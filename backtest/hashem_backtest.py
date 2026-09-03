@@ -1298,7 +1298,7 @@ tr:hover {{background:rgba(255,255,255,0.05)}}
 </html>"""
     return html
 
-def backtest_candle(symbol: str, timeframe: str = "1m", limit: int = 100, heikin_ashi: bool = False):
+def backtest_candle(symbol: str, timeframe: str = "1m", limit: int = 100, heikin_ashi: bool = False, data=None):
     
     tf_map = {
         '1m': mt5.TIMEFRAME_M1, '3m': mt5.TIMEFRAME_M3, '5m': mt5.TIMEFRAME_M5, 
@@ -1311,15 +1311,21 @@ def backtest_candle(symbol: str, timeframe: str = "1m", limit: int = 100, heikin
     
     mt5_tf = tf_map[timeframe]
     
-    mt5.initialize()
+    if data is not None:
+        # Phase-1 fix (coherent pairing): compute from caller-provided bars
+        # instead of self-fetching the latest N bars from MT5.
+        # `data` must be in MT5-raw format (epoch 'time' + 'tick_volume', ...).
+        df = pd.DataFrame(data)
+    else:
+        mt5.initialize()
     
-    rates = mt5.copy_rates_from_pos(symbol, mt5_tf, 0, limit)
+        rates = mt5.copy_rates_from_pos(symbol, mt5_tf, 0, limit)
     
-    if rates is None or len(rates) == 0:
-        print(f"Warning: No data returned from MT5 for {symbol} on {timeframe}")
-        return pd.DataFrame(columns=['time', 'open', 'high', 'low', 'close', 'tick_volume'])
+        if rates is None or len(rates) == 0:
+            print(f"Warning: No data returned from MT5 for {symbol} on {timeframe}")
+            return pd.DataFrame(columns=['time', 'open', 'high', 'low', 'close', 'tick_volume'])
     
-    df = pd.DataFrame(rates)
+        df = pd.DataFrame(rates)
     df['time'] = pd.to_datetime(df['time'], unit='s')
     df.rename(columns={'tick_volume': 'volume'}, inplace=True)
     

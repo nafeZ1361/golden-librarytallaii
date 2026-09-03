@@ -1,0 +1,15 @@
+
+================================================================================
+BACKTEST COMPLETED - TRADE STATISTICS
+================================================================================
+Total Trades Executed: 84
+Winning Trades: 22
+Losing Trades: 62
+Breakeven Trades: 0
+Win Rate: 26.19%
+Total Profit: $-1800.00
+Final Balance: $3200.00
+ROI: -36.00%
+================================================================================
+
+Backtest completed! Report saved to: backtest/backtest_report_XAUUSD._3m_20260903_235448.html

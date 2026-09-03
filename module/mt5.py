@@ -209,7 +209,7 @@ def close_half_vol_order(ticket):
 def close_all_positions():
     positions = mt5.positions_get()
     if positions is None:
-        pass
+        return
 
     for position in positions:
         p_ticket = position._asdict()['ticket']
@@ -778,7 +778,7 @@ def remove_order(ticket):
 def close_all_pending_orders():
     positions = mt5.orders_get()
     if positions is None:
-        pass
+        return
 
     for position in positions:
         p_ticket = position.ticket
@@ -1153,7 +1153,7 @@ def count_sl_between_hours(comment, start_hour, end_hour):
 def close_all_pending_orders_with_type(type = 'buy'):
     positions = mt5.orders_get()
     if positions is None:
-        pass
+        return
 
     for position in positions:
         if type == 'buy' and position.type == 2 :

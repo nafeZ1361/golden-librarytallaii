@@ -1,0 +1,425 @@
+﻿# bot.ipynb
+from module.mt5 import *
+from module.indicators import *
+from module.modifyPosition import *
+from module.stg import *
+from module.state_io import save_state, load_state
+import MetaTrader5 as mt5
+import time
+import datetime
+
+mt5.initialize()
+
+# --------------------------- ØªÙ†Ø¸ÛŒÙ…Ø§Øª Ø§ØµÙ„ÛŒ --------------------------- #
+symbol = 'XAUUSD'
+tf = '1m'
+Start_balance = balance()
+risk = 1
+rr = 2
+
+
+# ======================================================================================== #
+# Ø§Ø³ØªØ±Ø§ØªÚ˜ÛŒ 1: ADX + SuperTrend
+# Ù†Ú©ØªÙ‡: ADX ÙÙ‚Ø· Ù‚Ø¯Ø±Øª Ø±ÙˆÙ†Ø¯ Ù…ÛŒâ€ŒØ¯Ù‡Ø¯ Ù†Ù‡ Ø¬Ù‡ØªØŒ Ù¾Ø³ Ø§Ø² ADX>25 Ø¨Ù‡ Ø¹Ù†ÙˆØ§Ù† ÙÛŒÙ„ØªØ± Ù‚Ø¯Ø±Øª Ø§Ø³ØªÙØ§Ø¯Ù‡ Ù…ÛŒâ€ŒÚ©Ù†ÛŒÙ…
+# ======================================================================================== #
+def adx_super_stg(symbol, tf, candle_type='ha', rr=2, comment='adx_super_stg'):
+
+    # Ù…Ø¯ÛŒØ±ÛŒØª Ù¾ÙˆØ²ÛŒØ´Ù†â€ŒÙ‡Ø§ÛŒ Ø¨Ø§Ø²
+    positions = mt5.positions_get(symbol=symbol)
+    if positions:
+        for position in positions:
+            if position.comment == comment:
+                tp1_save_profit(position)
+                smartTP(tf, position)
+
+    # Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Ú†Ù†Ø¯ ÙˆØ±ÙˆØ¯
+    if total_position_comment(comment) > 0:
+        return
+
+    # Ù‚ÛŒÙ…Øª
+    price = mt5.symbol_info_tick(symbol)
+    if price is None:
+        return
+
+    # Ø³ÛŒÚ¯Ù†Ø§Ù„â€ŒÙ‡Ø§
+    adx_val = adx(symbol, tf, 14, 14, candle_type)
+    trend_super = supertrend(symbol, tf, 10, 3, candle_type)
+    super_pos_list = trend_super['position']
+    signal_super = Trend_change_signal(super_pos_list)
+
+    # Ø´Ø±Ø· ÙˆØ±ÙˆØ¯: ADX Ø¨Ø§Ù„Ø§ÛŒ 25 (Ø±ÙˆÙ†Ø¯ Ù‚ÙˆÛŒ) + Ø³ÛŒÚ¯Ù†Ø§Ù„ Ø³ÙˆÙ¾Ø±ØªØ±Ù†Ø¯
+    # buy
+    if adx_val[-2] > 25 and super_pos_list[-2] == 'long' and signal_super == 'buy':
+        sl = price.ask - smartSL(symbol, tf, 7, 4)
+        tp = price.ask + ((price.ask - sl) * rr)
+        org_risk = risk_corrector_comment(comment, risk, Start_balance, rr)
+        lot = lot_calculator(symbol, org_risk, price.ask, sl)
+        create_order(symbol, lot, buy, sl, tp, comment)
+
+    # sell
+    if adx_val[-2] > 25 and super_pos_list[-2] == 'short' and signal_super == 'sell':
+        sl = price.bid + smartSL(symbol, tf, 7, 4)
+        tp = price.bid - ((sl - price.bid) * rr)
+        org_risk = risk_corrector_comment(comment, risk, Start_balance, rr)
+        lot = lot_calculator(symbol, org_risk, price.bid, sl)
+        create_order(symbol, lot, sell, sl, tp, comment)
+
+
+# ======================================================================================== #
+# Ø§Ø³ØªØ±Ø§ØªÚ˜ÛŒ 2: Ichimoku + SuperTrend
+# Ø±ÙˆÙ†Ø¯ Ø§ÛŒÚ†ÛŒÙ…ÙˆÚ©Ùˆ: cloud = green ÛŒØ¹Ù†ÛŒ longØŒ cloud = red ÛŒØ¹Ù†ÛŒ short
+# ======================================================================================== #
+def ichimoku_super_stg(symbol, tf, candle_type='ha', rr=2, comment='ichimoku_super_stg'):
+
+    # Ù…Ø¯ÛŒØ±ÛŒØª Ù¾ÙˆØ²ÛŒØ´Ù†â€ŒÙ‡Ø§ÛŒ Ø¨Ø§Ø²
+    positions = mt5.positions_get(symbol=symbol)
+    if positions:
+        for position in positions:
+            if position.comment == comment:
+                tp1_save_profit(position)
+                smartTP(tf, position)
+
+    # Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Ú†Ù†Ø¯ ÙˆØ±ÙˆØ¯
+    if total_position_comment(comment) > 0:
+        return
+
+    # Ù‚ÛŒÙ…Øª
+    price = mt5.symbol_info_tick(symbol)
+    if price is None:
+        return
+
+    # Ø³ÛŒÚ¯Ù†Ø§Ù„â€ŒÙ‡Ø§
+    ichi = ichimoku(symbol, tf, 9, 26, 26, 52, candle_type)
+    ichi_cloud = ichi['cloud']
+    trend_super = supertrend(symbol, tf, 10, 3, candle_type)
+    super_pos_list = trend_super['position']
+    signal_super = Trend_change_signal(super_pos_list)
+
+    # buy: Ø§Ø¨Ø± Ø³Ø¨Ø² + Ø³ÛŒÚ¯Ù†Ø§Ù„ Ø³ÙˆÙ¾Ø± buy
+    if ichi_cloud[-2] == 'green' and signal_super == 'buy':
+        sl = price.ask - smartSL(symbol, tf, 7, 4)
+        tp = price.ask + ((price.ask - sl) * rr)
+        org_risk = risk_corrector_comment(comment, risk, Start_balance, rr)
+        lot = lot_calculator(symbol, org_risk, price.ask, sl)
+        create_order(symbol, lot, buy, sl, tp, comment)
+
+    # sell: Ø§Ø¨Ø± Ù‚Ø±Ù…Ø² + Ø³ÛŒÚ¯Ù†Ø§Ù„ Ø³ÙˆÙ¾Ø± sell
+    if ichi_cloud[-2] == 'red' and signal_super == 'sell':
+        sl = price.bid + smartSL(symbol, tf, 7, 4)
+        tp = price.bid - ((sl - price.bid) * rr)
+        org_risk = risk_corrector_comment(comment, risk, Start_balance, rr)
+        lot = lot_calculator(symbol, org_risk, price.bid, sl)
+        create_order(symbol, lot, sell, sl, tp, comment)
+
+
+# ======================================================================================== #
+# Ø§Ø³ØªØ±Ø§ØªÚ˜ÛŒ 3: SuperTrend + Parabolic SAR
+# ======================================================================================== #
+def super_sar_stg(symbol, tf, candle_type='ha', rr=2, comment='super_sar_stg'):
+
+    # Ù…Ø¯ÛŒØ±ÛŒØª Ù¾ÙˆØ²ÛŒØ´Ù†â€ŒÙ‡Ø§ÛŒ Ø¨Ø§Ø²
+    positions = mt5.positions_get(symbol=symbol)
+    if positions:
+        for position in positions:
+            if position.comment == comment:
+                tp1_save_profit(position)
+                smartTP(tf, position)
+
+    # Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Ú†Ù†Ø¯ ÙˆØ±ÙˆØ¯
+    if total_position_comment(comment) > 0:
+        return
+
+    # Ù‚ÛŒÙ…Øª
+    price = mt5.symbol_info_tick(symbol)
+    if price is None:
+        return
+
+    # Ø³ÛŒÚ¯Ù†Ø§Ù„â€ŒÙ‡Ø§
+    trend_super = supertrend(symbol, tf, 10, 3, candle_type)
+    super_pos_list = trend_super['position']
+    signal_sar = sar_signal(symbol, tf, 0.02, 0.02, 0.2, candle_type)
+
+    # buy: Ø³ÙˆÙ¾Ø± long + Ø³Ø§Ø± buy
+    if super_pos_list[-2] == 'long' and signal_sar == 'buy':
+        sl = price.ask - smartSL(symbol, tf, 7, 4)
+        tp = price.ask + ((price.ask - sl) * rr)
+        org_risk = risk_corrector_comment(comment, risk, Start_balance, rr)
+        lot = lot_calculator(symbol, org_risk, price.ask, sl)
+        create_order(symbol, lot, buy, sl, tp, comment)
+
+    # sell: Ø³ÙˆÙ¾Ø± short + Ø³Ø§Ø± sell
+    if super_pos_list[-2] == 'short' and signal_sar == 'sell':
+        sl = price.bid + smartSL(symbol, tf, 7, 4)
+        tp = price.bid - ((sl - price.bid) * rr)
+        org_risk = risk_corrector_comment(comment, risk, Start_balance, rr)
+        lot = lot_calculator(symbol, org_risk, price.bid, sl)
+        create_order(symbol, lot, sell, sl, tp, comment)
+
+
+# ======================================================================================== #
+# Ø§Ø³ØªØ±Ø§ØªÚ˜ÛŒ 4: SuperTrend + MACD
+# Ø±ÙˆÙ†Ø¯ MACD: histogram > 0 = longØŒ < 0 = short
+# Ø³ÛŒÚ¯Ù†Ø§Ù„: ØªØºÛŒÛŒØ± Ø¬Ù‡Øª histogram
+# ======================================================================================== #
+def super_macd_stg(symbol, tf, candle_type='ha', rr=2, comment='super_macd_stg'):
+
+    # Ù…Ø¯ÛŒØ±ÛŒØª Ù¾ÙˆØ²ÛŒØ´Ù†â€ŒÙ‡Ø§ÛŒ Ø¨Ø§Ø²
+    positions = mt5.positions_get(symbol=symbol)
+    if positions:
+        for position in positions:
+            if position.comment == comment:
+                tp1_save_profit(position)
+                smartTP(tf, position)
+
+    # Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Ú†Ù†Ø¯ ÙˆØ±ÙˆØ¯
+    if total_position_comment(comment) > 0:
+        return
+
+    # Ù‚ÛŒÙ…Øª
+    price = mt5.symbol_info_tick(symbol)
+    if price is None:
+        return
+
+    # Ø³ÛŒÚ¯Ù†Ø§Ù„â€ŒÙ‡Ø§
+    trend_super = supertrend(symbol, tf, 10, 3, candle_type)
+    super_pos_list = trend_super['position']
+    macd_data = macd(symbol, tf, 12, 26, 9)
+    hist = macd_data['histogram']
+
+    # Ø³ÛŒÚ¯Ù†Ø§Ù„ MACD: ØªØºÛŒÛŒØ± Ø¬Ù‡Øª histogram
+    macd_buy = hist[-3] < 0 and hist[-2] > 0
+    macd_sell = hist[-3] > 0 and hist[-2] < 0
+
+    # buy: Ø³ÙˆÙ¾Ø± long + MACD buy
+    if super_pos_list[-2] == 'long' and macd_buy:
+        sl = price.ask - smartSL(symbol, tf, 7, 4)
+        tp = price.ask + ((price.ask - sl) * rr)
+        org_risk = risk_corrector_comment(comment, risk, Start_balance, rr)
+        lot = lot_calculator(symbol, org_risk, price.ask, sl)
+        create_order(symbol, lot, buy, sl, tp, comment)
+
+    # sell: Ø³ÙˆÙ¾Ø± short + MACD sell
+    if super_pos_list[-2] == 'short' and macd_sell:
+        sl = price.bid + smartSL(symbol, tf, 7, 4)
+        tp = price.bid - ((sl - price.bid) * rr)
+        org_risk = risk_corrector_comment(comment, risk, Start_balance, rr)
+        lot = lot_calculator(symbol, org_risk, price.bid, sl)
+        create_order(symbol, lot, sell, sl, tp, comment)
+
+
+# ======================================================================================== #
+# Ø§Ø³ØªØ±Ø§ØªÚ˜ÛŒ 5: SuperTrend + Keltner Channels
+# Ø±ÙˆÙ†Ø¯ Ú©Ù„ØªÙ†Ø±: close > upper = longØŒ close < lower = short
+# ======================================================================================== #
+def super_keltner_stg(symbol, tf, candle_type='ha', rr=2, comment='super_keltner_stg'):
+
+    # Ù…Ø¯ÛŒØ±ÛŒØª Ù¾ÙˆØ²ÛŒØ´Ù†â€ŒÙ‡Ø§ÛŒ Ø¨Ø§Ø²
+    positions = mt5.positions_get(symbol=symbol)
+    if positions:
+        for position in positions:
+            if position.comment == comment:
+                tp1_save_profit(position)
+                smartTP(tf, position)
+
+    # Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Ú†Ù†Ø¯ ÙˆØ±ÙˆØ¯
+    if total_position_comment(comment) > 0:
+        return
+
+    # Ù‚ÛŒÙ…Øª
+    price = mt5.symbol_info_tick(symbol)
+    if price is None:
+        return
+
+    # Ú©Ù†Ø¯Ù„â€ŒÙ‡Ø§ Ø¨Ø±Ø§ÛŒ Ú†Ú© Ú©Ø±Ø¯Ù† close
+    candles = candle(symbol, tf, 5)
+
+    # Ø³ÛŒÚ¯Ù†Ø§Ù„â€ŒÙ‡Ø§
+    trend_super = supertrend(symbol, tf, 10, 3, candle_type)
+    super_pos_list = trend_super['position']
+    signal_super = Trend_change_signal(super_pos_list)
+    keltner_up = keltner_channels(symbol, tf, 'up', 20, 10, 2, candle_type)
+    keltner_low = keltner_channels(symbol, tf, 'low', 20, 10, 2, candle_type)
+
+    # Ø±ÙˆÙ†Ø¯ Ú©Ù„ØªÙ†Ø±
+    keltner_long = candles[-2]['close'] > keltner_up[-2]
+    keltner_short = candles[-2]['close'] < keltner_low[-2]
+
+    # buy: Ú©Ù„ØªÙ†Ø± long + Ø³ÙˆÙ¾Ø± buy
+    if keltner_long and signal_super == 'buy':
+        sl = price.ask - smartSL(symbol, tf, 7, 4)
+        tp = price.ask + ((price.ask - sl) * rr)
+        org_risk = risk_corrector_comment(comment, risk, Start_balance, rr)
+        lot = lot_calculator(symbol, org_risk, price.ask, sl)
+        create_order(symbol, lot, buy, sl, tp, comment)
+
+    # sell: Ú©Ù„ØªÙ†Ø± short + Ø³ÙˆÙ¾Ø± sell
+    if keltner_short and signal_super == 'sell':
+        sl = price.bid + smartSL(symbol, tf, 7, 4)
+        tp = price.bid - ((sl - price.bid) * rr)
+        org_risk = risk_corrector_comment(comment, risk, Start_balance, rr)
+        lot = lot_calculator(symbol, org_risk, price.bid, sl)
+        create_order(symbol, lot, sell, sl, tp, comment)
+
+
+# ======================================================================================== #
+# Ø§Ø³ØªØ±Ø§ØªÚ˜ÛŒ 6: SuperTrend + Trend Magic
+# ======================================================================================== #
+def super_trendmagic_stg(symbol, tf, candle_type='ha', rr=2, comment='super_trendmagic_stg'):
+
+    # Ù…Ø¯ÛŒØ±ÛŒØª Ù¾ÙˆØ²ÛŒØ´Ù†â€ŒÙ‡Ø§ÛŒ Ø¨Ø§Ø²
+    positions = mt5.positions_get(symbol=symbol)
+    if positions:
+        for position in positions:
+            if position.comment == comment:
+                tp1_save_profit(position)
+                smartTP(tf, position)
+
+    # Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Ú†Ù†Ø¯ ÙˆØ±ÙˆØ¯
+    if total_position_comment(comment) > 0:
+        return
+
+    # Ù‚ÛŒÙ…Øª
+    price = mt5.symbol_info_tick(symbol)
+    if price is None:
+        return
+
+    # Ø³ÛŒÚ¯Ù†Ø§Ù„â€ŒÙ‡Ø§
+    trend_super = supertrend(symbol, tf, 10, 3, candle_type)
+    super_pos_list = trend_super['position']
+    signal_super = Trend_change_signal(super_pos_list)
+    tm = trend_magic(symbol, tf, 20, 5, 1, candle_type)
+    tm_signal_list = tm['signal']
+
+    # buy: ØªØ±Ù†Ø¯ Ù…Ø¬ÛŒÚ© long + Ø³ÙˆÙ¾Ø± buy
+    if tm_signal_list[-2] == 'long' and signal_super == 'buy':
+        sl = price.ask - smartSL(symbol, tf, 7, 4)
+        tp = price.ask + ((price.ask - sl) * rr)
+        org_risk = risk_corrector_comment(comment, risk, Start_balance, rr)
+        lot = lot_calculator(symbol, org_risk, price.ask, sl)
+        create_order(symbol, lot, buy, sl, tp, comment)
+
+    # sell: ØªØ±Ù†Ø¯ Ù…Ø¬ÛŒÚ© short + Ø³ÙˆÙ¾Ø± sell
+    if tm_signal_list[-2] == 'short' and signal_super == 'sell':
+        sl = price.bid + smartSL(symbol, tf, 7, 4)
+        tp = price.bid - ((sl - price.bid) * rr)
+        org_risk = risk_corrector_comment(comment, risk, Start_balance, rr)
+        lot = lot_calculator(symbol, org_risk, price.bid, sl)
+        create_order(symbol, lot, sell, sl, tp, comment)
+
+
+# ======================================================================================== #
+# Ø§Ø³ØªØ±Ø§ØªÚ˜ÛŒ 7: SuperTrend + Volumatic VIDYA
+# ======================================================================================== #
+def super_vidya_stg(symbol, tf, candle_type='ha', rr=2, comment='super_vidya_stg'):
+
+    # Ù…Ø¯ÛŒØ±ÛŒØª Ù¾ÙˆØ²ÛŒØ´Ù†â€ŒÙ‡Ø§ÛŒ Ø¨Ø§Ø²
+    positions = mt5.positions_get(symbol=symbol)
+    if positions:
+        for position in positions:
+            if position.comment == comment:
+                tp1_save_profit(position)
+                smartTP(tf, position)
+
+    # Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Ú†Ù†Ø¯ ÙˆØ±ÙˆØ¯
+    if total_position_comment(comment) > 0:
+        return
+
+    # Ù‚ÛŒÙ…Øª
+    price = mt5.symbol_info_tick(symbol)
+    if price is None:
+        return
+
+    # Ø³ÛŒÚ¯Ù†Ø§Ù„â€ŒÙ‡Ø§
+    trend_super = supertrend(symbol, tf, 10, 3, candle_type)
+    super_pos_list = trend_super['position']
+    signal_super = Trend_change_signal(super_pos_list)
+    vidya_trend = volumatic_vidya(symbol, tf, 10, 20, 2, 'trend', candle_type)
+
+    # buy: ÙˆÛŒØ¯ÛŒØ§ long + Ø³ÙˆÙ¾Ø± buy
+    if vidya_trend[-2] == 'long' and signal_super == 'buy':
+        sl = price.ask - smartSL(symbol, tf, 7, 4)
+        tp = price.ask + ((price.ask - sl) * rr)
+        org_risk = risk_corrector_comment(comment, risk, Start_balance, rr)
+        lot = lot_calculator(symbol, org_risk, price.ask, sl)
+        create_order(symbol, lot, buy, sl, tp, comment)
+
+    # sell: ÙˆÛŒØ¯ÛŒØ§ short + Ø³ÙˆÙ¾Ø± sell
+    if vidya_trend[-2] == 'short' and signal_super == 'sell':
+        sl = price.bid + smartSL(symbol, tf, 7, 4)
+        tp = price.bid - ((sl - price.bid) * rr)
+        org_risk = risk_corrector_comment(comment, risk, Start_balance, rr)
+        lot = lot_calculator(symbol, org_risk, price.bid, sl)
+        create_order(symbol, lot, sell, sl, tp, comment)
+
+
+# ======================================================================================== #
+# Ø§Ø³ØªØ±Ø§ØªÚ˜ÛŒ 8: SuperTrend + Trend Ali
+# ======================================================================================== #
+def super_trendali_stg(symbol, tf, candle_type='ha', rr=2, comment='super_trendali_stg'):
+
+    # Ù…Ø¯ÛŒØ±ÛŒØª Ù¾ÙˆØ²ÛŒØ´Ù†â€ŒÙ‡Ø§ÛŒ Ø¨Ø§Ø²
+    positions = mt5.positions_get(symbol=symbol)
+    if positions:
+        for position in positions:
+            if position.comment == comment:
+                tp1_save_profit(position)
+                smartTP(tf, position)
+
+    # Ø¬Ù„ÙˆÚ¯ÛŒØ±ÛŒ Ø§Ø² Ú†Ù†Ø¯ ÙˆØ±ÙˆØ¯
+    if total_position_comment(comment) > 0:
+        return
+
+    # Ù‚ÛŒÙ…Øª
+    price = mt5.symbol_info_tick(symbol)
+    if price is None:
+        return
+
+    # Ø³ÛŒÚ¯Ù†Ø§Ù„â€ŒÙ‡Ø§
+    trend_super = supertrend(symbol, tf, 10, 3, candle_type)
+    super_pos_list = trend_super['position']
+    signal_super = Trend_change_signal(super_pos_list)
+    tali = trend_ali(symbol, tf, 60, 6, 'Hma', candle_type)
+    tali_trend = tali['trend']
+
+    # buy: ØªØ±Ù†Ø¯ Ø¹Ù„ÛŒ long + Ø³ÙˆÙ¾Ø± buy
+    if tali_trend[-2] == 'long' and signal_super == 'buy':
+        sl = price.ask - smartSL(symbol, tf, 7, 4)
+        tp = price.ask + ((price.ask - sl) * rr)
+        org_risk = risk_corrector_comment(comment, risk, Start_balance, rr)
+        lot = lot_calculator(symbol, org_risk, price.ask, sl)
+        create_order(symbol, lot, buy, sl, tp, comment)
+
+    # sell: ØªØ±Ù†Ø¯ Ø¹Ù„ÛŒ short + Ø³ÙˆÙ¾Ø± sell
+    if tali_trend[-2] == 'short' and signal_super == 'sell':
+        sl = price.bid + smartSL(symbol, tf, 7, 4)
+        tp = price.bid - ((sl - price.bid) * rr)
+        org_risk = risk_corrector_comment(comment, risk, Start_balance, rr)
+        lot = lot_calculator(symbol, org_risk, price.bid, sl)
+        create_order(symbol, lot, sell, sl, tp, comment)
+
+
+# ======================================================================================== #
+# Ø§Ø¬Ø±Ø§ÛŒ Ø±Ø¨Ø§Øª
+# ======================================================================================== #
+while True:
+    try:
+        mt5.symbol_select(symbol, True)
+
+        # Ø§Ø¬Ø±Ø§ÛŒ Ù‡Ù…Ù‡ Ø§Ø³ØªØ±Ø§ØªÚ˜ÛŒâ€ŒÙ‡Ø§
+        # Ù‡Ø± ØªØ§Ø¨Ø¹ Ø®ÙˆØ¯Ø´ Ú†Ú© Ù…ÛŒâ€ŒÚ©Ù†Ø¯ Ú©Ù‡ Ù¾ÙˆØ²ÛŒØ´Ù† Ø¨Ø§Ø² Ø¯Ø§Ø±Ø¯ ÛŒØ§ Ù†Ù‡
+        adx_super_stg(symbol, tf, 'ha', rr, 'adx_super_stg')
+        ichimoku_super_stg(symbol, tf, 'ha', rr, 'ichimoku_super_stg')
+        super_sar_stg(symbol, tf, 'ha', rr, 'super_sar_stg')
+        super_macd_stg(symbol, tf, 'ha', rr, 'super_macd_stg')
+        super_keltner_stg(symbol, tf, 'ha', rr, 'super_keltner_stg')
+        super_trendmagic_stg(symbol, tf, 'ha', rr, 'super_trendmagic_stg')
+        super_vidya_stg(symbol, tf, 'ha', rr, 'super_vidya_stg')
+        super_trendali_stg(symbol, tf, 'ha', rr, 'super_trendali_stg')
+
+        time.sleep(1)
+
+    except Exception as e:
+        print(e)
+        time.sleep(10)
+        continue
+    
