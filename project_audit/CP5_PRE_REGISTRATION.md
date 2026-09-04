@@ -276,3 +276,77 @@ its artifact file on disk (terminal output alone is not evidence).
 FINAL OBJECTIVE REMINDER: the deliverable is TRUTH. If A1/A2 fail any gate,
 the recorded outcome is NO PROVEN EDGE — a valid scientific result — and the
 control remains the reference. NO LIVE TRADING at any point of CP5.
+
+---
+
+# AMENDMENT 1 — 2026-09-04 (Methodology Finalization — registered BEFORE any CP5 result)
+
+Gate: CP5 Methodology Review. User-approved decisions: F1 (fix) and F4 (exact
+OR definition to be registered pre-results). At the time of this amendment NO
+CP5 performance number exists anywhere (no CP5.5+ step has run) — this
+amendment cannot be result-driven by construction.
+
+## A1. What changed and why
+
+| ID | Change | Reason | Hypothesis impact |
+|---|---|---|---|
+| F1 | `strategy_a1_meanrev.py`: NaN guard `is None` checks → `pd.isna(...)` (now also covering `up[i]`) | Defensive correctness only: float NaN never equals None, so the old guard never fired | NONE — bit-identical outputs proven on all 6 fixtures (§A4) |
+| F4 | `strategy_a2_breakout.py`: OR eligibility registered AND implemented — (a) interior days only, (b) verified session open (previous bar = previous calendar day AND session break ≥ 30 min), (c) complete gap-free OR (exactly OR_BARS bars AND exact (OR_BARS−1)×tf-min span); the former 60% completeness rule (old F5) is REMOVED | A bar-count window boundary can fall mid-session; a partial first-day OR is not a true Opening Range. Incomplete ORs must not generate signals | H-A2 event population redefined structurally (STRICTER); registered before results |
+
+## A2. Final definitions (binding — supersedes §C where they differ)
+
+**A1 (final):** unchanged — RSI(14) fresh cross 30/70 AND close beyond the
+BB(20,2) band on the cross bar; params fixed a priori (14/30/70, 20/2); plain
+candles; NaN-aware warm-up guard (proven behavior-preserving).
+
+**A2 (final):** §C as amended by the OR-eligibility rule (a)(b)(c) above.
+Signals only on interior days with a verified session open and a complete
+gap-free OR; days failing any condition produce NO signals. Volume filter
+1.5×, breakout direction, run semantics, fixed params (120 min, 1.5×) — all
+unchanged. Session-break threshold registered at 30 min (empirical minimum
+interior day-start gap ≥ 60 min — §A3).
+
+**Data / metrics / acceptance / failure criteria:** unchanged from §B, §D,
+§12, §13. Registered deviations D1–D4 remain as registered.
+
+## A3. Empirical session facts behind the F4 rule (structural survey of the frozen Sep-3 fixtures — timestamps only, no strategy output touched)
+
+- Trading day ≈ 459–460 M3 bars (~23 h). NO day has < 40 bars (0 of 195).
+- Interior day-start gap ~63 min; weekend ~2949 min; holiday variants ≥ 213 min;
+  minimum observed interior day-start gap ≥ 60 min → `SESSION_BREAK_MIN = 30`.
+- First bar of day: 01:00/01:03 on ~90% of days, 00:00/00:03 on DST-shifted
+  days → the rule is STRUCTURAL (no session-clock constant needed).
+- Every window's first day starts mid-session (20:39, 11:03, 20:09, 06:09,
+  16:27, 08:57) → excluded by rule (a). ≤ 1 day per window affected.
+
+## A4. Fix validation (script `cp5_source_validation.py`; artifacts `CP5_source_validation_PRE.md` / `_POST.md`)
+
+- **F1:** A1 state hashes bit-identical PRE→POST on all 6 windows; event counts
+  unchanged (226/227/227/225/228/246). NaN synthetic (close rows 0–24 = NaN):
+  no crash, rows < 30 all `hold`, identical hash `44fc7284074b9231` PRE→POST.
+  ⇒ valid input gives identical output; NaN handled correctly; NO new signals
+  from the fix; no look-ahead (guard is past-only); no parameter changed.
+- **F4:** A2 hashes unchanged on windows 1/3/5/6; window 2: 2955→2865 event
+  bars (−90, 1 event day removed); window 4: 351→331 (−20, 1 event day removed).
+  POST: `ineligible_event_days = 0` on all 6 windows against an INDEPENDENT
+  re-implementation of the eligibility rule. The change only REMOVED events
+  (POST ⊆ PRE); none added.
+- Validation fixtures = the frozen Sep-3 control windows used as regression
+  fixtures ONLY — they are NOT the CP5 dataset (CP5 data freeze happens at the
+  data-freeze gate per §B/D3).
+
+## A5. Source Freeze (binding from the commit containing this amendment)
+
+Tag: `cp5-source-freeze-v1`. From this commit, experiment code is immutable
+without a registered amendment. Frozen versions (sha256):
+
+```
+strategy_a1_meanrev.py  85c1781a700dde5ed0015fc64841f99a4c0263b6913b9b3afc5a77765e4105a6
+strategy_a2_breakout.py 732d1eaad9517e2c4b4bbe1d0fc82a1fc8a0a9c79fd8a8aa9898ab72d279dd5b
+research_harness.py     c5e7844a27d9c4a6d08a0221d7a42580e9750cb45f410672589e21f2ddc49216
+cp5_source_validation.py 36b12b30b7780db4f93c89cb08130d093e4771991cb9eb0bb6a0df1a04db8c9a
+```
+
+Roadmap position after this amendment: Methodology Finalization COMPLETE →
+next gate = **Data Freeze + Provenance** (CP5.2), which requires MT5 contact
+and explicit user authorization.

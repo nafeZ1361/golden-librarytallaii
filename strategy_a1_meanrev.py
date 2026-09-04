@@ -12,6 +12,7 @@
 #
 # Computed purely on the supplied window df (plain candles). No MT5 access.
 
+import pandas as pd
 import pandas_ta
 
 
@@ -31,7 +32,9 @@ def signal_fn(wdf, tf_name=None):
 
     states = ["hold"] * n
     for i in range(1, n):
-        if r[i] is None or lo[i] is None or r[i - 1] is None:
+        # NaN-aware warm-up guard: float('nan') (pandas tolist) is not None,
+        # so the former `is None` checks never fired (CP5 F1, behavior-preserving).
+        if pd.isna(r[i]) or pd.isna(lo[i]) or pd.isna(up[i]) or pd.isna(r[i - 1]):
             continue
         if r[i] < 30 and r[i - 1] >= 30 and c[i] <= lo[i]:
             states[i] = "buy"
