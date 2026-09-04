@@ -130,6 +130,11 @@ BASELINE LOCK NOT YET PERFORMED.
 
 EVIDENCE PRESERVATION ≠ BASELINE LOCK.
 
+> ADDENDUM 2026-09-04 (post-lock): Baseline Lock has now been performed —
+> see `BASELINE_LOCK.md` and tag `baseline-lock-v1`. The statement above was
+> true at recording time and is superseded by the lock. The distinction
+> EVIDENCE PRESERVATION ≠ BASELINE LOCK remains valid.
+
 ---
 
 Audit trail of this record: read-only inspection only. No source code was
