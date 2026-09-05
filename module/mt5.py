@@ -1,10 +1,52 @@
 import datetime
+import time
 import pandas as pd
 import MetaTrader5 as mt5
 import ta
 import pytz
 import requests
 import numpy as np
+
+
+# ---- CP19 LOOP-1 safety additions (D1/D2/D3) --------------------------------
+class MT5DataError(RuntimeError):
+    """Terminal returned None/unusable data. Callers must fail SAFE (never
+    treat missing MT5 data as a successful/zero state)."""
+
+
+def _mt5safety_log(msg):
+    print("[MT5SAFETY] %s" % msg, flush=True)
+
+
+def _require_result(result, what):
+    if result is None:
+        _mt5safety_log("%s -> None (MT5 unavailable?); fail-safe path" % what)
+        raise MT5DataError(what)
+    return result
+
+
+def _retcode_ok(res):
+    return res is not None and getattr(res, "retcode", None) == getattr(
+        mt5, "TRADE_RETCODE_DONE", 10009)
+
+
+def _verify_position_gone(ticket, attempts=5, delay=0.2):
+    for _ in range(attempts):
+        remaining = mt5.positions_get(ticket=ticket)
+        if remaining is not None and len(remaining) == 0:
+            return True
+        time.sleep(delay)
+    return False
+
+
+def _verify_order_gone(ticket, attempts=5, delay=0.2):
+    for _ in range(attempts):
+        remaining = mt5.orders_get(ticket=ticket)
+        if remaining is not None and len(remaining) == 0:
+            return True
+        time.sleep(delay)
+    return False
+# ---- end CP19 LOOP-1 additions ----------------------------------------------
 
 
 buy = mt5.ORDER_TYPE_BUY
@@ -136,23 +178,30 @@ def create_order(symbol, lot, order_type, sl=0.0, tp=0.0, comment='hashem'):
     return result
         
 def close_order(ticket):
-
     position = mt5.positions_get(ticket=ticket)
-    if position is None or len(position) == 0:
-        print(f"پوزیشن {ticket} پیدا نشد")
-        return
-    
+    if position is None:
+        _mt5safety_log("close_order(%s): positions_get=None (MT5 unavailable)" % ticket)
+        return None
+    if len(position) == 0:
+        _mt5safety_log("close_order(%s): position not found (already closed?)" % ticket)
+        return None
+
     position = position[0]
     symbol = position.symbol
     volume = position.volume
-    
-    close_type = mt5.ORDER_TYPE_SELL if position.type == mt5.POSITION_TYPE_BUY else mt5.ORDER_TYPE_BUY
-    
+
     price_info = mt5.symbol_info_tick(symbol)
+    if price_info is None:
+        _mt5safety_log("close_order(%s): symbol_info_tick=None" % ticket)
+        return None
+
+    close_type = mt5.ORDER_TYPE_SELL if position.type == mt5.POSITION_TYPE_BUY else mt5.ORDER_TYPE_BUY
+
     price = price_info.bid if position.type == mt5.POSITION_TYPE_BUY else price_info.ask
-    
+
     filling_modes = [mt5.ORDER_FILLING_FOK, mt5.ORDER_FILLING_IOC, mt5.ORDER_FILLING_RETURN]
-    
+
+    last_result = None
     for filling_mode in filling_modes:
         request = {
             "action": mt5.TRADE_ACTION_DEAL,
@@ -167,8 +216,11 @@ def close_order(ticket):
             "type_time": mt5.ORDER_TIME_GTC,
             "type_filling": filling_mode,
         }
-        
-        mt5.order_send(request)
+
+        last_result = mt5.order_send(request)
+        if _retcode_ok(last_result):
+            return last_result
+    return last_result
 
 def close_half_vol_order(ticket):
 
@@ -209,25 +261,54 @@ def close_half_vol_order(ticket):
 def close_all_positions():
     positions = mt5.positions_get()
     if positions is None:
-        return
+        _mt5safety_log("close_all_positions: positions_get=None -> NOTHING closed (fail-safe)")
+        return {"attempted": 0, "closed": 0, "failed": 0,
+                "verified_clean": False, "status": "MT5_UNAVAILABLE"}
 
+    attempted = closed = failed = 0
     for position in positions:
         p_ticket = position._asdict()['ticket']
-        close_order(p_ticket)
+        attempted += 1
+        res = close_order(p_ticket)
+        gone = _verify_position_gone(p_ticket)
+        if _retcode_ok(res) and gone:
+            closed += 1
+        else:
+            failed += 1
+            _mt5safety_log("close_all_positions: ticket %s NOT verified closed"
+                           " (retcode=%s, gone=%s)" % (p_ticket, getattr(res, "retcode", None), gone))
+
+    remaining = mt5.positions_get()
+    verified_clean = bool(remaining is not None and len(remaining) == 0)
+    status = "OK" if (failed == 0 and verified_clean) else (
+        "MT5_UNAVAILABLE" if remaining is None else "PARTIAL_FAILED")
+    if status != "OK":
+        _mt5safety_log("close_all_positions: status=%s attempted=%d closed=%d failed=%d"
+                       % (status, attempted, closed, failed))
+    return {"attempted": attempted, "closed": closed, "failed": failed,
+            "verified_clean": verified_clean, "status": status}
 
 def close_half_positions():
     positions = mt5.positions_get()
-    if positions is None or len(positions) == 0:
-        return
+    if positions is None:
+        _mt5safety_log("close_half_positions: positions_get=None -> NOTHING closed (fail-safe)")
+        return {"attempted": 0, "closed": 0, "failed": 0,
+                "verified_clean": False, "status": "MT5_UNAVAILABLE"}
 
     half_count = len(positions) // 2
-
+    attempted = closed = failed = 0
     for i, position in enumerate(positions):
         if i >= half_count:
             break
         p_ticket = position._asdict()['ticket']
-        
-        close_order(p_ticket)
+        attempted += 1
+        res = close_order(p_ticket)
+        if _retcode_ok(res) and _verify_position_gone(p_ticket):
+            closed += 1
+        else:
+            failed += 1
+    return {"attempted": attempted, "closed": closed, "failed": failed,
+            "verified_clean": failed == 0, "status": "OK" if failed == 0 else "PARTIAL_FAILED"}
 
 def total_positons():
     positions_total=mt5.positions_total()
@@ -776,41 +857,72 @@ def remove_order(ticket):
     return res
  
 def close_all_pending_orders():
-    positions = mt5.orders_get()
-    if positions is None:
-        return
+    orders = mt5.orders_get()
+    if orders is None:
+        _mt5safety_log("close_all_pending_orders: orders_get=None -> NOTHING removed (fail-safe)")
+        return {"attempted": 0, "removed": 0, "failed": 0,
+                "verified_clean": False, "status": "MT5_UNAVAILABLE"}
 
-    for position in positions:
-        p_ticket = position.ticket
-        remove_order(p_ticket)
+    attempted = removed = failed = 0
+    for order in orders:
+        attempted += 1
+        res = remove_order(order.ticket)
+        if _retcode_ok(res) and _verify_order_gone(order.ticket):
+            removed += 1
+        else:
+            failed += 1
+            _mt5safety_log("close_all_pending_orders: order %s NOT verified removed"
+                           % order.ticket)
+
+    remaining = mt5.orders_get()
+    verified_clean = bool(remaining is not None and len(remaining) == 0)
+    status = "OK" if (failed == 0 and verified_clean) else (
+        "MT5_UNAVAILABLE" if remaining is None else "PARTIAL_FAILED")
+    return {"attempted": attempted, "removed": removed, "failed": failed,
+            "verified_clean": verified_clean, "status": status}
 
 def close_half_with_comment(comment):
-  
     positions = mt5.positions_get()
-    
-    positions_with_comment = [pos for pos in positions if pos.comment == comment]
-    
-    half_count = len(positions_with_comment) // 2
+    if positions is None:
+        _mt5safety_log("close_half_with_comment: positions_get=None -> NOTHING closed (fail-safe)")
+        return {"attempted": 0, "closed": 0, "failed": 0,
+                "verified_clean": False, "status": "MT5_UNAVAILABLE"}
 
+    positions_with_comment = [pos for pos in positions if pos.comment == comment]
+    half_count = len(positions_with_comment) // 2
+    attempted = closed = failed = 0
     for i, position in enumerate(positions_with_comment):
         if i >= half_count:
             break
-         
         p_ticket = position.ticket
-       
-        close_order(p_ticket)
+        attempted += 1
+        res = close_order(p_ticket)
+        if _retcode_ok(res) and _verify_position_gone(p_ticket):
+            closed += 1
+        else:
+            failed += 1
+    return {"attempted": attempted, "closed": closed, "failed": failed,
+            "verified_clean": failed == 0, "status": "OK" if failed == 0 else "PARTIAL_FAILED"}
 
 def close_all_with_comment(comment):
-  
     positions = mt5.positions_get()
-    
+    if positions is None:
+        _mt5safety_log("close_all_with_comment: positions_get=None -> NOTHING closed (fail-safe)")
+        return {"attempted": 0, "closed": 0, "failed": 0,
+                "verified_clean": False, "status": "MT5_UNAVAILABLE"}
+
     positions_with_comment = [pos for pos in positions if pos.comment == comment]
-    
-    for position in positions_with_comment :
-         
+    attempted = closed = failed = 0
+    for position in positions_with_comment:
         p_ticket = position.ticket
-      
-        close_order(p_ticket)
+        attempted += 1
+        res = close_order(p_ticket)
+        if _retcode_ok(res) and _verify_position_gone(p_ticket):
+            closed += 1
+        else:
+            failed += 1
+    return {"attempted": attempted, "closed": closed, "failed": failed,
+            "verified_clean": failed == 0, "status": "OK" if failed == 0 else "PARTIAL_FAILED"}
 
 def fvg(symbol , tf):
     candles = candle(symbol , tf )
@@ -982,7 +1094,8 @@ def pnl_today() :
     from_time = datetime.datetime(now.year , now.month , now.day , 0 , 0 , 0 , 0)
     to_time =  from_time + datetime.timedelta(days=1)
 
-    history = mt5.history_deals_get(from_time ,to_time )
+    history = _require_result(mt5.history_deals_get(from_time ,to_time) ,
+                              "pnl_today: history_deals_get")
 
     for position in history : 
         profit += position.commission
@@ -990,8 +1103,7 @@ def pnl_today() :
         profit += position.profit
         profit += position.fee
 
-    
-    positions = mt5.positions_get()
+    positions = _require_result(mt5.positions_get() , "pnl_today: positions_get")
 
     for i in positions : 
         position = i._asdict()
@@ -1004,8 +1116,12 @@ def pnl_today() :
 
 
 
-def daily_draw_down_checker(Start_balance , daily_drow_down) : 
-    pnl = pnl_today()
+def daily_draw_down_checker(Start_balance , daily_drow_down) :
+    try:
+        pnl = pnl_today()
+    except MT5DataError as ex:
+        _mt5safety_log("daily_draw_down_checker: data failure (%s) -> FAIL-SAFE: TRIGGERED" % ex)
+        return True
     if pnl < 0 : 
         if (abs(pnl)) >= (Start_balance * (daily_drow_down / 100)) : 
             return True
@@ -1018,7 +1134,12 @@ def daily_draw_down_checker(Start_balance , daily_drow_down) :
 
 
 def total_draw_down(total_bls = 5000 , full_drow_down = 12):
-    equity = mt5.account_info().equity
+    try:
+        account = _require_result(mt5.account_info() , "total_draw_down: account_info")
+        equity = account.equity
+    except MT5DataError as ex:
+        _mt5safety_log("total_draw_down: data failure (%s) -> FAIL-SAFE: TRIGGERED" % ex)
+        return True
     if equity - total_bls < 0 : 
         if abs(equity - total_bls) >= (total_bls * (full_drow_down / 100)) : 
             return True
@@ -1031,7 +1152,7 @@ def total_draw_down(total_bls = 5000 , full_drow_down = 12):
     
 
 def count_position_now(type , symbol):
-    positions = mt5.positions_get()
+    positions = _require_result(mt5.positions_get() , "count_position_now: positions_get")
     buy = 0
     sell = 0
     for position in positions :
@@ -1099,7 +1220,7 @@ def risk_corrector_comment(comment , risk ,starting_balance , rr = 2 ,max_risk =
 
 
 def total_position_comment(comment):
-    positions = mt5.positions_get()
+    positions = _require_result(mt5.positions_get() , "total_position_comment: positions_get")
     total = 0
     for position in positions :
         if position.comment == comment :
@@ -1151,14 +1272,30 @@ def count_sl_between_hours(comment, start_hour, end_hour):
 
 
 def close_all_pending_orders_with_type(type = 'buy'):
-    positions = mt5.orders_get()
-    if positions is None:
-        return
+    orders = mt5.orders_get()
+    if orders is None:
+        _mt5safety_log("close_all_pending_orders_with_type: orders_get=None ->"
+                       " NOTHING removed (fail-safe)")
+        return {"attempted": 0, "removed": 0, "failed": 0,
+                "verified_clean": False, "status": "MT5_UNAVAILABLE"}
 
-    for position in positions:
+    attempted = removed = failed = 0
+    for position in orders:
         if type == 'buy' and position.type == 2 :
             p_ticket = position.ticket
-            remove_order(p_ticket)
+            attempted += 1
+            res = remove_order(p_ticket)
+            if _retcode_ok(res) and _verify_order_gone(p_ticket):
+                removed += 1
+            else:
+                failed += 1
         if type == 'sell' and position.type == 3 :
             p_ticket = position.ticket
-            remove_order(p_ticket) 
+            attempted += 1
+            res = remove_order(p_ticket)
+            if _retcode_ok(res) and _verify_order_gone(p_ticket):
+                removed += 1
+            else:
+                failed += 1
+    return {"attempted": attempted, "removed": removed, "failed": failed,
+            "verified_clean": failed == 0, "status": "OK" if failed == 0 else "PARTIAL_FAILED"} 
