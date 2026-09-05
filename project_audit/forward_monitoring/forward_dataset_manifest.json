@@ -1,0 +1,12 @@
+{
+ "dataset_version": "FD-CP5.9",
+ "contract_version": "1.0",
+ "forward_start_timestamp": null,
+ "stamped": false,
+ "events": 0,
+ "qualified": 0,
+ "excluded": 0,
+ "observation_days": 0,
+ "last_event_timestamp": null,
+ "boundary": "broker_date >= 2026-09-05 (strictly after 2026-09-04 23:54)"
+}
