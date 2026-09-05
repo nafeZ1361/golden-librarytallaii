@@ -304,6 +304,13 @@ def pick_abcd_points_bearish(lows: list, highs: list):
 
 # ----------------------------- ABCD Strategy (fixed) ----------------------------- #
 
+# -----------------------------------------------------------------------
+# QUARANTINED (CP19 LOOP-4 / D9): abcd_strategy has NO production caller
+# (caller-graph verified in CP19). It is kept for research/reference only.
+# Do NOT wire it into any live path without a new pre-registered validation
+# cycle. Note: Gartley_Stg / Butterfly_Stg referenced by bot_state.json are
+# MISSING DEPENDENCIES (source file never recovered) - registered in CP19.
+# -----------------------------------------------------------------------
 def abcd_strategy(symbol: str,
                   tf: str,
                   risk: float,

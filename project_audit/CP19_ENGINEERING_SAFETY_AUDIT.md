@@ -124,3 +124,21 @@ evidence. Fixes are PROPOSED and require authorization (source-change gate).
 4. D9/D10/D12: quarantine dead code; resolve orphan state keys (user decision);
    env-var credentials.
 5. D11: refresh stale audit docs.
+
+## LOOP-4 addendum (D9/D10/D12 executed 2026-09-05)
+
+- D9: `abcd_strategy` QUARANTINED — banner added at the definition (stg.py);
+  function preserved intact; no production caller exists (verified).
+- D10: **MISSING DEPENDENCY registered** — `Gartley_Stg` / `Butterfly_Stg` are
+  referenced only by `bot_state.json`; their source (the never-recovered
+  "stg peleh.py") does not exist in the repository. Resolution (restore the
+  file vs remove the orphan keys) requires a USER DECISION; bot_state.json was
+  deliberately NOT modified (user runtime data).
+- D12: `module/telegram.py` rewritten — credentials ONLY from environment
+  (`TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHANNEL_ID`); placeholder `yorToken` and
+  the hardcoded numeric channel id REMOVED; import-safe without telebot/
+  mplfinance (`TELEGRAM_AVAILABLE` flag); duplicate echo_all handler removed;
+  send functions no-op safely and never print credentials. NOTE: the numeric
+  channel id remains in git history (mitigation: treat it as rotated; it grants
+  no trading capability).
+
