@@ -65,6 +65,21 @@ if not DRY_RUN:
 def log(msg):
     print("[%s] %s" % (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), msg), flush=True)
 
+# CP23: optional Telegram notifications (notifications ONLY — no order
+# capability; module/telegram.py never reaches a broker and is env-configured)
+try:
+    from module.telegram import send_message_to_channel as _tg_notify
+except Exception:  # noqa: BLE001 - notifications are optional by design
+    _tg_notify = None
+
+
+def notify(msg):
+    if _tg_notify:
+        try:
+            _tg_notify("[runner] " + msg)
+        except Exception as ex:  # noqa: BLE001 - never let notifications crash trading safety
+            log("notify failed silently: %s" % type(ex).__name__)
+
 # ---------------- init ----------------
 if not mt5.initialize():
     log("MT5 initialize failed: %s" % str(mt5.last_error()))
@@ -83,6 +98,8 @@ log("mode=%s | %s %s | digits=%s pip=%s | start_balance=%.2f"
     % ("DRY-RUN" if DRY_RUN else "LIVE", SYMBOL, TF, digits, pip, start_balance))
 log("kill-switches: daily_dd=%.1f%% total_dd=%.1f%% | risk=%.1f%%/trade | strategy=ST(10,3)+trend_ali(60,6,Hma)"
     % (DAILY_DD, TOTAL_DD, RISK_PCT))
+notify("runner started: mode=%s %s %s | risk=%.1f%% | SAFETY=PASS, LIVE=DENIED(research)"
+       % ("DRY-RUN" if DRY_RUN else "LIVE", SYMBOL, TF, RISK_PCT))
 
 last_sig = None
 killed = False
@@ -91,13 +108,17 @@ try:
     while not killed:
         # ---- kill-switches (wired every loop) ----
         if daily_draw_down_checker(start_balance, DAILY_DD):
-            log("KILL-SWITCH: daily drawdown %.1f%% hit (pnl_today=%.2f)" % (DAILY_DD, pnl_today()))
+            log("KILL-SWITCH: daily drawdown %.1f%% hit" % DAILY_DD)
+            notify("KILL-SWITCH: daily drawdown %.1f%% hit -> positions closing, runner stopping"
+                   % DAILY_DD)
             if not DRY_RUN:
                 close_all_positions()
             killed = True
             break
         if total_draw_down(start_balance, TOTAL_DD):
             log("KILL-SWITCH: total drawdown %.1f%% hit" % TOTAL_DD)
+            notify("KILL-SWITCH: total drawdown %.1f%% hit -> positions closing, runner stopping"
+                   % TOTAL_DD)
             if not DRY_RUN:
                 close_all_positions()
             killed = True
