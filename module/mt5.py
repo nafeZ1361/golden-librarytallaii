@@ -48,6 +48,13 @@ def _verify_order_gone(ticket, attempts=5, delay=0.2):
     return False
 # ---- end CP19 LOOP-1 additions ----------------------------------------------
 
+# CP19 LOOP-2 (D4): absolute risk ceiling. Contract sources: bot_runner.py
+# RISK_PCT=1.0 (the authorized production runner) and the 2% research baseline.
+# NO code path may size risk above this cap, regardless of caller-provided
+# max_risk or base risk. This neutralizes the loss-chasing escalators
+# (risk_corrector / risk_corrector_comment) documented in CP3/CP19-D4.
+HARD_RISK_CAP_PERCENT = 2.0
+
 
 buy = mt5.ORDER_TYPE_BUY
 buy_limit = mt5.ORDER_TYPE_BUY_LIMIT
@@ -337,7 +344,8 @@ def count_tp():
     time_difference = datetime.timedelta(hours=get_broker_offset())
     mt5_now = datetime.datetime.now(datetime.timezone.utc) + time_difference
     start_of_day = datetime.datetime(mt5_now.year, mt5_now.month, mt5_now.day, tzinfo=datetime.timezone.utc) + time_difference
-    orders = mt5.history_deals_get(start_of_day, mt5_now)
+    orders = _require_result(mt5.history_deals_get(start_of_day, mt5_now) ,
+                             "count_tp: history_deals_get")
     profit_count = sum(1 for order in orders if order.profit > 0)
     return profit_count
 
@@ -345,8 +353,9 @@ def profit_today():
     time_difference = datetime.timedelta(hours=get_broker_offset())
     mt5_now = datetime.datetime.now(datetime.timezone.utc) + time_difference
     start_of_day = datetime.datetime(mt5_now.year, mt5_now.month, mt5_now.day, tzinfo=datetime.timezone.utc) + time_difference
-    orders = mt5.history_deals_get(start_of_day, mt5_now)
-    profit_today = sum(order.profit for order in orders)    
+    orders = _require_result(mt5.history_deals_get(start_of_day, mt5_now) ,
+                             "profit_today: history_deals_get")
+    profit_today = sum(order.profit for order in orders)
     return profit_today
 
 def count_sl_in_hours(hours=1):
@@ -1186,8 +1195,10 @@ def risk_corrector(risk ,starting_balance , rr = 2 ,max_risk = 100) :
 
     adjusted_risk_percentage = round(adjusted_risk_percentage, 2)
     
-    adjusted_risk_percentage = max(adjusted_risk_percentage, risk)  
-    adjusted_risk_percentage = min(adjusted_risk_percentage, max_risk)  
+    risk = min(risk, HARD_RISK_CAP_PERCENT)  # CP19 LOOP-2 (D4) hard cap
+    adjusted_risk_percentage = max(adjusted_risk_percentage, risk)
+    adjusted_risk_percentage = min(adjusted_risk_percentage, max_risk,
+                                   HARD_RISK_CAP_PERCENT)
        
     
     return adjusted_risk_percentage
@@ -1212,8 +1223,10 @@ def risk_corrector_comment(comment , risk ,starting_balance , rr = 2 ,max_risk =
 
     adjusted_risk_percentage = round(adjusted_risk_percentage, 2)
     
-    adjusted_risk_percentage = max(adjusted_risk_percentage, risk)  
-    adjusted_risk_percentage = min(adjusted_risk_percentage, max_risk)  
+    risk = min(risk, HARD_RISK_CAP_PERCENT)  # CP19 LOOP-2 (D4) hard cap
+    adjusted_risk_percentage = max(adjusted_risk_percentage, risk)
+    adjusted_risk_percentage = min(adjusted_risk_percentage, max_risk,
+                                   HARD_RISK_CAP_PERCENT)
        
     
     return adjusted_risk_percentage
