@@ -37,7 +37,8 @@ for mod in ("numpy", "pandas", "MetaTrader5", "ta", "pandas_ta", "plotly", "yfin
 import MetaTrader5 as mt5
 from module.mt5 import (create_order, close_all_positions, balance, pnl_today,
                         daily_draw_down_checker, total_draw_down, lot_calculator,
-                        total_position_comment, buy, sell)
+                        total_position_comment, buy, sell,
+                        check_time, is_news, HARD_RISK_CAP_PERCENT)
 from backtest.indicators import backtest_supertrend, backtest_trend_ali
 
 # ---------------- configuration ----------------
@@ -50,6 +51,11 @@ SL_PIPS, TP_PIPS = 100.0, 200.0   # tested baseline: $10 SL / $20 TP on gold
 DAILY_DD, TOTAL_DD = 5.0, 12.0    # kill-switch thresholds (%, from original cell-1 config)
 LOOP_SECONDS = 20
 LOOKBACK_BARS = 14400   # 30 days of M3 bars for indicator warm-up
+# CP19 LOOP-6 / CP21 safety gates (engineering; no strategy parameter):
+SESSION_START_HOUR = int(os.environ.get("SESSION_START_HOUR", "0"))   # 0-23 broker hour
+SESSION_END_HOUR = int(os.environ.get("SESSION_END_HOUR", "23"))      # default: always allow
+NEWS_FILTER = os.environ.get("NEWS_FILTER", "1") == "1"               # default: ON
+MAX_LOT = float(os.environ.get("MAX_LOT", "1.0"))                     # order-size ceiling
 
 if (not DRY_RUN) and (not ALLOW_LIVE):
     sys.exit("[guard] live mode requires ALLOW_LIVE=1. Refusing to start.")
@@ -111,26 +117,42 @@ try:
 
         if sig in ('buy', 'sell') and total_position_comment(COMMENT) == 0:
             agreed = (sig == 'buy' and trend == 'buy') or (sig == 'sell' and trend == 'sell')
-            if agreed:
+            # CP21 safety gates (in mandatory order) — any gate failing => NO ORDER
+            if not check_time(SESSION_START_HOUR, SESSION_END_HOUR):
+                log("[GATE] TIME CHECK failed (session closed) -> NO ORDER")
+            elif NEWS_FILTER and is_news():
+                log("[GATE] NEWS CHECK failed (high-impact news window) -> NO ORDER")
+            elif agreed:
                 tick = mt5.symbol_info_tick(SYMBOL)
-                if sig == 'buy':
-                    entry = tick.ask
-                    sl = entry - SL_PIPS * pip
-                    tp = entry + TP_PIPS * pip
-                    otype = buy
+                if tick is None:
+                    log("[GATE] ORDER VALIDATION failed: no tick -> NO ORDER")
                 else:
-                    entry = tick.bid
-                    sl = entry + SL_PIPS * pip
-                    tp = entry - TP_PIPS * pip
-                    otype = sell
-                lot = lot_calculator(SYMBOL, RISK_PCT, entry, sl)
-                if DRY_RUN:
-                    log("DRY-RUN intended order: %s %s lot=%.2f entry=%.2f sl=%.2f tp=%.2f (comment=%s)"
-                        % (sig, SYMBOL, lot, entry, sl, tp, COMMENT))
-                else:
-                    res = create_order(SYMBOL, lot, otype, sl, tp, COMMENT)
-                    log("LIVE order sent: %s lot=%.2f retcode=%s"
-                        % (sig, lot, getattr(res, "retcode", None)))
+                    if sig == 'buy':
+                        entry = tick.ask
+                        sl = entry - SL_PIPS * pip
+                        tp = entry + TP_PIPS * pip
+                        otype = buy
+                    else:
+                        entry = tick.bid
+                        sl = entry + SL_PIPS * pip
+                        tp = entry - TP_PIPS * pip
+                        otype = sell
+                    lot = lot_calculator(SYMBOL, RISK_PCT, entry, sl)
+                    # ORDER VALIDATION: bounded size and sane geometry
+                    if lot <= 0 or lot > MAX_LOT:
+                        log("[GATE] ORDER VALIDATION failed: lot=%.2f outside (0, %.2f]"
+                            " -> NO ORDER" % (lot, MAX_LOT))
+                    elif abs(entry - sl) <= 0 or abs(tp - entry) <= 0 or entry <= 0:
+                        log("[GATE] ORDER VALIDATION failed: degenerate SL/TP -> NO ORDER")
+                    elif DRY_RUN:
+                        log("DRY-RUN intended order: %s %s lot=%.2f entry=%.2f sl=%.2f tp=%.2f (comment=%s)"
+                            % (sig, SYMBOL, lot, entry, sl, tp, COMMENT))
+                    else:
+                        res = create_order(SYMBOL, lot, otype, sl, tp, COMMENT)
+                        log("LIVE order sent: %s lot=%.2f retcode=%s"
+                            % (sig, lot, getattr(res, "retcode", None)))
+            elif sig in ('buy', 'sell'):
+                log("[GATE] strategy agreement failed -> NO ORDER")
 
         time.sleep(LOOP_SECONDS)
 
