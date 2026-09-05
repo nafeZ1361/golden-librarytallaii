@@ -1,0 +1,108 @@
+{
+ "experiment": "CYCLE-R1 OOS FREEZE",
+ "created_local": "2026-09-05T22:21:49",
+ "windows": [
+  {
+   "file": "r1_window_1_df.csv",
+   "bars": 14400,
+   "first": "2023-10-02 13:21:00",
+   "last": "2023-11-15 02:30:00",
+   "increasing": true,
+   "dups": 0,
+   "gaps": {
+    "daily_break": 26,
+    "weekend": 6,
+    "OTHER": 1
+   },
+   "ohlc_valid": true,
+   "grid_ok": true,
+   "contiguous": null,
+   "sha256": "4a352bdc8f15e078a697ac649070a72fe2ed81a3c81bf25f48d110c4131fc9b3"
+  },
+  {
+   "file": "r1_window_2_df.csv",
+   "bars": 14400,
+   "first": "2023-11-15 02:33:00",
+   "last": "2023-12-29 15:33:00",
+   "increasing": true,
+   "dups": 0,
+   "gaps": {
+    "daily_break": 26,
+    "weekend": 6
+   },
+   "ohlc_valid": true,
+   "grid_ok": true,
+   "contiguous": true,
+   "sha256": "2a1dcdbddde5f87a57d11580e1fadd4a4ee8f4dd95bac2bf60bb782aa3a04e24"
+  },
+  {
+   "file": "r1_window_3_df.csv",
+   "bars": 14400,
+   "first": "2023-12-29 15:36:00",
+   "last": "2024-02-14 02:21:00",
+   "increasing": true,
+   "dups": 0,
+   "gaps": {
+    "weekend": 7,
+    "daily_break": 25
+   },
+   "ohlc_valid": true,
+   "grid_ok": true,
+   "contiguous": true,
+   "sha256": "5aecef50c7a32d3f93c005cac054fabc4a1e7268f6c7b43254eb4a15c35c3c8c"
+  },
+  {
+   "file": "r1_window_4_df.csv",
+   "bars": 14400,
+   "first": "2024-02-14 02:24:00",
+   "last": "2024-03-28 11:42:00",
+   "increasing": true,
+   "dups": 0,
+   "gaps": {
+    "daily_break": 27,
+    "weekend": 6
+   },
+   "ohlc_valid": true,
+   "grid_ok": true,
+   "contiguous": true,
+   "sha256": "7f52aa3c1e9b717583ce2aedc4540a2ef2509ac8322e212188ff80d4a354bc79"
+  },
+  {
+   "file": "r1_window_5_df.csv",
+   "bars": 14400,
+   "first": "2024-03-28 11:45:00",
+   "last": "2024-05-13 20:12:00",
+   "increasing": true,
+   "dups": 0,
+   "gaps": {
+    "weekend": 7,
+    "daily_break": 27
+   },
+   "ohlc_valid": true,
+   "grid_ok": true,
+   "contiguous": true,
+   "sha256": "7b868f097d76c887bc6c96096b40932803bc9962cd240123e315fad3fabf0b7d"
+  },
+  {
+   "file": "r1_window_6_df.csv",
+   "bars": 14400,
+   "first": "2024-05-13 20:15:00",
+   "last": "2024-06-26 11:18:00",
+   "increasing": true,
+   "dups": 0,
+   "gaps": {
+    "daily_break": 31,
+    "weekend": 6
+   },
+   "ohlc_valid": true,
+   "grid_ok": true,
+   "contiguous": true,
+   "sha256": "20d10fcf039801e10d9e4519619fec201c123b56fd6697c953be1912e01dab46"
+  }
+ ],
+ "dataset_sha256_combined": "f5b0124b363acaa0b3364618ccdc9f584bb21a043301df95f6b646a26faa410a",
+ "anomalies": [
+  "w1 unclassified gap 345min"
+ ],
+ "verdict": "FROZEN"
+}
