@@ -1190,8 +1190,9 @@ def pnl_today() :
 def daily_draw_down_checker(Start_balance , daily_drow_down) :
     try:
         pnl = pnl_today()
-    except MT5DataError as ex:
-        _mt5safety_log("daily_draw_down_checker: data failure (%s) -> FAIL-SAFE: TRIGGERED" % ex)
+    except Exception as ex:  # CP20: ANY evaluation failure -> fail-safe TRIGGERED
+        _mt5safety_log("daily_draw_down_checker: evaluation failure (%s: %s) ->"
+                       " FAIL-SAFE: TRIGGERED" % (type(ex).__name__, ex))
         return True
     if pnl < 0 : 
         if (abs(pnl)) >= (Start_balance * (daily_drow_down / 100)) : 
@@ -1208,8 +1209,9 @@ def total_draw_down(total_bls = 5000 , full_drow_down = 12):
     try:
         account = _require_result(mt5.account_info() , "total_draw_down: account_info")
         equity = account.equity
-    except MT5DataError as ex:
-        _mt5safety_log("total_draw_down: data failure (%s) -> FAIL-SAFE: TRIGGERED" % ex)
+    except Exception as ex:  # CP20: ANY evaluation failure -> fail-safe TRIGGERED
+        _mt5safety_log("total_draw_down: evaluation failure (%s: %s) ->"
+                       " FAIL-SAFE: TRIGGERED" % (type(ex).__name__, ex))
         return True
     if equity - total_bls < 0 : 
         if abs(equity - total_bls) >= (total_bls * (full_drow_down / 100)) : 
