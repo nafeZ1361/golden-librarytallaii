@@ -25,6 +25,13 @@ except ImportError as _imp_ex:
 TOKEN = _os.environ.get("TELEGRAM_BOT_TOKEN", "")
 CHANNEL_ID = _os.environ.get("TELEGRAM_CHANNEL_ID", "")
 
+# CP23: route Telegram API through a local proxy when configured
+# (TELEGRAM_PROXY, e.g. http://127.0.0.1:8227) — required on networks where
+# api.telegram.org is blocked. Fail behavior stays fail-open/logged.
+TELEGRAM_PROXY = _os.environ.get("TELEGRAM_PROXY", "")
+if TELEGRAM_AVAILABLE and telebot is not None and TELEGRAM_PROXY:
+    telebot.apihelper.proxy = {"http": TELEGRAM_PROXY, "https": TELEGRAM_PROXY}
+
 if TELEGRAM_AVAILABLE and TOKEN:
     bot = telebot.TeleBot(TOKEN)
 else:

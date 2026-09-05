@@ -37,6 +37,13 @@ ALLOWED_CHATS = {s.strip() for s in _os.environ.get(
 
 bot = telebot.TeleBot(TOKEN) if (MONITOR_AVAILABLE and TOKEN) else None
 
+# CP23 LOOP: route the Telegram API through a local proxy when configured
+# (TELEGRAM_PROXY, e.g. http://127.0.0.1:8227) — api.telegram.org is blocked
+# on some networks; the desktop app already uses such a path.
+PROXY = _os.environ.get("TELEGRAM_PROXY", "")
+if MONITOR_AVAILABLE and telebot is not None and PROXY:
+    telebot.apihelper.proxy = {"http": PROXY, "https": PROXY}
+
 
 def is_allowed(chat_id):
     """Fail-closed: if no allowlist is configured, EVERYONE is denied."""
