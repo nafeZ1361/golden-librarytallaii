@@ -152,16 +152,22 @@ def get_trading_sessions():
 
 def create_order(symbol, lot, order_type, sl=0.0, tp=0.0, comment='hashem'):
     symbol_info = mt5.symbol_info(symbol)
-    
+    if symbol_info is None:
+        _mt5safety_log("create_order(%s): symbol_info=None -> order REJECTED locally" % symbol)
+        return None
+
     filling_mode = symbol_info.filling_mode
     if filling_mode == 1:
         filling_mode = mt5.ORDER_FILLING_FOK
     elif filling_mode == 2:
         filling_mode = mt5.ORDER_FILLING_IOC
     else:
-        filling_mode = mt5.ORDER_FILLING_FOK 
-    
+        filling_mode = mt5.ORDER_FILLING_FOK
+
     price_info = mt5.symbol_info_tick(symbol)
+    if price_info is None:
+        _mt5safety_log("create_order(%s): symbol_info_tick=None -> order REJECTED locally" % symbol)
+        return None
     price = price_info.ask if order_type == buy else price_info.bid
 
     request = {
@@ -179,8 +185,10 @@ def create_order(symbol, lot, order_type, sl=0.0, tp=0.0, comment='hashem'):
     }
     
     result = mt5.order_send(request)
-    if result.retcode != mt5.TRADE_RETCODE_DONE:
-        print(f"خطا در ثبت سفارش: {result.comment}")
+    if not _retcode_ok(result):
+        _mt5safety_log("create_order(%s): REJECTED retcode=%s comment=%s"
+                       % (symbol, getattr(result, "retcode", None), comment))
+    return result
     
     return result
         
@@ -232,22 +240,29 @@ def close_order(ticket):
 def close_half_vol_order(ticket):
 
     position = mt5.positions_get(ticket=ticket)
-    if position is None or len(position) == 0:
-        print(f"پوزیشن {ticket} پیدا نشد")
-        return
-    
+    if position is None:
+        _mt5safety_log("close_half_vol_order(%s): positions_get=None" % ticket)
+        return None
+    if len(position) == 0:
+        _mt5safety_log("close_half_vol_order(%s): position not found (already closed?)" % ticket)
+        return None
+
     position = position[0]
     symbol = position.symbol
     volume = round(position.volume / 2 , 2)
     if volume < 0.01 :
         volume = 0.01
     close_type = mt5.ORDER_TYPE_SELL if position.type == mt5.POSITION_TYPE_BUY else mt5.ORDER_TYPE_BUY
-    
+
     price_info = mt5.symbol_info_tick(symbol)
+    if price_info is None:
+        _mt5safety_log("close_half_vol_order(%s): symbol_info_tick=None" % ticket)
+        return None
     price = price_info.bid if position.type == mt5.POSITION_TYPE_BUY else price_info.ask
-    
+
     filling_modes = [mt5.ORDER_FILLING_FOK, mt5.ORDER_FILLING_IOC, mt5.ORDER_FILLING_RETURN]
-    
+
+    last_result = None
     for filling_mode in filling_modes:
         request = {
             "action": mt5.TRADE_ACTION_DEAL,
@@ -262,9 +277,12 @@ def close_half_vol_order(ticket):
             "type_time": mt5.ORDER_TIME_GTC,
             "type_filling": filling_mode,
         }
-        
-        mt5.order_send(request)
-     
+
+        last_result = mt5.order_send(request)
+        if _retcode_ok(last_result):
+            return last_result
+    return last_result
+
 def close_all_positions():
     positions = mt5.positions_get()
     if positions is None:
@@ -750,20 +768,33 @@ def isgap(symbol, tf):
     else:
         return False
     
+def _broker_now():
+    # CP19 LOOP-3 (D7): session hours must be evaluated in BROKER time, not raw
+    # UTC. Same convention as pnl_today. If the offset cannot be computed
+    # (MT5 down) we fall back to plain UTC and log loudly.
+    try:
+        offset_hours = get_broker_offset()
+    except Exception as ex:  # noqa: BLE001 - fail-open with loud log
+        _mt5safety_log("_broker_now: get_broker_offset failed (%s) -> offset=0"
+                       % type(ex).__name__)
+        offset_hours = 0
+    return datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=offset_hours)
+
+
 def check_time(start_hour, end_hour):
-    current_time = datetime.datetime.now(datetime.UTC).time()
+    current_time = _broker_now().time()
     if current_time.hour >= start_hour and current_time.hour <= end_hour:
         return True
     else:
         return False
-    
+
 def check_time_min(start_hour, start_minute, end_hour, end_minute):
 
-    current_time = datetime.datetime.now(datetime.UTC).time()
-   
+    current_time = _broker_now().time()
+
     start_time = datetime.time(start_hour, start_minute)
     end_time = datetime.time(end_hour, end_minute)
-    
+
     if start_time <= current_time <= end_time:
         return True
     else:
@@ -820,6 +851,11 @@ def modify_stop(ticket, new_stop_loss):
     }
 
     result = mt5.order_send(request)
+    if not _retcode_ok(result):
+        _mt5safety_log("modify_stop(%s): REJECTED retcode=%s"
+                       % (ticket, getattr(result, "retcode", None)))
+        return False
+    return True
 
 def modify_tp(ticket, new_tp):
 
@@ -840,6 +876,11 @@ def modify_tp(ticket, new_tp):
     }
 
     result = mt5.order_send(request)
+    if not _retcode_ok(result):
+        _mt5safety_log("modify_tp(%s): REJECTED retcode=%s"
+                       % (ticket, getattr(result, "retcode", None)))
+        return False
+    return True
 
 def pending_order(symbol , lot , order_type , price , sl = 0.0 , tp= 0.0 , comment = 'hashem'):
     request={
@@ -855,6 +896,9 @@ def pending_order(symbol , lot , order_type , price , sl = 0.0 , tp= 0.0 , comme
         "type_filling": mt5.ORDER_FILLING_IOC,
         }
     order = mt5.order_send(request)
+    if not _retcode_ok(order):
+        _mt5safety_log("pending_order(%s): REJECTED retcode=%s"
+                       % (symbol, getattr(order, "retcode", None)))
     return order
 
 def remove_order(ticket):
@@ -952,20 +996,38 @@ cache = {
 }
 
 def fetch_economic_news(currency='USD'):
+    # CP19 LOOP-3 (D6): network failures must never crash the trading loop.
+    # Registered choice: the news filter is ADVISORY -> on any failure we log
+    # loudly and return [] (fail-open); the hard guards are the kill-switches.
     url = "https://nfs.faireconomy.media/ff_calendar_thisweek.json"
-    response = requests.get(url)
-    data = response.json()
-    
+    try:
+        response = requests.get(url, timeout=10)
+        if response.status_code != 200:
+            _mt5safety_log("fetch_economic_news: HTTP %s -> no news data (fail-open)"
+                           % response.status_code)
+            return []
+        data = response.json()
+    except requests.RequestException as ex:
+        _mt5safety_log("fetch_economic_news: network failure (%s) -> no news data"
+                       " (fail-open)" % type(ex).__name__)
+        return []
+    except ValueError as ex:
+        _mt5safety_log("fetch_economic_news: malformed response (%s) -> no news"
+                       " data (fail-open)" % type(ex).__name__)
+        return []
+
     news_data = []
     for event in data:
-        if event['country'] == currency and event['impact'] == 'High':
-            event_date = event['date']
-            event_time = datetime.datetime.strptime(event_date, "%Y-%m-%dT%H:%M:%S%z")
-            news_data.append({
-                'time': event_time,
-                'event': event['title']
-            })
-    
+        try:
+            if event['country'] == currency and event['impact'] == 'High':
+                event_date = event['date']
+                event_time = datetime.datetime.strptime(event_date, "%Y-%m-%dT%H:%M:%S%z")
+                news_data.append({
+                    'time': event_time,
+                    'event': event['title']
+                })
+        except (KeyError, ValueError) as ex:
+            _mt5safety_log("fetch_economic_news: skipping malformed event (%s)" % ex)
     return news_data
 
 def is_during_important_news(news_data, check_time):
