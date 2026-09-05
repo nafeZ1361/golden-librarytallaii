@@ -1,32 +1,135 @@
 {
-  "registry_version": 1,
-  "generated": "2026-09-05",
-  "datasets": [
-    {"id": "DS-CP5-MAIN", "period": "2025-12-10 21:39/2026-09-04 17:30", "bars": 86400,
-     "identity": "be4fa581f59c635d22da49ef4443c5801e0e60cd5852d6a9b0fdca822186a2a3", "status": "BURNED-IS"},
-    {"id": "DS-CP6-OOS", "period": "2025-03-20 03:54/2025-12-10 21:36", "bars": 86400,
-     "identity": "3d615ad8d241b70e566050535e0889380e1869b85a26830e5fbd08f48e2f1a3c", "status": "BURNED-OOS"},
-    {"id": "DS-ARCH-OOS", "period": "2024-06-26 11:21/2025-03-20 03:51", "bars": 86400,
-     "identity": "060ba2440aa495ab28097d9ed810a5e3bcdf09b00ffba1d15b2e536cea2ea1d7", "status": "BURNED-OOS"},
-    {"id": "DS-FRAG-FWD", "period": "2026-09-04 17:33/2026-09-04 23:54", "bars": 128,
-     "identity": "see CP6 manifest", "status": "SUPPLEMENT-UNDERPOWERED"}
-  ],
-  "unseen_reserves": [
-    {"id": "RES-ARCH-2021-2024", "period": "2021-06-20/2024-06-26", "approx_bars": 230000, "status": "UNSEEN"},
-    {"id": "RES-FORWARD", "period": "post 2026-09-04", "approx_bars": "accumulating", "status": "UNSEEN"}
-  ],
-  "hypotheses": [
-    {"id": "H-CTRL-BASELINE", "status": "RETIRED", "reason": "NO_PROVEN_EDGE (CP4 WFO)"},
-    {"id": "H-A1-V1", "status": "RETIRED", "reason": "OOS_FAILURE (CP6 49.29%) / OVERFITTING_SUSPECTED"},
-    {"id": "H-A2-V1", "status": "RETIRED", "reason": "STATISTICAL_FAILURE (corrected LBs < 50) + NO_EDGE on OOS"},
-    {"id": "H-A2-V2", "status": "RETIRED", "reason": "OOS_FAILURE (CP5.9 40.74%)"}
-  ],
-  "variant_budget": {"consumed": 3, "max": 10},
-  "experiments": [
-    {"id": "EXP-CP4", "status": "NO_PROVEN_EDGE"}, {"id": "EXP-CP4B", "status": "NO_PROVEN_EDGE"},
-    {"id": "EXP-CP4C", "status": "NO_EDGE"}, {"id": "EXP-CP4D", "status": "NO_EDGE"},
-    {"id": "EXP-CP5.5", "status": "PASSED_IS"}, {"id": "EXP-CP5.6", "status": "PASSED_IS"},
-    {"id": "EXP-CP5.7", "status": "SCREENING"}, {"id": "EXP-CP5.9", "status": "FAILED_OOS"},
-    {"id": "EXP-CP6", "status": "FAILED_REPLICATION"}, {"id": "EXP-CP7", "status": "DOCUMENTED"}
-  ]
+ "registry_version": 1,
+ "generated": "2026-09-05",
+ "datasets": [
+  {
+   "id": "DS-CP5-MAIN",
+   "period": "2025-12-10 21:39/2026-09-04 17:30",
+   "bars": 86400,
+   "identity": "be4fa581f59c635d22da49ef4443c5801e0e60cd5852d6a9b0fdca822186a2a3",
+   "status": "BURNED-IS"
+  },
+  {
+   "id": "DS-CP6-OOS",
+   "period": "2025-03-20 03:54/2025-12-10 21:36",
+   "bars": 86400,
+   "identity": "3d615ad8d241b70e566050535e0889380e1869b85a26830e5fbd08f48e2f1a3c",
+   "status": "BURNED-OOS"
+  },
+  {
+   "id": "DS-ARCH-OOS",
+   "period": "2024-06-26 11:21/2025-03-20 03:51",
+   "bars": 86400,
+   "identity": "060ba2440aa495ab28097d9ed810a5e3bcdf09b00ffba1d15b2e536cea2ea1d7",
+   "status": "BURNED-OOS"
+  },
+  {
+   "id": "DS-FRAG-FWD",
+   "period": "2026-09-04 17:33/2026-09-04 23:54",
+   "bars": 128,
+   "identity": "see CP6 manifest",
+   "status": "SUPPLEMENT-UNDERPOWERED"
+  }
+ ],
+ "unseen_reserves": [
+  {
+   "id": "RES-ARCH-2021-2024",
+   "period": "2021-06-20/2024-06-26",
+   "approx_bars": 230000,
+   "status": "UNSEEN"
+  },
+  {
+   "id": "RES-FORWARD",
+   "period": "post 2026-09-04",
+   "approx_bars": "accumulating",
+   "status": "UNSEEN"
+  }
+ ],
+ "hypotheses": [
+  {
+   "id": "H-CTRL-BASELINE",
+   "status": "RETIRED",
+   "reason": "NO_PROVEN_EDGE (CP4 WFO)"
+  },
+  {
+   "id": "H-A1-V1",
+   "status": "RETIRED",
+   "reason": "OOS_FAILURE (CP6 49.29%) / OVERFITTING_SUSPECTED"
+  },
+  {
+   "id": "H-A2-V1",
+   "status": "RETIRED",
+   "reason": "STATISTICAL_FAILURE (corrected LBs < 50) + NO_EDGE on OOS"
+  },
+  {
+   "id": "H-A2-V2",
+   "status": "RETIRED",
+   "reason": "OOS_FAILURE (CP5.9 40.74%)"
+  },
+  {
+   "id": "H-A2-V2-FADE",
+   "status": "RETIRED",
+   "reason": "OOS_FAILURE (3-period record 59.26/57.30/45.34; m=3 corrected LB 35.95)"
+  },
+  {
+   "id": "H-A4-V1",
+   "status": "RETIRED",
+   "reason": "NO_EDGE (IS 50.00%, OOS 47.54%)"
+  }
+ ],
+ "variant_budget": {
+  "consumed": 5,
+  "max": 10
+ },
+ "experiments": [
+  {
+   "id": "EXP-CP4",
+   "status": "NO_PROVEN_EDGE"
+  },
+  {
+   "id": "EXP-CP4B",
+   "status": "NO_PROVEN_EDGE"
+  },
+  {
+   "id": "EXP-CP4C",
+   "status": "NO_EDGE"
+  },
+  {
+   "id": "EXP-CP4D",
+   "status": "NO_EDGE"
+  },
+  {
+   "id": "EXP-CP5.5",
+   "status": "PASSED_IS"
+  },
+  {
+   "id": "EXP-CP5.6",
+   "status": "PASSED_IS"
+  },
+  {
+   "id": "EXP-CP5.7",
+   "status": "SCREENING"
+  },
+  {
+   "id": "EXP-CP5.9",
+   "status": "FAILED_OOS"
+  },
+  {
+   "id": "EXP-CP6",
+   "status": "FAILED_REPLICATION"
+  },
+  {
+   "id": "EXP-CP7",
+   "status": "DOCUMENTED"
+  },
+  {
+   "id": "EXP-CYCLE-R1",
+   "status": "FAILED_OOS x2"
+  },
+  {
+   "id": "EXP-CYCLE-R2",
+   "status": "RETIRED_PERMANENTLY"
+  }
+ ],
+ "forward_monitoring": "registered (DORMANT; one evaluation at >=300 events or 180d)"
 }
