@@ -1,0 +1,204 @@
+{
+ "experiment": "CP6-OOS",
+ "generated_local": "2026-09-05T17:09:02",
+ "oos_identity": "3d615ad8d241b70e566050535e0889380e1869b85a26830e5fbd08f48e2f1a3c",
+ "constants": {
+  "seed": 55056,
+  "n_boot": 10000
+ },
+ "determinism": true,
+ "results": {
+  "A1_h5": {
+   "n": 1337,
+   "wins": 659,
+   "rate_pct": 49.28945400149588,
+   "rho1": 0.02974288946363302,
+   "deff": 1.042406097432088,
+   "hac_bonf_lb": 46.16050264912243,
+   "boot_bonf_lb": 45.84891548242334,
+   "verdict": "NO PROVEN DIRECTIONAL EDGE ON OOS",
+   "per_window": [
+    {
+     "window": 1,
+     "events": 242,
+     "wins": 105,
+     "rate_pct": 43.388429752066116
+    },
+    {
+     "window": 2,
+     "events": 220,
+     "wins": 108,
+     "rate_pct": 49.09090909090909
+    },
+    {
+     "window": 3,
+     "events": 206,
+     "wins": 95,
+     "rate_pct": 46.116504854368934
+    },
+    {
+     "window": 4,
+     "events": 210,
+     "wins": 118,
+     "rate_pct": 56.19047619047619
+    },
+    {
+     "window": 5,
+     "events": 248,
+     "wins": 112,
+     "rate_pct": 45.16129032258064
+    },
+    {
+     "window": 6,
+     "events": 211,
+     "wins": 121,
+     "rate_pct": 57.345971563981045
+    }
+   ]
+  },
+  "A1_h20": {
+   "n": 1335,
+   "wins": 687,
+   "rate_pct": 51.460674157303366,
+   "rho1": 0.10264808787656866,
+   "deff": 1.1295948353760918,
+   "hac_bonf_lb": 48.202117939152906,
+   "boot_bonf_lb": 47.86516853932584,
+   "verdict": "NO PROVEN DIRECTIONAL EDGE ON OOS",
+   "per_window": [
+    {
+     "window": 1,
+     "events": 242,
+     "wins": 114,
+     "rate_pct": 47.107438016528924
+    },
+    {
+     "window": 2,
+     "events": 219,
+     "wins": 107,
+     "rate_pct": 48.858447488584474
+    },
+    {
+     "window": 3,
+     "events": 206,
+     "wins": 122,
+     "rate_pct": 59.22330097087378
+    },
+    {
+     "window": 4,
+     "events": 210,
+     "wins": 121,
+     "rate_pct": 57.61904761904761
+    },
+    {
+     "window": 5,
+     "events": 248,
+     "wins": 109,
+     "rate_pct": 43.95161290322581
+    },
+    {
+     "window": 6,
+     "events": 210,
+     "wins": 114,
+     "rate_pct": 54.285714285714285
+    }
+   ]
+  },
+  "A2_h5": {
+   "n": 4957,
+   "wins": 2526,
+   "rate_pct": 50.95824087149485,
+   "rho1": 0.07711943786847729,
+   "deff": 1.1296564173156152,
+   "hac_bonf_lb": 49.266733646413606,
+   "boot_bonf_lb": 49.07189328222715,
+   "verdict": "NO PROVEN DIRECTIONAL EDGE ON OOS",
+   "per_window": [
+    {
+     "window": 1,
+     "events": 767,
+     "wins": 398,
+     "rate_pct": 51.89048239895697
+    },
+    {
+     "window": 2,
+     "events": 759,
+     "wins": 381,
+     "rate_pct": 50.19762845849802
+    },
+    {
+     "window": 3,
+     "events": 897,
+     "wins": 469,
+     "rate_pct": 52.28539576365663
+    },
+    {
+     "window": 4,
+     "events": 907,
+     "wins": 473,
+     "rate_pct": 52.149944873208376
+    },
+    {
+     "window": 5,
+     "events": 603,
+     "wins": 307,
+     "rate_pct": 50.91210613598673
+    },
+    {
+     "window": 6,
+     "events": 1024,
+     "wins": 498,
+     "rate_pct": 48.6328125
+    }
+   ]
+  },
+  "A2_h20": {
+   "n": 4949,
+   "wins": 2499,
+   "rate_pct": 50.495049504950494,
+   "rho1": 0.3935514007583231,
+   "deff": 2.136915099844746,
+   "hac_bonf_lb": 48.16640325122189,
+   "boot_bonf_lb": 47.918645180844614,
+   "verdict": "NO PROVEN DIRECTIONAL EDGE ON OOS",
+   "per_window": [
+    {
+     "window": 1,
+     "events": 765,
+     "wins": 445,
+     "rate_pct": 58.16993464052288
+    },
+    {
+     "window": 2,
+     "events": 759,
+     "wins": 371,
+     "rate_pct": 48.88010540184453
+    },
+    {
+     "window": 3,
+     "events": 897,
+     "wins": 461,
+     "rate_pct": 51.39353400222966
+    },
+    {
+     "window": 4,
+     "events": 907,
+     "wins": 440,
+     "rate_pct": 48.511576626240355
+    },
+    {
+     "window": 5,
+     "events": 600,
+     "wins": 295,
+     "rate_pct": 49.166666666666664
+    },
+    {
+     "window": 6,
+     "events": 1021,
+     "wins": 487,
+     "rate_pct": 47.69833496571989
+    }
+   ]
+  }
+ }
+}

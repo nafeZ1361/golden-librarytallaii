@@ -1,0 +1,238 @@
+{
+ "experiment": "CP5.6-economic-review",
+ "generated_local": "2026-09-05T16:17:37",
+ "preflight": {
+  "head": "9184e5b4f5f10aaaafd257fe8a05aaf61c6e5ab5",
+  "baseline_lock": "dd526e588cdfbe5b961d02be5f1d71b265b8f8e3",
+  "source_freeze": "9184e5b4f5f10aaaafd257fe8a05aaf61c6e5ab5"
+ },
+ "registered_constants": {
+  "costs_pips": {
+   "C0": 0.0,
+   "C1": 3.5,
+   "C2": 6.0
+  },
+  "usd_per_pip": 1.0,
+  "directed_expansion_note": "C1/C2 for both strategies per new MASTER PROMPT CP5.6"
+ },
+ "days_per_window": {
+  "1": 33,
+  "2": 32,
+  "3": 33,
+  "4": 32,
+  "5": 33,
+  "6": 32
+ },
+ "review": {
+  "A1": {
+   "costs": {
+    "C0": {
+     "pips_per_trade": 0.0,
+     "net_pnl": 10700.0,
+     "expectancy": 11.03,
+     "positive": true
+    },
+    "C1": {
+     "pips_per_trade": 3.5,
+     "net_pnl": 7305.0,
+     "expectancy": 7.53,
+     "positive": true
+    },
+    "C2": {
+     "pips_per_trade": 6.0,
+     "net_pnl": 4880.0,
+     "expectancy": 5.03,
+     "positive": true
+    }
+   },
+   "break_even_pips": 11.03,
+   "curve": {
+    "1.0": 10.03,
+    "2.0": 9.03,
+    "2.5": 8.53,
+    "3.0": 8.03,
+    "3.5": 7.53,
+    "4.0": 7.03,
+    "5.0": 6.03,
+    "6.0": 5.03,
+    "8.0": 3.03,
+    "10.0": 1.03,
+    "12.0": -0.97
+   },
+   "two_point_dev": 1.1368683772161603e-13,
+   "trade_frequency": [
+    {
+     "window": 1,
+     "trades": 137,
+     "days": 33,
+     "trades_per_day": 4.15
+    },
+    {
+     "window": 2,
+     "trades": 188,
+     "days": 32,
+     "trades_per_day": 5.88
+    },
+    {
+     "window": 3,
+     "trades": 182,
+     "days": 33,
+     "trades_per_day": 5.52
+    },
+    {
+     "window": 4,
+     "trades": 149,
+     "days": 32,
+     "trades_per_day": 4.66
+    },
+    {
+     "window": 5,
+     "trades": 157,
+     "days": 33,
+     "trades_per_day": 4.76
+    },
+    {
+     "window": 6,
+     "trades": 157,
+     "days": 32,
+     "trades_per_day": 4.91
+    }
+   ],
+   "drawdowns": [
+    11.86,
+    18.31,
+    24.53,
+    20.0,
+    19.7,
+    8.93
+   ],
+   "effect_sizes": {
+    "A1_h5": {
+     "rate_pct": 55.595930232558146,
+     "n": 1376,
+     "z": 4.15,
+     "cohens_h": 0.112
+    },
+    "A1_h20": {
+     "rate_pct": 51.96506550218341,
+     "n": 1374,
+     "z": 1.46,
+     "cohens_h": 0.039
+    }
+   },
+   "aggregate_frozen": {
+    "trades": 970,
+    "net_pnl": 10700.0,
+    "expectancy": 11.030927835051546,
+    "oos_fold_positions_positive": "5/5",
+    "windows_positive": "6/6",
+    "mean_return_pct": 35.67
+   }
+  },
+  "A2": {
+   "costs": {
+    "C0": {
+     "pips_per_trade": 0.0,
+     "net_pnl": 8700.0,
+     "expectancy": 10.66,
+     "positive": true
+    },
+    "C1": {
+     "pips_per_trade": 3.5,
+     "net_pnl": 5844.0,
+     "expectancy": 7.16,
+     "positive": true
+    },
+    "C2": {
+     "pips_per_trade": 6.0,
+     "net_pnl": 3804.0,
+     "expectancy": 4.66,
+     "positive": true
+    }
+   },
+   "break_even_pips": 10.66,
+   "curve": {
+    "1.0": 9.66,
+    "2.0": 8.66,
+    "2.5": 8.16,
+    "3.0": 7.66,
+    "3.5": 7.16,
+    "4.0": 6.66,
+    "5.0": 5.66,
+    "6.0": 4.66,
+    "8.0": 2.66,
+    "10.0": 0.66,
+    "12.0": -1.34
+   },
+   "two_point_dev": 1.1368683772161603e-13,
+   "trade_frequency": [
+    {
+     "window": 1,
+     "trades": 203,
+     "days": 33,
+     "trades_per_day": 6.15
+    },
+    {
+     "window": 2,
+     "trades": 253,
+     "days": 32,
+     "trades_per_day": 7.91
+    },
+    {
+     "window": 3,
+     "trades": 92,
+     "days": 33,
+     "trades_per_day": 2.79
+    },
+    {
+     "window": 4,
+     "trades": 90,
+     "days": 32,
+     "trades_per_day": 2.81
+    },
+    {
+     "window": 5,
+     "trades": 79,
+     "days": 33,
+     "trades_per_day": 2.39
+    },
+    {
+     "window": 6,
+     "trades": 99,
+     "days": 32,
+     "trades_per_day": 3.09
+    }
+   ],
+   "drawdowns": [
+    22.67,
+    17.31,
+    33.87,
+    23.21,
+    22.03,
+    15.38
+   ],
+   "effect_sizes": {
+    "A2_h5": {
+     "rate_pct": 52.56064690026954,
+     "n": 1855,
+     "z": 2.21,
+     "cohens_h": 0.051
+    },
+    "A2_h20": {
+     "rate_pct": 51.64775796866559,
+     "n": 1851,
+     "z": 1.42,
+     "cohens_h": 0.033
+    }
+   },
+   "aggregate_frozen": {
+    "trades": 816,
+    "net_pnl": 8700.0,
+    "expectancy": 10.661764705882353,
+    "oos_fold_positions_positive": "3/5",
+    "windows_positive": "4/6",
+    "mean_return_pct": 29.0
+   }
+  }
+ }
+}
