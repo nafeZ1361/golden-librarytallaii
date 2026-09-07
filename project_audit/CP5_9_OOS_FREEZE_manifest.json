@@ -1,0 +1,106 @@
+{
+ "experiment": "CP5.9 OOS-v2 FREEZE",
+ "created_local": "2026-09-05T17:36:58",
+ "definition": "6x14400 M3 bars ending 2025-03-20 03:51 broker",
+ "windows": [
+  {
+   "file": "cp6v2_window_1_df.csv",
+   "bars": 14400,
+   "first": "2024-06-26 11:21:00",
+   "last": "2024-08-08 21:06:00",
+   "increasing": true,
+   "dups": 0,
+   "gaps": {
+    "daily_break": 25,
+    "weekend": 6
+   },
+   "ohlc_valid": true,
+   "grid_ok": true,
+   "contiguous": null,
+   "sha256": "8d6d2cdb6ed463aafa6dfabd5feeb85cf0ecc8ed56727242a37de162990c9469"
+  },
+  {
+   "file": "cp6v2_window_2_df.csv",
+   "bars": 14400,
+   "first": "2024-08-08 21:09:00",
+   "last": "2024-09-23 07:57:00",
+   "increasing": true,
+   "dups": 0,
+   "gaps": {
+    "daily_break": 25,
+    "weekend": 7
+   },
+   "ohlc_valid": true,
+   "grid_ok": true,
+   "contiguous": true,
+   "sha256": "e05bdd7dfda304b5f7115afffee1852d90fac1f87397a7855a680318efadfc2c"
+  },
+  {
+   "file": "cp6v2_window_3_df.csv",
+   "bars": 14400,
+   "first": "2024-09-23 08:00:00",
+   "last": "2024-11-05 15:48:00",
+   "increasing": true,
+   "dups": 0,
+   "gaps": {
+    "daily_break": 27,
+    "weekend": 6
+   },
+   "ohlc_valid": true,
+   "grid_ok": true,
+   "contiguous": true,
+   "sha256": "1ac8427bf9a3e44192c68ca5c303b46da1d270eaa3d309619d204fdca54bbce1"
+  },
+  {
+   "file": "cp6v2_window_4_df.csv",
+   "bars": 14400,
+   "first": "2024-11-05 15:51:00",
+   "last": "2024-12-19 04:51:00",
+   "increasing": true,
+   "dups": 0,
+   "gaps": {
+    "daily_break": 26,
+    "weekend": 6
+   },
+   "ohlc_valid": true,
+   "grid_ok": true,
+   "contiguous": true,
+   "sha256": "59fd01bcf4daff64e40312805aec5177f304a37690c327724210470a8954f2f4"
+  },
+  {
+   "file": "cp6v2_window_5_df.csv",
+   "bars": 14400,
+   "first": "2024-12-19 04:54:00",
+   "last": "2025-02-04 18:03:00",
+   "increasing": true,
+   "dups": 0,
+   "gaps": {
+    "daily_break": 23,
+    "weekend": 9
+   },
+   "ohlc_valid": true,
+   "grid_ok": true,
+   "contiguous": true,
+   "sha256": "d56d6c65e8dd05a8f37bdd20a8770fcea0cb651b647495c4b462f6eaa885adc3"
+  },
+  {
+   "file": "cp6v2_window_6_df.csv",
+   "bars": 14400,
+   "first": "2025-02-04 18:06:00",
+   "last": "2025-03-20 03:51:00",
+   "increasing": true,
+   "dups": 0,
+   "gaps": {
+    "daily_break": 26,
+    "weekend": 6
+   },
+   "ohlc_valid": true,
+   "grid_ok": true,
+   "contiguous": true,
+   "sha256": "db66a5ab13bc2cef8b70710beb98b687995111d4a096a49266fa8713771ae537"
+  }
+ ],
+ "dataset_sha256_combined": "060ba2440aa495ab28097d9ed810a5e3bcdf09b00ffba1d15b2e536cea2ea1d7",
+ "anomalies": [],
+ "verdict": "FROZEN"
+}

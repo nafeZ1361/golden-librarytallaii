@@ -58,15 +58,17 @@ def backtest_cross_signal(series1, series2):
     signals = ['hold', 'hold', 'hold'] + signals
     return signals
 
-def backtest_supertrend(symbol, tf, limit, atr_period=10, multiplier=3.0, candle_type='ca'):
+def backtest_supertrend(symbol, tf, limit, atr_period=10, multiplier=3.0, candle_type='ca', df=None):
     limit = int(limit)
     
     required_limit = max(limit, atr_period * 5)
     
+    # Phase-1 fix: optional `df` (MT5-raw format) = compute signals on THIS data
+    # (coherent pairing) instead of re-fetching the latest bars from MT5.
     if candle_type == 'ca':
-        df = backtest_candle(symbol, tf, required_limit).copy()
+        df = backtest_candle(symbol, tf, required_limit, False, data=df).copy()
     else:
-        df = backtest_candle(symbol, tf, required_limit, True).copy()
+        df = backtest_candle(symbol, tf, required_limit, True, data=df).copy()
     
     def rma(series, length):
         result = [np.nan] * len(series)
@@ -880,16 +882,18 @@ def backtest_volumatic_vidya(symbol, tf, limit, vidya_length=10, vidya_momentum=
     else:
         raise ValueError("Use 'trend' or 'line'.")
 
-def backtest_trend_ali(symbol, tf, limit, length=60, length_mult=6.0, mode='Hma', candle_type='ca'):
+def backtest_trend_ali(symbol, tf, limit, length=60, length_mult=6.0, mode='Hma', candle_type='ca', df=None):
     limit = int(limit)
     final_length = int(length * length_mult)
     
     required_limit = max(limit, final_length * 5)
     
+    # Phase-1 fix: optional `df` (MT5-raw format) = compute signals on THIS data
+    # (coherent pairing) instead of re-fetching the latest bars from MT5.
     if candle_type == 'ca':
-        ohlc = backtest_candle(symbol, tf, required_limit)
+        ohlc = backtest_candle(symbol, tf, required_limit, False, data=df)
     else:
-        ohlc = backtest_candle(symbol, tf, required_limit, True)
+        ohlc = backtest_candle(symbol, tf, required_limit, True, data=df)
     
     def calc_wma(data, period):
         if len(data) < period:

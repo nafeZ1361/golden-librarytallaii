@@ -1,0 +1,106 @@
+{
+  "created": "2026-09-03T23:57:08.599917",
+  "mode": "fixed-df-param",
+  "ab_regression": {
+    "signals_equal": true,
+    "stats_equal": true
+  },
+  "results": [
+    {
+      "window": 1,
+      "start": "2025-12-10 04:27:00",
+      "end": "2026-01-26 17:48:00",
+      "candles": 14400,
+      "stats": {
+        "Total Trades Executed": 76.0,
+        "Winning Trades": 19.0,
+        "Losing Trades": 57.0,
+        "Win Rate": 25.0,
+        "Total Profit": -1900.0,
+        "Final Balance": 3100.0,
+        "ROI": -38.0
+      },
+      "report": "backtest/backtest_report_XAUUSD._3m_20260903_235419.html"
+    },
+    {
+      "window": 2,
+      "start": "2026-01-26 17:51:00",
+      "end": "2026-03-11 03:54:00",
+      "candles": 14400,
+      "stats": {
+        "Total Trades Executed": 84.0,
+        "Winning Trades": 22.0,
+        "Losing Trades": 62.0,
+        "Win Rate": 26.19,
+        "Total Profit": -1800.0,
+        "Final Balance": 3200.0,
+        "ROI": -36.0
+      },
+      "report": "backtest/backtest_report_XAUUSD._3m_20260903_235448.html"
+    },
+    {
+      "window": 3,
+      "start": "2026-03-11 03:57:00",
+      "end": "2026-04-24 12:54:00",
+      "candles": 14400,
+      "stats": {
+        "Total Trades Executed": 76.0,
+        "Winning Trades": 23.0,
+        "Losing Trades": 53.0,
+        "Win Rate": 30.26,
+        "Total Profit": -700.0,
+        "Final Balance": 4300.0,
+        "ROI": -14.0
+      },
+      "report": "backtest/backtest_report_XAUUSD._3m_20260903_235517.html"
+    },
+    {
+      "window": 4,
+      "start": "2026-04-24 12:57:00",
+      "end": "2026-06-08 23:12:00",
+      "candles": 14400,
+      "stats": {
+        "Total Trades Executed": 65.0,
+        "Winning Trades": 22.0,
+        "Losing Trades": 43.0,
+        "Win Rate": 33.85,
+        "Total Profit": 100.0,
+        "Final Balance": 5100.0,
+        "ROI": 2.0
+      },
+      "report": "backtest/backtest_report_XAUUSD._3m_20260903_235554.html"
+    },
+    {
+      "window": 5,
+      "start": "2026-06-08 23:15:00",
+      "end": "2026-07-22 15:42:00",
+      "candles": 14400,
+      "stats": {
+        "Total Trades Executed": 85.0,
+        "Winning Trades": 22.0,
+        "Losing Trades": 63.0,
+        "Win Rate": 25.88,
+        "Total Profit": -1900.0,
+        "Final Balance": 3100.0,
+        "ROI": -38.0
+      },
+      "report": "backtest/backtest_report_XAUUSD._3m_20260903_235637.html"
+    },
+    {
+      "window": 6,
+      "start": "2026-07-22 15:45:00",
+      "end": "2026-09-03 23:18:00",
+      "candles": 14400,
+      "stats": {
+        "Total Trades Executed": 74.0,
+        "Winning Trades": 32.0,
+        "Losing Trades": 42.0,
+        "Win Rate": 43.24,
+        "Total Profit": 2200.0,
+        "Final Balance": 7200.0,
+        "ROI": 44.0
+      },
+      "report": "backtest/backtest_report_XAUUSD._3m_20260903_235708.html"
+    }
+  ]
+}

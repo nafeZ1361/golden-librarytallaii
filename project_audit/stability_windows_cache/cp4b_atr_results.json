@@ -1,0 +1,1211 @@
+{
+  "created": "2026-09-04T12:42:50.938459",
+  "mode": "B0 ATR exits",
+  "harness_equivalence": "True",
+  "folds": [
+    {
+      "fold": 1,
+      "status": "OK",
+      "is_bounds": [
+        "2025-12-10 15:30:00",
+        "2026-01-27 05:51:00"
+      ],
+      "oos_bounds": [
+        "2026-01-27 05:54:00",
+        "2026-03-11 14:57:00"
+      ],
+      "selected_combo": {
+        "atr_period": 10,
+        "multiplier": 3.0,
+        "length": 80,
+        "length_mult": 6.0
+      },
+      "is": {
+        "roi": -19.51542027946063,
+        "winrate": 35.55555555555556,
+        "total_trades": 90,
+        "profit_factor": 0.8320712774944523,
+        "max_drawdown": 26.064833956441873,
+        "final_balance": 4024.2289860269684,
+        "total_profit": -975.7710139730316,
+        "skipped_entries": 0
+      },
+      "oos": {
+        "roi": -64.05850737130493,
+        "winrate": 26.31578947368421,
+        "total_trades": 95,
+        "profit_factor": 0.5419483894488439,
+        "max_drawdown": 64.05850737130493,
+        "final_balance": 1797.0746314347534,
+        "total_profit": -3202.9253685652466,
+        "skipped_entries": 0
+      },
+      "degradation_roi": -44.5430870918443,
+      "is_table": [
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 2.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -31.614679086378946,
+            "winrate": 34.48275862068966,
+            "total_trades": 116,
+            "profit_factor": 0.7917804112818538,
+            "max_drawdown": 33.417670320101145,
+            "final_balance": 3419.2660456810527,
+            "total_profit": -1580.7339543189473,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 3.0,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -33.89722712516119,
+            "winrate": 31.70731707317073,
+            "total_trades": 82,
+            "profit_factor": 0.6983287820892676,
+            "max_drawdown": 34.08731787285249,
+            "final_balance": 3305.1386437419405,
+            "total_profit": -1694.8613562580595,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 3.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -38.98657421644108,
+            "winrate": 26.31578947368421,
+            "total_trades": 57,
+            "profit_factor": 0.5349289589821818,
+            "max_drawdown": 47.48543353056085,
+            "final_balance": 3050.671289177946,
+            "total_profit": -1949.3287108220538,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 14,
+            "multiplier": 2.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -43.376847301182444,
+            "winrate": 32.773109243697476,
+            "total_trades": 119,
+            "profit_factor": 0.7294004515663597,
+            "max_drawdown": 44.3462247434466,
+            "final_balance": 2831.157634940878,
+            "total_profit": -2168.842365059122,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 14,
+            "multiplier": 3.0,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -56.43776294798263,
+            "winrate": 27.27272727272727,
+            "total_trades": 88,
+            "profit_factor": 0.5616842263430524,
+            "max_drawdown": 58.417055512761415,
+            "final_balance": 2178.1118526008686,
+            "total_profit": -2821.8881473991314,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 14,
+            "multiplier": 3.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -40.8954723344489,
+            "winrate": 26.984126984126984,
+            "total_trades": 63,
+            "profit_factor": 0.5550645742854198,
+            "max_drawdown": 45.70156719139292,
+            "final_balance": 2955.226383277555,
+            "total_profit": -2044.7736167224448,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 20,
+            "multiplier": 2.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -46.31442008048985,
+            "winrate": 31.858407079646017,
+            "total_trades": 113,
+            "profit_factor": 0.6999190667611606,
+            "max_drawdown": 47.23220670045031,
+            "final_balance": 2684.2789959755073,
+            "total_profit": -2315.7210040244927,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 20,
+            "multiplier": 3.0,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -39.93388113614414,
+            "winrate": 31.11111111111111,
+            "total_trades": 90,
+            "profit_factor": 0.6790240031411419,
+            "max_drawdown": 47.17664067362468,
+            "final_balance": 3003.305943192793,
+            "total_profit": -1996.6940568072068,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 20,
+            "multiplier": 3.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -42.15827321422688,
+            "winrate": 26.5625,
+            "total_trades": 64,
+            "profit_factor": 0.5486102986155628,
+            "max_drawdown": 42.940084852254245,
+            "final_balance": 2892.086339288656,
+            "total_profit": -2107.913660711344,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 3.0,
+            "length": 40,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -44.5912890314803,
+            "winrate": 28.57142857142857,
+            "total_trades": 77,
+            "profit_factor": 0.596283153821639,
+            "max_drawdown": 44.5912890314803,
+            "final_balance": 2770.435548425985,
+            "total_profit": -2229.564451574015,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 3.0,
+            "length": 80,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -19.51542027946063,
+            "winrate": 35.55555555555556,
+            "total_trades": 90,
+            "profit_factor": 0.8320712774944523,
+            "max_drawdown": 26.064833956441873,
+            "final_balance": 4024.2289860269684,
+            "total_profit": -975.7710139730316,
+            "skipped_entries": 0
+          }
+        }
+      ]
+    },
+    {
+      "fold": 2,
+      "status": "OK",
+      "is_bounds": [
+        "2026-01-27 05:54:00",
+        "2026-03-11 14:57:00"
+      ],
+      "oos_bounds": [
+        "2026-03-11 15:00:00",
+        "2026-04-27 01:03:00"
+      ],
+      "selected_combo": {
+        "atr_period": 10,
+        "multiplier": 2.5,
+        "length": 60,
+        "length_mult": 6.0
+      },
+      "is": {
+        "roi": -2.582846741137619,
+        "winrate": 39.473684210526315,
+        "total_trades": 114,
+        "profit_factor": 0.9812565751137395,
+        "max_drawdown": 16.0373483041371,
+        "final_balance": 4870.857662943119,
+        "total_profit": -129.14233705688093,
+        "skipped_entries": 0
+      },
+      "oos": {
+        "roi": 23.544775762543033,
+        "winrate": 44.66019417475729,
+        "total_trades": 103,
+        "profit_factor": 1.2048020302948215,
+        "max_drawdown": 15.826909114445224,
+        "final_balance": 6177.238788127152,
+        "total_profit": 1177.2387881271516,
+        "skipped_entries": 0
+      },
+      "degradation_roi": 26.12762250368065,
+      "is_table": [
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 2.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -2.582846741137619,
+            "winrate": 39.473684210526315,
+            "total_trades": 114,
+            "profit_factor": 0.9812565751137395,
+            "max_drawdown": 16.0373483041371,
+            "final_balance": 4870.857662943119,
+            "total_profit": -129.14233705688093,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 3.0,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -22.005792793866714,
+            "winrate": 34.523809523809526,
+            "total_trades": 84,
+            "profit_factor": 0.7994350995235112,
+            "max_drawdown": 30.06467253159395,
+            "final_balance": 3899.7103603066644,
+            "total_profit": -1100.2896396933356,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 3.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -10.76983648399535,
+            "winrate": 36.0655737704918,
+            "total_trades": 61,
+            "profit_factor": 0.8615116351408812,
+            "max_drawdown": 29.05279740620077,
+            "final_balance": 4461.5081758002325,
+            "total_profit": -538.4918241997675,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 14,
+            "multiplier": 2.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -13.248605457431276,
+            "winrate": 37.719298245614034,
+            "total_trades": 114,
+            "profit_factor": 0.9068401420945135,
+            "max_drawdown": 27.743345196635033,
+            "final_balance": 4337.569727128436,
+            "total_profit": -662.4302728715638,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 14,
+            "multiplier": 3.0,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -31.189897952253247,
+            "winrate": 32.967032967032964,
+            "total_trades": 91,
+            "profit_factor": 0.7434873520804618,
+            "max_drawdown": 36.32197421430596,
+            "final_balance": 3440.5051023873375,
+            "total_profit": -1559.4948976126625,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 14,
+            "multiplier": 3.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -12.476957567741119,
+            "winrate": 36.231884057971016,
+            "total_trades": 69,
+            "profit_factor": 0.8572936272907165,
+            "max_drawdown": 27.303753066719764,
+            "final_balance": 4376.152121612944,
+            "total_profit": -623.847878387056,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 20,
+            "multiplier": 2.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -16.343592458375262,
+            "winrate": 37.28813559322034,
+            "total_trades": 118,
+            "profit_factor": 0.8889915713161922,
+            "max_drawdown": 27.454737955891023,
+            "final_balance": 4182.820377081237,
+            "total_profit": -817.179622918763,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 20,
+            "multiplier": 3.0,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -27.286865304062303,
+            "winrate": 34.375,
+            "total_trades": 96,
+            "profit_factor": 0.7829561985800862,
+            "max_drawdown": 31.301683023709735,
+            "final_balance": 3635.656734796885,
+            "total_profit": -1364.3432652031152,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 20,
+            "multiplier": 3.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -13.916767771125269,
+            "winrate": 36.11111111111111,
+            "total_trades": 72,
+            "profit_factor": 0.8482609070488094,
+            "max_drawdown": 24.530394870898274,
+            "final_balance": 4304.161611443737,
+            "total_profit": -695.8383885562635,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 3.0,
+            "length": 40,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -35.496157163127975,
+            "winrate": 31.818181818181817,
+            "total_trades": 88,
+            "profit_factor": 0.7043173301838506,
+            "max_drawdown": 38.33300252788373,
+            "final_balance": 3225.1921418436013,
+            "total_profit": -1774.8078581563987,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 3.0,
+            "length": 80,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -64.05850737130493,
+            "winrate": 26.31578947368421,
+            "total_trades": 95,
+            "profit_factor": 0.5419483894488439,
+            "max_drawdown": 64.05850737130493,
+            "final_balance": 1797.0746314347534,
+            "total_profit": -3202.9253685652466,
+            "skipped_entries": 0
+          }
+        }
+      ]
+    },
+    {
+      "fold": 3,
+      "status": "OK",
+      "is_bounds": [
+        "2026-03-11 15:00:00",
+        "2026-04-27 01:03:00"
+      ],
+      "oos_bounds": [
+        "2026-04-27 01:06:00",
+        "2026-06-09 11:15:00"
+      ],
+      "selected_combo": {
+        "atr_period": 10,
+        "multiplier": 3.0,
+        "length": 80,
+        "length_mult": 6.0
+      },
+      "is": {
+        "roi": 36.75952763260909,
+        "winrate": 48.837209302325576,
+        "total_trades": 86,
+        "profit_factor": 1.414889732047638,
+        "max_drawdown": 19.04012514378275,
+        "final_balance": 6837.976381630455,
+        "total_profit": 1837.9763816304549,
+        "skipped_entries": 0
+      },
+      "oos": {
+        "roi": -5.243250459418777,
+        "winrate": 38.75,
+        "total_trades": 80,
+        "profit_factor": 0.9466764709919024,
+        "max_drawdown": 14.306173902879985,
+        "final_balance": 4737.837477029061,
+        "total_profit": -262.1625229709389,
+        "skipped_entries": 0
+      },
+      "degradation_roi": -42.00277809202787,
+      "is_table": [
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 2.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": 23.544775762543033,
+            "winrate": 44.66019417475729,
+            "total_trades": 103,
+            "profit_factor": 1.2048020302948215,
+            "max_drawdown": 15.826909114445224,
+            "final_balance": 6177.238788127152,
+            "total_profit": 1177.2387881271516,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 3.0,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": 18.1822337096917,
+            "winrate": 44.871794871794876,
+            "total_trades": 78,
+            "profit_factor": 1.2100567933231292,
+            "max_drawdown": 13.548651801198798,
+            "final_balance": 5909.111685484585,
+            "total_profit": 909.111685484585,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 3.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -6.562119208956991,
+            "winrate": 38.095238095238095,
+            "total_trades": 63,
+            "profit_factor": 0.9162553724401713,
+            "max_drawdown": 19.262714011529006,
+            "final_balance": 4671.89403955215,
+            "total_profit": -328.1059604478496,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 14,
+            "multiplier": 2.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": 0.3569863275698844,
+            "winrate": 40.0,
+            "total_trades": 100,
+            "profit_factor": 1.002964954644142,
+            "max_drawdown": 30.344548219224148,
+            "final_balance": 5017.849316378494,
+            "total_profit": 17.849316378494223,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 14,
+            "multiplier": 3.0,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": 6.226329242409756,
+            "winrate": 41.66666666666667,
+            "total_trades": 84,
+            "profit_factor": 1.0635494560852203,
+            "max_drawdown": 13.772875756824432,
+            "final_balance": 5311.316462120488,
+            "total_profit": 311.3164621204878,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 14,
+            "multiplier": 3.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": 3.6318603240740592,
+            "winrate": 41.17647058823529,
+            "total_trades": 68,
+            "profit_factor": 1.0454846100108257,
+            "max_drawdown": 14.24458021143549,
+            "final_balance": 5181.593016203703,
+            "total_profit": 181.59301620370297,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 20,
+            "multiplier": 2.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -5.5761404746082555,
+            "winrate": 38.83495145631068,
+            "total_trades": 103,
+            "profit_factor": 0.9559521189195704,
+            "max_drawdown": 27.561234466673522,
+            "final_balance": 4721.192976269587,
+            "total_profit": -278.80702373041277,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 20,
+            "multiplier": 3.0,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -18.442696661149185,
+            "winrate": 35.714285714285715,
+            "total_trades": 84,
+            "profit_factor": 0.8282597328942206,
+            "max_drawdown": 35.660847410601896,
+            "final_balance": 4077.865166942541,
+            "total_profit": -922.1348330574592,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 20,
+            "multiplier": 3.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": 0.32690835339048135,
+            "winrate": 40.298507462686565,
+            "total_trades": 67,
+            "profit_factor": 1.0041009739614741,
+            "max_drawdown": 21.08382822528034,
+            "final_balance": 5016.345417669524,
+            "total_profit": 16.345417669524068,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 3.0,
+            "length": 40,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": 25.07096794603136,
+            "winrate": 46.75324675324675,
+            "total_trades": 77,
+            "profit_factor": 1.3045001649079027,
+            "max_drawdown": 10.714975440076813,
+            "final_balance": 6253.548397301568,
+            "total_profit": 1253.548397301568,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 3.0,
+            "length": 80,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": 36.75952763260909,
+            "winrate": 48.837209302325576,
+            "total_trades": 86,
+            "profit_factor": 1.414889732047638,
+            "max_drawdown": 19.04012514378275,
+            "final_balance": 6837.976381630455,
+            "total_profit": 1837.9763816304549,
+            "skipped_entries": 0
+          }
+        }
+      ]
+    },
+    {
+      "fold": 4,
+      "status": "OK",
+      "is_bounds": [
+        "2026-04-27 01:06:00",
+        "2026-06-09 11:15:00"
+      ],
+      "oos_bounds": [
+        "2026-06-09 11:18:00",
+        "2026-07-23 03:45:00"
+      ],
+      "selected_combo": {
+        "atr_period": 14,
+        "multiplier": 3.5,
+        "length": 60,
+        "length_mult": 6.0
+      },
+      "is": {
+        "roi": 22.88040623013107,
+        "winrate": 47.45762711864407,
+        "total_trades": 59,
+        "profit_factor": 1.372648684408524,
+        "max_drawdown": 10.5925106372754,
+        "final_balance": 6144.020311506553,
+        "total_profit": 1144.0203115065533,
+        "skipped_entries": 0
+      },
+      "oos": {
+        "roi": -36.67963357569511,
+        "winrate": 30.263157894736842,
+        "total_trades": 76,
+        "profit_factor": 0.6536451618477133,
+        "max_drawdown": 53.37244210081039,
+        "final_balance": 3166.0183212152447,
+        "total_profit": -1833.9816787847553,
+        "skipped_entries": 0
+      },
+      "degradation_roi": -59.56003980582618,
+      "is_table": [
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 2.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -11.947607399407534,
+            "winrate": 37.5,
+            "total_trades": 104,
+            "profit_factor": 0.9078004518500611,
+            "max_drawdown": 31.851733927212745,
+            "final_balance": 4402.619630029623,
+            "total_profit": -597.3803699703767,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 3.0,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": 5.682885287436893,
+            "winrate": 41.66666666666667,
+            "total_trades": 72,
+            "profit_factor": 1.0675928589470167,
+            "max_drawdown": 11.609547500216323,
+            "final_balance": 5284.144264371845,
+            "total_profit": 284.14426437184466,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 3.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": 14.020776235980136,
+            "winrate": 44.26229508196721,
+            "total_trades": 61,
+            "profit_factor": 1.2076764076711417,
+            "max_drawdown": 11.591173656227172,
+            "final_balance": 5701.038811799007,
+            "total_profit": 701.0388117990069,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 14,
+            "multiplier": 2.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -20.556554674169746,
+            "winrate": 36.11111111111111,
+            "total_trades": 108,
+            "profit_factor": 0.8509711669340981,
+            "max_drawdown": 39.20334994360917,
+            "final_balance": 3972.1722662915126,
+            "total_profit": -1027.8277337084874,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 14,
+            "multiplier": 3.0,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": 9.108992655873918,
+            "winrate": 42.465753424657535,
+            "total_trades": 73,
+            "profit_factor": 1.1084547398622249,
+            "max_drawdown": 14.932363102502338,
+            "final_balance": 5455.449632793696,
+            "total_profit": 455.44963279369586,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 14,
+            "multiplier": 3.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": 22.88040623013107,
+            "winrate": 47.45762711864407,
+            "total_trades": 59,
+            "profit_factor": 1.372648684408524,
+            "max_drawdown": 10.5925106372754,
+            "final_balance": 6144.020311506553,
+            "total_profit": 1144.0203115065533,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 20,
+            "multiplier": 2.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": 0.6972585752061605,
+            "winrate": 40.0,
+            "total_trades": 105,
+            "profit_factor": 1.0055352559407014,
+            "max_drawdown": 23.06571487221216,
+            "final_balance": 5034.862928760308,
+            "total_profit": 34.86292876030802,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 20,
+            "multiplier": 3.0,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": 17.20986562790702,
+            "winrate": 44.5945945945946,
+            "total_trades": 74,
+            "profit_factor": 1.2099504585014158,
+            "max_drawdown": 13.43307930656367,
+            "final_balance": 5860.493281395351,
+            "total_profit": 860.493281395351,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 20,
+            "multiplier": 3.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": 15.282852869682136,
+            "winrate": 45.45454545454545,
+            "total_trades": 55,
+            "profit_factor": 1.2558217209831959,
+            "max_drawdown": 10.227427673118159,
+            "final_balance": 5764.142643484107,
+            "total_profit": 764.1426434841069,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 3.0,
+            "length": 40,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -8.647492262831802,
+            "winrate": 37.68115942028986,
+            "total_trades": 69,
+            "profit_factor": 0.8996553496332074,
+            "max_drawdown": 14.443136230213186,
+            "final_balance": 4567.62538685841,
+            "total_profit": -432.3746131415901,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 3.0,
+            "length": 80,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -5.243250459418777,
+            "winrate": 38.75,
+            "total_trades": 80,
+            "profit_factor": 0.9466764709919024,
+            "max_drawdown": 14.306173902879985,
+            "final_balance": 4737.837477029061,
+            "total_profit": -262.1625229709389,
+            "skipped_entries": 0
+          }
+        }
+      ]
+    },
+    {
+      "fold": 5,
+      "status": "OK",
+      "is_bounds": [
+        "2026-06-09 11:18:00",
+        "2026-07-23 03:45:00"
+      ],
+      "oos_bounds": [
+        "2026-07-23 03:48:00",
+        "2026-09-04 11:21:00"
+      ],
+      "selected_combo": {
+        "atr_period": 10,
+        "multiplier": 3.0,
+        "length": 80,
+        "length_mult": 6.0
+      },
+      "is": {
+        "roi": 22.56698120895464,
+        "winrate": 44.680851063829785,
+        "total_trades": 94,
+        "profit_factor": 1.2172290522507594,
+        "max_drawdown": 11.795219521088491,
+        "final_balance": 6128.349060447732,
+        "total_profit": 1128.349060447732,
+        "skipped_entries": 0
+      },
+      "oos": {
+        "roi": 43.52827243064136,
+        "winrate": 49.46236559139785,
+        "total_trades": 93,
+        "profit_factor": 1.4645639351417545,
+        "max_drawdown": 7.752933581520435,
+        "final_balance": 7176.413621532068,
+        "total_profit": 2176.4136215320677,
+        "skipped_entries": 0
+      },
+      "degradation_roi": 20.961291221686718,
+      "is_table": [
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 2.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -16.784380723865453,
+            "winrate": 36.93693693693694,
+            "total_trades": 111,
+            "profit_factor": 0.8800711948049129,
+            "max_drawdown": 32.82032766718558,
+            "final_balance": 4160.780963806727,
+            "total_profit": -839.2190361932726,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 3.0,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": 2.2104001912437887,
+            "winrate": 40.44943820224719,
+            "total_trades": 89,
+            "profit_factor": 1.0208894042935637,
+            "max_drawdown": 15.577030213093071,
+            "final_balance": 5110.520009562189,
+            "total_profit": 110.52000956218944,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 3.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -31.74615440084136,
+            "winrate": 31.57894736842105,
+            "total_trades": 76,
+            "profit_factor": 0.6939679196651172,
+            "max_drawdown": 41.962025250336694,
+            "final_balance": 3412.692279957932,
+            "total_profit": -1587.307720042068,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 14,
+            "multiplier": 2.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -6.518376214712353,
+            "winrate": 38.983050847457626,
+            "total_trades": 118,
+            "profit_factor": 0.9548968810692212,
+            "max_drawdown": 30.485375488258516,
+            "final_balance": 4674.081189264382,
+            "total_profit": -325.9188107356176,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 14,
+            "multiplier": 3.0,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -10.434172497257205,
+            "winrate": 37.64705882352941,
+            "total_trades": 85,
+            "profit_factor": 0.9017659791094785,
+            "max_drawdown": 22.30583189962212,
+            "final_balance": 4478.29137513714,
+            "total_profit": -521.7086248628602,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 14,
+            "multiplier": 3.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -36.67963357569511,
+            "winrate": 30.263157894736842,
+            "total_trades": 76,
+            "profit_factor": 0.6536451618477133,
+            "max_drawdown": 53.37244210081039,
+            "final_balance": 3166.0183212152447,
+            "total_profit": -1833.9816787847553,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 20,
+            "multiplier": 2.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": 9.708727416513884,
+            "winrate": 41.66666666666667,
+            "total_trades": 120,
+            "profit_factor": 1.0692924463844409,
+            "max_drawdown": 16.087469537107378,
+            "final_balance": 5485.436370825694,
+            "total_profit": 485.4363708256942,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 20,
+            "multiplier": 3.0,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -15.275942853636352,
+            "winrate": 36.84210526315789,
+            "total_trades": 95,
+            "profit_factor": 0.8731879714194565,
+            "max_drawdown": 26.817436060719103,
+            "final_balance": 4236.202857318182,
+            "total_profit": -763.7971426818176,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 20,
+            "multiplier": 3.5,
+            "length": 60,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": -31.96683363984179,
+            "winrate": 30.985915492957744,
+            "total_trades": 71,
+            "profit_factor": 0.6720459826148396,
+            "max_drawdown": 46.92241060875367,
+            "final_balance": 3401.6583180079106,
+            "total_profit": -1598.3416819920894,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 3.0,
+            "length": 40,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": 9.020779833919205,
+            "winrate": 42.168674698795186,
+            "total_trades": 83,
+            "profit_factor": 1.093901675052234,
+            "max_drawdown": 21.483052040271335,
+            "final_balance": 5451.03899169596,
+            "total_profit": 451.03899169596025,
+            "skipped_entries": 0
+          }
+        },
+        {
+          "combo": {
+            "atr_period": 10,
+            "multiplier": 3.0,
+            "length": 80,
+            "length_mult": 6.0
+          },
+          "is": {
+            "roi": 22.56698120895464,
+            "winrate": 44.680851063829785,
+            "total_trades": 94,
+            "profit_factor": 1.2172290522507594,
+            "max_drawdown": 11.795219521088491,
+            "final_balance": 6128.349060447732,
+            "total_profit": 1128.349060447732,
+            "skipped_entries": 0
+          }
+        }
+      ]
+    }
+  ],
+  "pos_is_folds": 3,
+  "oos_rois": [
+    -64.05850737130493,
+    23.544775762543033,
+    -5.243250459418777,
+    -36.67963357569511,
+    43.52827243064136
+  ],
+  "branch": "EXIT-GEOMETRY WAS THE PROBLEM -> rerun CP4 with ATR exits + fuller grid"
+}

@@ -1,0 +1,42 @@
+{
+  "checkpoint": "CP3",
+  "status": "PASS",
+  "created": "2026-09-04T00:46:24.125433",
+  "tests": [
+    {
+      "test": "Trend_change_signal: short->long on closed bars = 'buy'",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "Trend_change_signal: long->short = 'sell'",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "Trend_change_signal: no flip = 'hold'",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "_safe_swings drops unconfirmed (repaint-prone) recent swings",
+      "status": "PASS",
+      "detail": "kept=[10, 81] (90,99 dropped: 99-idx < 18)"
+    },
+    {
+      "test": "baseline agreement: ST-flip bar + TA state same-bar -> entry",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "notebook confirm-indicator decision paths: no future-shift consumption (static audit)",
+      "status": "PASS",
+      "detail": "sar_signal[-1] forming-bar exposure documented -> live divergence risk (CP7)"
+    },
+    {
+      "test": "ABCD strategy: risk_effective = risk*0.5 after consecutive losses (anti-martingale)",
+      "status": "PASS",
+      "detail": "risk halving confirmed in source; no multiplication anywhere in stg.py"
+    }
+  ]
+}

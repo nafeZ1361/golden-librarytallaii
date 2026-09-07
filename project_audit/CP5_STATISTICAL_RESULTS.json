@@ -1,0 +1,380 @@
+{
+ "experiment": "CP5.5",
+ "generated_local": "2026-09-05T14:53:18",
+ "statistical": {
+  "A1": {
+   "h5": {
+    "per_window": [
+     {
+      "window": 1,
+      "events": 226,
+      "wins": 127,
+      "losses": 99,
+      "rate_pct": 56.19469026548673,
+      "wald95": [
+       49.726051927095526,
+       62.66332860387792
+      ],
+      "excluded_end": 0
+     },
+     {
+      "window": 2,
+      "events": 224,
+      "wins": 134,
+      "losses": 90,
+      "rate_pct": 59.82142857142857,
+      "wald95": [
+       53.401093445829595,
+       66.24176369702755
+      ],
+      "excluded_end": 0
+     },
+     {
+      "window": 3,
+      "events": 235,
+      "wins": 133,
+      "losses": 102,
+      "rate_pct": 56.59574468085107,
+      "wald95": [
+       50.258796083687585,
+       62.932693278014554
+      ],
+      "excluded_end": 0
+     },
+     {
+      "window": 4,
+      "events": 218,
+      "wins": 120,
+      "losses": 98,
+      "rate_pct": 55.04587155963303,
+      "wald95": [
+       48.4423592489049,
+       61.64938387036116
+      ],
+      "excluded_end": 0
+     },
+     {
+      "window": 5,
+      "events": 227,
+      "wins": 116,
+      "losses": 111,
+      "rate_pct": 51.10132158590308,
+      "wald95": [
+       44.59841119447484,
+       57.604231977331324
+      ],
+      "excluded_end": 0
+     },
+     {
+      "window": 6,
+      "events": 246,
+      "wins": 135,
+      "losses": 111,
+      "rate_pct": 54.87804878048781,
+      "wald95": [
+       48.65960396883533,
+       61.09649359214029
+      ],
+      "excluded_end": 0
+     }
+    ],
+    "aggregate": {
+     "events": 1376,
+     "wins": 765,
+     "losses": 611,
+     "rate_pct": 55.595930232558146,
+     "wald95": [
+      52.97062536849785,
+      58.22123509661844
+     ]
+    },
+    "cell_verdict": "CANDIDATE DIRECTIONAL EDGE"
+   },
+   "h20": {
+    "per_window": [
+     {
+      "window": 1,
+      "events": 226,
+      "wins": 118,
+      "losses": 108,
+      "rate_pct": 52.21238938053098,
+      "wald95": [
+       45.69991100826305,
+       58.7248677527989
+      ],
+      "excluded_end": 0
+     },
+     {
+      "window": 2,
+      "events": 224,
+      "wins": 115,
+      "losses": 109,
+      "rate_pct": 51.33928571428571,
+      "wald95": [
+       44.79373468467407,
+       57.88483674389735
+      ],
+      "excluded_end": 0
+     },
+     {
+      "window": 3,
+      "events": 234,
+      "wins": 127,
+      "losses": 107,
+      "rate_pct": 54.27350427350427,
+      "wald95": [
+       47.89048678163289,
+       60.65652176537565
+      ],
+      "excluded_end": 1
+     },
+     {
+      "window": 4,
+      "events": 217,
+      "wins": 116,
+      "losses": 101,
+      "rate_pct": 53.45622119815668,
+      "wald95": [
+       46.81946059885889,
+       60.092981797454485
+      ],
+      "excluded_end": 1
+     },
+     {
+      "window": 5,
+      "events": 227,
+      "wins": 111,
+      "losses": 116,
+      "rate_pct": 48.89867841409692,
+      "wald95": [
+       42.395768022668676,
+       55.40158880552516
+      ],
+      "excluded_end": 0
+     },
+     {
+      "window": 6,
+      "events": 246,
+      "wins": 127,
+      "losses": 119,
+      "rate_pct": 51.6260162601626,
+      "wald95": [
+       45.38106933282295,
+       57.87096318750224
+      ],
+      "excluded_end": 0
+     }
+    ],
+    "aggregate": {
+     "events": 1374,
+     "wins": 714,
+     "losses": 660,
+     "rate_pct": 51.96506550218341,
+     "wald95": [
+      49.323283081376786,
+      54.60684792299002
+     ]
+    },
+    "cell_verdict": "NO PROVEN DIRECTIONAL EDGE"
+   }
+  },
+  "A2": {
+   "h5": {
+    "per_window": [
+     {
+      "window": 1,
+      "events": 833,
+      "wins": 452,
+      "losses": 381,
+      "rate_pct": 54.26170468187274,
+      "wald95": [
+       50.87856230985134,
+       57.64484705389415
+      ],
+      "excluded_end": 2
+     },
+     {
+      "window": 2,
+      "events": 464,
+      "wins": 242,
+      "losses": 222,
+      "rate_pct": 52.1551724137931,
+      "wald95": [
+       47.60986490107027,
+       56.700479926515946
+      ],
+      "excluded_end": 0
+     },
+     {
+      "window": 3,
+      "events": 116,
+      "wins": 55,
+      "losses": 61,
+      "rate_pct": 47.41379310344828,
+      "wald95": [
+       38.326901451095694,
+       56.500684755800854
+      ],
+      "excluded_end": 0
+     },
+     {
+      "window": 4,
+      "events": 150,
+      "wins": 77,
+      "losses": 73,
+      "rate_pct": 51.33333333333333,
+      "wald95": [
+       43.3345123831812,
+       59.33215428348546
+      ],
+      "excluded_end": 1
+     },
+     {
+      "window": 5,
+      "events": 129,
+      "wins": 68,
+      "losses": 61,
+      "rate_pct": 52.71317829457365,
+      "wald95": [
+       44.09747211662923,
+       61.32888447251808
+      ],
+      "excluded_end": 0
+     },
+     {
+      "window": 6,
+      "events": 163,
+      "wins": 81,
+      "losses": 82,
+      "rate_pct": 49.693251533742334,
+      "wald95": [
+       42.01744357838702,
+       57.36905948909765
+      ],
+      "excluded_end": 0
+     }
+    ],
+    "aggregate": {
+     "events": 1855,
+     "wins": 975,
+     "losses": 880,
+     "rate_pct": 52.56064690026954,
+     "wald95": [
+      50.28825179909866,
+      54.83304200144041
+     ]
+    },
+    "cell_verdict": "CANDIDATE DIRECTIONAL EDGE"
+   },
+   "h20": {
+    "per_window": [
+     {
+      "window": 1,
+      "events": 833,
+      "wins": 442,
+      "losses": 391,
+      "rate_pct": 53.06122448979592,
+      "wald95": [
+       49.672095622698784,
+       56.45035335689306
+      ],
+      "excluded_end": 2
+     },
+     {
+      "window": 2,
+      "events": 464,
+      "wins": 243,
+      "losses": 221,
+      "rate_pct": 52.370689655172406,
+      "wald95": [
+       47.826270579528604,
+       56.91510873081621
+      ],
+      "excluded_end": 0
+     },
+     {
+      "window": 3,
+      "events": 116,
+      "wins": 60,
+      "losses": 56,
+      "rate_pct": 51.724137931034484,
+      "wald95": [
+       42.63047764336545,
+       60.81779821870352
+      ],
+      "excluded_end": 0
+     },
+     {
+      "window": 4,
+      "events": 149,
+      "wins": 70,
+      "losses": 79,
+      "rate_pct": 46.97986577181208,
+      "wald95": [
+       38.96605221249582,
+       54.99367933112834
+      ],
+      "excluded_end": 2
+     },
+     {
+      "window": 5,
+      "events": 129,
+      "wins": 71,
+      "losses": 58,
+      "rate_pct": 55.03875968992248,
+      "wald95": [
+       46.45426617167468,
+       63.62325320817027
+      ],
+      "excluded_end": 0
+     },
+     {
+      "window": 6,
+      "events": 160,
+      "wins": 70,
+      "losses": 90,
+      "rate_pct": 43.75,
+      "wald95": [
+       36.06318600621818,
+       51.43681399378182
+      ],
+      "excluded_end": 3
+     }
+    ],
+    "aggregate": {
+     "events": 1851,
+     "wins": 956,
+     "losses": 895,
+     "rate_pct": 51.64775796866559,
+     "wald95": [
+      49.371157048635745,
+      53.92435888869542
+     ]
+    },
+    "cell_verdict": "NO PROVEN DIRECTIONAL EDGE"
+   }
+  }
+ },
+ "verdicts": {
+  "A1": {
+   "cell_verdicts": {
+    "h5": "CANDIDATE DIRECTIONAL EDGE",
+    "h20": "NO PROVEN DIRECTIONAL EDGE"
+   },
+   "statistical_gate_both_horizons": false,
+   "economic_gate": true,
+   "cost_gate": null,
+   "verdict": "NO PROVEN EDGE"
+  },
+  "A2": {
+   "cell_verdicts": {
+    "h5": "CANDIDATE DIRECTIONAL EDGE",
+    "h20": "NO PROVEN DIRECTIONAL EDGE"
+   },
+   "statistical_gate_both_horizons": false,
+   "economic_gate": true,
+   "cost_gate": null,
+   "verdict": "NO PROVEN EDGE"
+  }
+ }
+}

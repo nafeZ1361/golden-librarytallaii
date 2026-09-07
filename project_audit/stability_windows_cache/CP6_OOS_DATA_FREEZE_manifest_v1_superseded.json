@@ -1,0 +1,149 @@
+{
+ "experiment": "CP6 OOS FREEZE",
+ "created_local": "2026-09-05T16:56:27",
+ "registered_oos_definition": "6x14400 bars preceding frozen boundary + forward fragment supplement",
+ "frozen_boundary": {
+  "cp5_first": "2025-12-10 21:39:00",
+  "cp5_last": "2026-09-04 17:30:00"
+ },
+ "mt5_symbol_info": {
+  "digits": 2,
+  "point": 0.01
+ },
+ "windows": [
+  {
+   "file": "cp6_window_1_df.csv",
+   "window_id": 1,
+   "symbol": "XAUUSD.",
+   "timeframe": "M3",
+   "bars": 14400,
+   "first": "2025-03-20 00:24:00",
+   "last": "2025-05-05 10:54:00",
+   "increasing": true,
+   "duplicates": 0,
+   "gaps": {
+    "daily_break": 26,
+    "weekend": 7
+   },
+   "ohlc_valid": true,
+   "nan_inf": 0,
+   "grid_ok": true,
+   "contiguous": null,
+   "sha256": "2327688beee6a7286f007ce3d7715c6206489b6dc05b3549df5138ad2f1b582a"
+  },
+  {
+   "file": "cp6_window_2_df.csv",
+   "window_id": 2,
+   "symbol": "XAUUSD.",
+   "timeframe": "M3",
+   "bars": 14400,
+   "first": "2025-05-05 10:57:00",
+   "last": "2025-06-17 20:48:00",
+   "increasing": true,
+   "duplicates": 0,
+   "gaps": {
+    "daily_break": 26,
+    "weekend": 6
+   },
+   "ohlc_valid": true,
+   "nan_inf": 0,
+   "grid_ok": true,
+   "contiguous": true,
+   "sha256": "668ca3dc0efbf825bf05f56360b2534100d0ae242d09ad6f34f30cfd308b1681"
+  },
+  {
+   "file": "cp6_window_3_df.csv",
+   "window_id": 3,
+   "symbol": "XAUUSD.",
+   "timeframe": "M3",
+   "bars": 14400,
+   "first": "2025-06-17 20:51:00",
+   "last": "2025-07-31 11:42:00",
+   "increasing": true,
+   "duplicates": 0,
+   "gaps": {
+    "daily_break": 27,
+    "weekend": 6
+   },
+   "ohlc_valid": true,
+   "nan_inf": 0,
+   "grid_ok": true,
+   "contiguous": true,
+   "sha256": "57ff0451b5bb229008eb75b5903e649c6b8e27e56a8596ecdbee960633b18773"
+  },
+  {
+   "file": "cp6_window_4_df.csv",
+   "window_id": 4,
+   "symbol": "XAUUSD.",
+   "timeframe": "M3",
+   "bars": 14400,
+   "first": "2025-07-31 11:45:00",
+   "last": "2025-09-12 21:30:00",
+   "increasing": true,
+   "duplicates": 0,
+   "gaps": {
+    "daily_break": 26,
+    "weekend": 6
+   },
+   "ohlc_valid": true,
+   "nan_inf": 0,
+   "grid_ok": true,
+   "contiguous": true,
+   "sha256": "585437dc2548111366e5053ba99f7987b9a82af24fd1770088ae86293e1bcf7e"
+  },
+  {
+   "file": "cp6_window_5_df.csv",
+   "window_id": 5,
+   "symbol": "XAUUSD.",
+   "timeframe": "M3",
+   "bars": 14400,
+   "first": "2025-09-12 21:33:00",
+   "last": "2025-10-28 04:51:00",
+   "increasing": true,
+   "duplicates": 0,
+   "gaps": {
+    "weekend": 7,
+    "daily_break": 25
+   },
+   "ohlc_valid": true,
+   "nan_inf": 0,
+   "grid_ok": true,
+   "contiguous": true,
+   "sha256": "8cb55180ab8c2aa534500cc919513a746d2d693bd211e89a31e64b9dfe4f1757"
+  },
+  {
+   "file": "cp6_window_6_df.csv",
+   "window_id": 6,
+   "symbol": "XAUUSD.",
+   "timeframe": "M3",
+   "bars": 14400,
+   "first": "2025-10-28 04:54:00",
+   "last": "2025-12-10 18:06:00",
+   "increasing": true,
+   "duplicates": 0,
+   "gaps": {
+    "daily_break": 26,
+    "weekend": 6
+   },
+   "ohlc_valid": true,
+   "nan_inf": 0,
+   "grid_ok": true,
+   "contiguous": true,
+   "sha256": "e68a5c04f5a869ca5b6ebac1b23df7193d3b7df0ab4c82aadcd9977364202481"
+  }
+ ],
+ "forward_fragment": {
+  "file": "cp6_forward_fragment.csv",
+  "bars": 198,
+  "first": "2026-09-04 14:03:00",
+  "last": "2026-09-04 23:54:00",
+  "all_after_frozen_last": false,
+  "sha256": "81fe24abfa9710be8f65f92ddac22e1a2791d6dbc7101f34efeb79af6d8db8df"
+ },
+ "dataset_sha256_combined": "692ea48beb7f2aea862d17b283a4244c5f163120eaa603df4585aa2d03b2bcca",
+ "anomalies": [
+  "OOS does not abut the frozen boundary",
+  "fragment contains bars at/before frozen last"
+ ],
+ "verdict": "FROZEN"
+}

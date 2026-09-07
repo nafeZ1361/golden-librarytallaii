@@ -1,0 +1,141 @@
+{
+ "experiment": "CP5.6-statistical",
+ "generated_local": "2026-09-05T15:57:43",
+ "registered_constants": {
+  "seed": 55056,
+  "n_boot": 10000,
+  "block_len": "h (events)",
+  "nw_lag": "h",
+  "bonferroni_m": 4,
+  "alpha": 0.05
+ },
+ "integrity_gate": "recomputed event/win counts == frozen CP5.5 statistics (all 4 cells)",
+ "results": {
+  "A1_h5": {
+   "n": 1376,
+   "rate_pct": 55.595930232558146,
+   "acf1_5": [
+    0.027619334282641576,
+    -0.03053093660357105,
+    0.07323058395892895,
+    -0.017302045217026198,
+    -0.019519151784592636
+   ],
+   "acf1_significant": false,
+   "acf1_within_window_mean": 0.02825363988776568,
+   "deff_hac": 1.0605138115523551,
+   "wald_lb": 52.97067360909079,
+   "hac_lb": 52.892408112358446,
+   "hac_lb_bonferroni": 52.50419900578361,
+   "boot_ci": [
+    52.8343023255814,
+    58.35755813953488
+   ],
+   "boot_ci_bonferroni": [
+    52.18023255813954,
+    59.01162790697675
+   ]
+  },
+  "A1_h20": {
+   "n": 1374,
+   "rate_pct": 51.96506550218341,
+   "acf1_5": [
+    0.0618686220021951,
+    -0.05111633379036406,
+    0.02098911021335889,
+    -9.363014757309831e-05,
+    0.028390729058594487
+   ],
+   "acf1_significant": true,
+   "acf1_within_window_mean": 0.06140554525483574,
+   "deff_hac": 0.9886218984086959,
+   "wald_lb": 49.323331624748704,
+   "hac_lb": 49.323331624748704,
+   "hac_lb_bonferroni": 48.94399492884934,
+   "boot_ci": [
+    49.272197962154294,
+    54.58515283842795
+   ],
+   "boot_ci_bonferroni": [
+    48.54439592430859,
+    55.27701965065505
+   ]
+  },
+  "A2_h5": {
+   "n": 1855,
+   "rate_pct": 52.56064690026954,
+   "acf1_5": [
+    0.000556566075434003,
+    -0.05511647157873573,
+    -0.021121677065073292,
+    -0.01090893383346214,
+    -0.013557495963156347
+   ],
+   "acf1_significant": false,
+   "acf1_within_window_mean": 0.004994696402188759,
+   "deff_hac": 0.8945255164123088,
+   "wald_lb": 50.288293554891894,
+   "hac_lb": 50.288293554891894,
+   "hac_lb_bonferroni": 49.96199762579988,
+   "boot_ci": [
+    50.40431266846361,
+    54.77088948787062
+   ],
+   "boot_ci_bonferroni": [
+    49.865229110512125,
+    55.309973045822105
+   ]
+  },
+  "A2_h20": {
+   "n": 1851,
+   "rate_pct": 51.64775796866559,
+   "acf1_5": [
+    0.3277404074633828,
+    0.13141639380523967,
+    0.023789465301721224,
+    -0.021100500531452893,
+    0.019425956813886806
+   ],
+   "acf1_significant": true,
+   "acf1_within_window_mean": 0.26698578623552716,
+   "deff_hac": 2.056288232991963,
+   "wald_lb": 49.37119888171189,
+   "hac_lb": 48.383226030466666,
+   "hac_lb_bonferroni": 47.914459373207144,
+   "boot_ci": [
+    48.35224203133441,
+    54.889249054565106
+   ],
+   "boot_ci_bonferroni": [
+    47.37979470556456,
+    55.861696380334955
+   ]
+  }
+ },
+ "cell_verdicts": {
+  "A1_h5": {
+   "verdict": "CANDIDATE (survives Bonferroni+dependence correction)",
+   "hac_lb_bonferroni": 52.50419900578361,
+   "boot_lb_bonferroni": 52.18023255813954
+  },
+  "A1_h20": {
+   "verdict": "NO PROVEN DIRECTIONAL EDGE (fails after correction)",
+   "hac_lb_bonferroni": 48.94399492884934,
+   "boot_lb_bonferroni": 48.54439592430859
+  },
+  "A2_h5": {
+   "verdict": "NO PROVEN DIRECTIONAL EDGE (fails after correction)",
+   "hac_lb_bonferroni": 49.96199762579988,
+   "boot_lb_bonferroni": 49.865229110512125
+  },
+  "A2_h20": {
+   "verdict": "NO PROVEN DIRECTIONAL EDGE (fails after correction)",
+   "hac_lb_bonferroni": 47.914459373207144,
+   "boot_lb_bonferroni": 47.37979470556456
+  }
+ },
+ "strategy_verdicts": {
+  "A1": "NO PROVEN EDGE",
+  "A2": "NO PROVEN EDGE"
+ }
+}

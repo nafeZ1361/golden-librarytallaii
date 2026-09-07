@@ -1,0 +1,1 @@
+event_id,detection_timestamp_utc,symbol,timeframe,event_type,direction,reference_price,first_breakout_timestamp,h5_outcome,h20_outcome,h5_close,h20_close,spread,data_source,dataset_version,excluded,exclusion_reason

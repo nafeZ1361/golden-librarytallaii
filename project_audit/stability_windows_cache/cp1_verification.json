@@ -1,0 +1,73 @@
+{
+  "checkpoint": "CP1 - DATA PIPELINE INTEGRITY",
+  "status": "PASS",
+  "created": "2026-09-04T00:26:56.468277",
+  "digits": 2,
+  "checks": [
+    {
+      "check": "forming candle excluded (pos=1 skips newest bar)",
+      "status": "PASS",
+      "detail": "pos0_last=1788479640 pos1_last=1788479460 delta=180s"
+    },
+    {
+      "check": "bulk dataset ends at closed-bar boundary",
+      "status": "PASS",
+      "detail": "bulk_last=1788479460 pos1_last=1788479460"
+    },
+    {
+      "check": "candle ordering strictly ascending",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check": "no duplicate timestamps",
+      "status": "PASS",
+      "detail": "dups=0"
+    },
+    {
+      "check": "OHLC integrity",
+      "status": "PASS",
+      "detail": "violations=0"
+    },
+    {
+      "check": "gaps: all market-closure events (weekends/holiday-eves/maintenance), no anomalies",
+      "status": "PASS",
+      "detail": "gaps>3min=192 | closure-class=192 | ANOMALY=0"
+    },
+    {
+      "check": "timezone: uniform naive broker time (no mixing)",
+      "status": "PASS",
+      "detail": "single source copy_rates unit='s'; no tz conversion in pipeline (code audit)"
+    },
+    {
+      "check": "df-path: ZERO hidden self-fetch (supertrend + trend_ali)",
+      "status": "PASS",
+      "detail": "copy_rates calls during df-path = 0 (st=0, ta=0)"
+    },
+    {
+      "check": "timestamp alignment by construction",
+      "status": "PASS",
+      "detail": "signal/confirmation lengths == df rows == 14400; series derived solely from the same slice"
+    },
+    {
+      "check": "determinism: signals identical on re-run",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check": "determinism: backtest stats identical on re-run",
+      "status": "PASS",
+      "detail": "{'Total Trades Executed': 76.0, 'Winning Trades': 19.0, 'Losing Trades': 57.0, 'Win Rate': 25.0, 'Total Profit': -1900.0, 'Final Balance': 3100.0, 'ROI': -38.0}"
+    },
+    {
+      "check": "A/B re-check: df= path == patched-fetch reference path",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "check": "coherent results stable across independent runs (T1 vs v2, shifted boundaries)",
+      "status": "PASS",
+      "detail": "T1 ROIs=[-42.0, -40.0, -14.0, -2.0, -32.0, 44.0] | v2 ROIs=[-38.0, -36.0, -14.0, 2.0, -38.0, 44.0]"
+    }
+  ]
+}
