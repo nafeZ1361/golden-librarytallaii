@@ -1,4 +1,4 @@
-﻿# module/state_io.py
+# module/state_io.py
 import json
 import numpy as np
 from typing import Any, Dict
