@@ -1,0 +1,10 @@
+Flask==3.1.2
+MetaTrader5==5.0.5388
+pandas==2.3.3
+numpy==2.2.6
+ta==0.11.0
+pandas-ta==0.4.71b0
+pytz==2025.2
+requests==2.32.5
+pyTelegramBotAPI==4.29.1
+mplfinance==0.12.10b0
