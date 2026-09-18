@@ -19,8 +19,6 @@ def supertrend_stg(symbol , tf, atr_period=10, multiplier=3.0 , candle_type = 'h
         
         
 # module/stg.py
-from module.mt5 import *
-from module.indicators import *
 import MetaTrader5 as mt5
 import datetime
 import numpy as np
@@ -304,6 +302,13 @@ def pick_abcd_points_bearish(lows: list, highs: list):
 
 # ----------------------------- ABCD Strategy (fixed) ----------------------------- #
 
+# -----------------------------------------------------------------------
+# QUARANTINED (CP19 LOOP-4 / D9): abcd_strategy has NO production caller
+# (caller-graph verified in CP19). It is kept for research/reference only.
+# Do NOT wire it into any live path without a new pre-registered validation
+# cycle. Note: Gartley_Stg / Butterfly_Stg referenced by bot_state.json are
+# MISSING DEPENDENCIES (source file never recovered) - registered in CP19.
+# -----------------------------------------------------------------------
 def abcd_strategy(symbol: str,
                   tf: str,
                   risk: float,
@@ -359,10 +364,7 @@ def abcd_strategy(symbol: str,
 
     # --- 2) دریافت داده کندلی ---
     raw = candle(symbol, tf, 500)
-    try:
-        df = raw.obj.copy()
-    except Exception:
-        df = pd.DataFrame(raw[:])
+    df = raw.copy()
 
     if df is None or df.empty:
         return state

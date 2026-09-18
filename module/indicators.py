@@ -140,9 +140,9 @@ def smma(symbol , tf , period = 7 , candle_type = 'ca'):
 
 def adx(symbol , tf, di_length=14, adx_smoothing=14 , candle_type = 'ca'):
     if candle_type == 'ca':
-        df = candle(symbol, tf,).obj.copy()
+        df = candle(symbol, tf,).copy()
     else:
-        df = heikin_ashi(symbol, tf).obj.copy()
+        df = heikin_ashi(symbol, tf).copy()
 
     high = df['high']
     low = df['low']
@@ -316,9 +316,9 @@ def rsi(symbol , tf , candle_type = 'ca'):
 
 def sar(symbol, tf, start=0.02, increament=0.02, max_value=0.2, candle_type='ca'):
     if candle_type == 'ca':
-        df = candle(symbol, tf).obj.copy()
+        df = candle(symbol, tf).copy()
     else:
-        df = heikin_ashi(symbol, tf).obj.copy()
+        df = heikin_ashi(symbol, tf).copy()
 
     high = df['high'].values    # تبدیل به numpy array
     low = df['low'].values      # تبدیل به numpy array
@@ -430,7 +430,7 @@ def macd(symbol, tf, fast=12, slow=26, signal=9):
 
     raw_data = candle(symbol, tf, 500)
   
-    data = raw_data.obj.copy()
+    data = raw_data.copy()
     
     data['close'] = pd.to_numeric(data['close'], errors='coerce')
     data = data.dropna(subset=['close'])
@@ -501,7 +501,7 @@ def nadaraya_watson(symbol , tf, h=8.0, mult=3.0, src_col='close', candle_type =
     else:
         df = heikin_ashi(symbol, tf)
 
-    data = df.obj.copy()
+    data = df.copy()
     def gaussian_weight(x, h):
         return np.exp(- (x ** 2) / (2 * h ** 2))
 
@@ -614,9 +614,9 @@ def time_high_low(symbol, start_hour_tv, start_minute_tv, timeframe_str, num_can
 
 def ut_bot(symbol , tf, key_value: int = 3, atr_period: int = 10 , candle_type = 'ca'):
     if candle_type == 'ca':
-        df = candle(symbol, tf).obj.copy()
+        df = candle(symbol, tf).copy()
     else:
-        df = heikin_ashi(symbol, tf).obj.copy()
+        df = heikin_ashi(symbol, tf).copy()
 
     if not all(col in df.columns for col in ['open', 'high', 'low', 'close']):
         raise ValueError("دیتافریم ورودی باید شامل ستون‌های 'open', 'high', 'low', 'close' باشد.")
@@ -659,9 +659,9 @@ def ut_bot(symbol , tf, key_value: int = 3, atr_period: int = 10 , candle_type =
 
 def supertrend(symbol , tf, atr_period=10, multiplier=3.0 , candle_type = 'ha'):
     if candle_type == 'ca':
-        df = candle(symbol, tf).obj.copy()
+        df = candle(symbol, tf).copy()
     else:
-        df = heikin_ashi(symbol, tf).obj.copy()
+        df = heikin_ashi(symbol, tf).copy()
     def rma(series, length):
         result = [np.nan] * len(series)
         for i in range(len(series)):
@@ -797,8 +797,8 @@ def trend_alert(symbol, high_tf, low_tf):
         return target_large_candle
 
   
-    high_tf_df = heikin_ashi(symbol ,high_tf , 100 ).obj.copy()
-    low_tf_df =  heikin_ashi(symbol ,low_tf , 100 ).obj.copy()
+    high_tf_df = heikin_ashi(symbol ,high_tf , 100 ).copy()
+    low_tf_df =  heikin_ashi(symbol ,low_tf , 100 ).copy()
 
     def ema(df, period):
         return df['close'].ewm(span=period, adjust=False).mean()
@@ -829,9 +829,9 @@ def trend_alert(symbol, high_tf, low_tf):
 
 def Atr(symbol , tf, period=14 , candle_type = 'ca'):
     if candle_type == 'ca':
-        data = candle(symbol, tf).obj.copy()
+        data = candle(symbol, tf).copy()
     else:
-        data = heikin_ashi(symbol, tf).obj.copy()
+        data = heikin_ashi(symbol, tf).copy()
     df = data.copy()
     df['ATR'] = pandas_ta.atr(df['high'], df['low'], df['close'], period)
     return df['ATR'].values
@@ -839,9 +839,9 @@ def Atr(symbol , tf, period=14 , candle_type = 'ca'):
 
 def stochrsi(symbol , tf , line='blue' , rsi_length=14, stoch_length=14, k_period=3, d_period=3 , candle_type='ca'):
     if candle_type == 'ca':
-        candles = candle(symbol, tf ).obj.copy()
+        candles = candle(symbol, tf ).copy()
     else:
-        candles = heikin_ashi(symbol, tf ).obj.copy()
+        candles = heikin_ashi(symbol, tf ).copy()
     df_close = candles['close']
     stoch_rsi = pandas_ta.stochrsi(df_close, length=stoch_length, rsi_length=rsi_length, k=k_period, d=d_period)
 
@@ -854,9 +854,9 @@ def stochrsi(symbol , tf , line='blue' , rsi_length=14, stoch_length=14, k_perio
 def ssl_hybrid(symbol, tf,candle_type = 'ca' ,baseline_type="HMA", baseline_length=60,ssl2_type="JMA", ssl2_length=5,exit_type="HMA", exit_length=15,atr_period=14, atr_mult=1.0, atr_smoothing="WMA",risk_lookback=100, risk_sensitivity=2):
 
     if candle_type == 'ca':
-        df = candle(symbol, tf, 500).obj.copy()
+        df = candle(symbol, tf, 500).copy()
     else:
-        df = heikin_ashi(symbol, tf, 500).obj.copy()
+        df = heikin_ashi(symbol, tf, 500).copy()
     def ma(ma_type, series, length, jurik_phase=3, jurik_power=1):
         if ma_type == "SMA":
             return series.rolling(length).mean()
@@ -1020,9 +1020,9 @@ def ssl_hybrid(symbol, tf,candle_type = 'ca' ,baseline_type="HMA", baseline_leng
 
 def ichimoku(symbol, tf, conversion_line=9, base_line=26, lagging_span=26, leading_b_period=52 , candle_type = 'ca'):
     if candle_type == 'ca':
-        df = candle(symbol, tf, 500).obj.copy()
+        df = candle(symbol, tf, 500).copy()
     else:
-        df = heikin_ashi(symbol, tf, 500).obj.copy()
+        df = heikin_ashi(symbol, tf, 500).copy()
     
 
     def kijun_sen(data, period):
@@ -1058,7 +1058,7 @@ def ichimoku(symbol, tf, conversion_line=9, base_line=26, lagging_span=26, leadi
 
 def kalman_trend_levels(symbol, tf, short_len=50, long_len=150):
     
-    ha_data = heikin_ashi(symbol, tf, max(short_len, long_len) * 2).obj.copy()
+    ha_data = heikin_ashi(symbol, tf, max(short_len, long_len) * 2).copy()
     
     def kalman_filter(src, length, R=0.01, Q=0.1):
         estimate = src.copy()
@@ -1090,9 +1090,9 @@ def kalman_trend_levels(symbol, tf, short_len=50, long_len=150):
 def half_trend(symbol, tf, amplitude=2, channel_deviation=2, candle_type='ca'):
     
     if candle_type == 'ca':
-        df = candle(symbol, tf, amplitude * 20).obj.copy()
+        df = candle(symbol, tf, amplitude * 20).copy()
     else:
-        df = heikin_ashi(symbol, tf, amplitude * 20).obj.copy()
+        df = heikin_ashi(symbol, tf, amplitude * 20).copy()
     
    
     df['high_price'] = df['high'].rolling(window=amplitude).max()
@@ -1392,9 +1392,9 @@ def zigzag(symbol, tf, depth=12, deviation=5, backstep=3):
 
 def Trend_Indicator_A(symbol, tf, ma_type="EMA", ma_period=9, alma_sigma=6, candle_type = 'ha'):
     if candle_type == 'ca':
-        ha_df = candle(symbol, tf,500).obj.copy()
+        ha_df = candle(symbol, tf,500).copy()
     else:
-        ha_df = heikin_ashi(symbol, tf, 500).obj.copy()
+        ha_df = heikin_ashi(symbol, tf, 500).copy()
 
     if ma_type == "ALMA":
         m = np.floor(0.5 * (ma_period - 1))
@@ -1470,9 +1470,9 @@ def Trend_Indicator_A(symbol, tf, ma_type="EMA", ma_period=9, alma_sigma=6, cand
 def deviation_trend_signals(symbol, tf, sma_length=50 , candle_type = 'ca'):
     
     if candle_type == 'ca':
-        df = candle(symbol, tf,5000).obj.copy()
+        df = candle(symbol, tf,5000).copy()
     else:
-        df = heikin_ashi(symbol, tf, 5000).obj.copy()
+        df = heikin_ashi(symbol, tf, 5000).copy()
 
     df = df.reset_index(drop=True)
     df['avg'] = df['close'].rolling(window=sma_length).mean()
@@ -1506,9 +1506,9 @@ def deviation_trend_signals(symbol, tf, sma_length=50 , candle_type = 'ca'):
 def volumatic_vidya(symbol, tf, vidya_length=10, vidya_momentum=20, band_distance=2, value='trend', candle_type='ca'):
     
     if candle_type == 'ca':
-        data = candle(symbol, tf, 5000).obj.copy()
+        data = candle(symbol, tf, 5000).copy()
     else:
-        data = heikin_ashi(symbol, tf, 5000).obj.copy()
+        data = heikin_ashi(symbol, tf, 5000).copy()
     
     def vidya_calc(data, vidya_length, vidya_momentum):
         momentum = data['close'].diff()
@@ -1714,7 +1714,7 @@ def trend_ali(symbol, tf, length=60, length_mult=6.0, mode='Hma', candle_type='c
 
 def detect_bos(symbol, tf):
     df = candle(symbol, tf, 5000)
-    df = df.obj.copy()
+    df = df.copy()
     
     L = df['low'].iloc[0]
     H = df['high'].iloc[0]
@@ -1922,7 +1922,7 @@ def detect_bos(symbol, tf):
 
 def detect_choch(symbol, tf):
     df = candle(symbol, tf, 5000)
-    df = df.obj.copy()
+    df = df.copy()
     
     L = df['low'].iloc[0]
     H = df['high'].iloc[0]
@@ -2130,7 +2130,7 @@ def detect_choch(symbol, tf):
 
 def detect_fvg(symbol, tf , unmitigated_only=False, unfilled_only=False):
     
-    df = candle(symbol, tf , 5000).obj.copy()
+    df = candle(symbol, tf , 5000).copy()
     if len(df) < 3:
         return []
     
@@ -2221,7 +2221,7 @@ def detect_fvg(symbol, tf , unmitigated_only=False, unfilled_only=False):
 
 def detect_ob(symbol, tf, merge_ratio=0.5, use_mother_bar=True):
     df = candle(symbol, tf, 5000)
-    df = df.obj.copy()
+    df = df.copy()
     if 'time' not in df.columns:
         df['time'] = df.index
     def handle_zone(zone_list: list, new_zone: dict, merge_ratio: float, is_supply: bool):
@@ -2339,7 +2339,7 @@ def detect_ob(symbol, tf, merge_ratio=0.5, use_mother_bar=True):
 def detect_idm(symbol, tf, structure_type: str = "Choch with IDM", pivot_length: int = 15):
 
     df = candle(symbol, tf, 5000)
-    df = df.obj.copy()
+    df = df.copy()
 
     if not all(col in df.columns for col in ['high', 'low', 'close']):
         raise ValueError("DataFrame must contain 'high', 'low', and 'close' columns.")

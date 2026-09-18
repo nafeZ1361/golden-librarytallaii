@@ -1,0 +1,21 @@
+# Requirements for the golden-library trading project
+# Pinned to the versions actually installed and validated in the project
+# Python 3.12 environment (C:\Python312) on 2026-09-06.
+# Install:  C:\Python312\python.exe -m pip install -r requirements.txt
+
+metatrader5==5.0.5388
+numpy==2.2.6
+pandas==2.3.3
+pandas-ta==0.4.71b0
+ta==0.11.0
+pytz==2025.2
+requests==2.32.5
+plotly==6.5.0
+yfinance==0.2.66
+tqdm==4.67.1
+
+# Telegram (REAL dependency since CP23): the read-only monitor bot
+# (module/monitor_bot.py) and the runner notifications (module/telegram.py)
+# require it. Install version consistent with the validated environment.
+pyTelegramBotAPI>=4.21
+mplfinance==0.12.10b0
