@@ -1,0 +1,69 @@
+{
+  "checkpoint": "CP2",
+  "status": "PASS",
+  "created": "2026-09-04T00:41:09.886020",
+  "digits": 2,
+  "pip": 0.1,
+  "tests": [
+    {
+      "test": "S1 entry@close + TP hit -> single winning trade",
+      "status": "PASS",
+      "detail": "{'Total Trades Executed': 1.0, 'Win Rate': 100.0, 'Total Profit': 200.0}"
+    },
+    {
+      "test": "S2 SL hit -> single losing trade",
+      "status": "PASS",
+      "detail": "{'Total Trades Executed': 1.0, 'Win Rate': 0.0, 'Total Profit': -100.0}"
+    },
+    {
+      "test": "S-risk invariant |profit_TP| / |profit_SL| == 2.0 (2:1 RR exact)",
+      "status": "PASS",
+      "detail": "S1=200.0 S2=-100.0 ratio=2.0"
+    },
+    {
+      "test": "CP2.3 same-candle TP&SL -> engine resolves as TP (optimistic)",
+      "status": "PASS",
+      "detail": "S3 profit=200.0 == S1(TP)=200.0 ; conservative(SL) would be -100.0 ; optimistic delta=300.0"
+    },
+    {
+      "test": "CP2.4 gap-up through TP -> exits at TP price (not open) [optimistic]",
+      "status": "PASS",
+      "detail": "S4 profit=200.0 == S1(TP@4420)=200.0 ; realistic open-fill would be 300.0"
+    },
+    {
+      "test": "CP2.4 gap-down through SL -> exits at SL price (not open) [optimistic]",
+      "status": "PASS",
+      "detail": "S5 profit=-100.0 == S2(SL@4390)=-100.0 ; realistic open-fill loss would be larger"
+    },
+    {
+      "test": "CP2.1 single-position engine: 2nd signal while open -> ignored",
+      "status": "PASS",
+      "detail": "trades=1.0 (must be 1)"
+    },
+    {
+      "test": "CP2.5 end-of-data open position -> silently dropped (0 trades recorded)",
+      "status": "PASS",
+      "detail": "result shows no trades; open-trade P/L excluded from statistics (CONFIRMED behavior)"
+    },
+    {
+      "test": "CP2.8 BUY/SELL symmetry (entry/SL/TP/profit mirrored)",
+      "status": "PASS",
+      "detail": "sell-TP=200.0 (==buy-TP 200.0) | sell-SL=-100.0 (==buy-SL -100.0)"
+    },
+    {
+      "test": "invariant: no signal -> no position/trades",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "test": "CP2.9 determinism (synthetic re-run identical)",
+      "status": "PASS",
+      "detail": "re-run profit=200.0"
+    },
+    {
+      "test": "CP2.11 baseline replay reproduces locked artifact exactly",
+      "status": "PASS",
+      "detail": "replay={'Total Trades Executed': 75.0, 'Win Rate': 42.67, 'Total Profit': 2100.0, 'Final Balance': 7100.0, 'ROI': 42.0}"
+    }
+  ]
+}
