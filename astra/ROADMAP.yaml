@@ -1,0 +1,227 @@
+# ASTRA Project Roadmap - XAUUSD Research
+
+stages:
+  S0_AUDIT:
+    name: "Project Audit & Infrastructure Review"
+    description: "Understand existing codebase, classify components, audit data"
+    exit_gate: HUMAN
+    status: PASS
+    approved_at: "2025-09-13T00:00:00Z"
+    approved_by: "HUMAN"
+    
+  S1_DATA_PREP:
+    name: "Data Preparation & Validation"
+    description: "Prepare historical data with proper splits (DEV/VALIDATION/OOS)"
+    exit_gate: AUTO
+    status: LOCKED
+    requirements:
+      - Download XAUUSD data (min 6 months for MVP0)
+      - Calculate timezone & broker offset
+      - Validate data integrity (gaps, duplicates)
+      - Create chronological split: DEV 55%, VAL 15%, OOS_1 15%, OOS_FINAL 15%
+      - Hash datasets and record provenance
+    
+  S2_BASELINE_STRATEGY:
+    name: "Rule-Based Baseline Strategy"
+    description: "Implement simple rule-based strategy as baseline"
+    exit_gate: AUTO
+    status: LOCKED
+    requirements:
+      - Implement entry/exit rules (e.g., Supertrend + RSI)
+      - Add risk management (1% per trade, daily loss cap)
+      - Backtest on DEV set only
+      - Record metrics: Sharpe, MaxDD, WinRate, Total Trades
+    
+  S3_BASELINE_VALIDATION:
+    name: "Baseline Validation"
+    description: "Validate baseline on VALIDATION set"
+    exit_gate: AUTO
+    status: LOCKED
+    requirements:
+      - Run on VALIDATION set (no tuning!)
+      - Compare metrics vs DEV
+      - Check for overfitting signs
+      - Decision: SUPPORTED / NOT_SUPPORTED / INCONCLUSIVE
+    
+  S4_COST_ANALYSIS:
+    name: "Transaction Cost Analysis"
+    description: "Analyze impact of spread, slippage, commissions"
+    exit_gate: AUTO
+    status: LOCKED
+    requirements:
+      - Model realistic execution costs
+      - Sensitivity analysis on spread (normal, high, rollover)
+      - Adjust backtest engine for adverse fills
+    
+  S5_ML_EXPLORATION:
+    name: "ML Feature Engineering & Baseline"
+    description: "Explore ML features with strict leakage prevention"
+    exit_gate: AUTO
+    status: LOCKED
+    constraints:
+      max_features: 3
+      horizon_bars: 5
+      purge_embargo_bars: 5
+      seed: 42
+    requirements:
+      - Create feature pipeline (no future leakage)
+      - Train baseline models (LogisticRegression, RandomForest)
+      - Walk-forward validation on DEV
+      - Leakage tests (permutation, shifted features)
+    
+  S6_OOS_FIRST_EXPOSURE:
+    name: "First OOS Exposure (OOS_1)"
+    description: "Single exposure to OOS_1 dataset"
+    exit_gate: HUMAN
+    status: LOCKED
+    requirements:
+      - Freeze final candidate(s)
+      - Compute hash of model/config
+      - Single evaluation on OOS_1
+      - Log access, BURN OOS_1
+      - NO retuning allowed after exposure
+    
+  S7_ROBUSTNESS_ANALYSIS:
+    name: "Robustness & Regime Analysis"
+    description: "Test strategy across market regimes"
+    exit_gate: AUTO
+    status: LOCKED
+    requirements:
+      - Identify regimes (TRENDING_UP, TRENDING_DOWN, RANGING_LOW/HIGH_VOL)
+      - Test performance per regime
+      - Confidence threshold: 0.60 for regime classification
+      - UNCERTAIN → NO_TRADE enforcement
+    
+  S8_RISK_ENGINE:
+    name: "Advanced Risk Management"
+    description: "Implement independent risk engine"
+    exit_gate: AUTO
+    status: LOCKED
+    requirements:
+      - Daily loss cap (5%)
+      - Total drawdown stop (12%)
+      - Consecutive loss guard
+      - Position sizing with volatility adjustment
+      - Cross-strategy exposure controls
+    
+  S9_CHAMPION_CHALLENGER:
+    name: "Champion/Challenger Framework"
+    description: "Compare multiple strategies formally"
+    exit_gate: AUTO
+    status: LOCKED
+    requirements:
+      - Define promotion rule (min 10% improvement)
+      - Track multiple candidates
+      - Archive rejected challengers
+      - Max DD constraint enforcement
+    
+  S10_WALK_FORWARD_OPTIMIZATION:
+    name: "Walk-Forward Optimization"
+    description: "WFO with strict isolation"
+    exit_gate: AUTO
+    status: LOCKED
+    requirements:
+      - Rolling window optimization
+      - Out-of-sample testing for each fold
+      - Parameter stability analysis
+      - Avoid curve-fitting
+    
+  S11_ENSEMBLE_METHODS:
+    name: "Ensemble & Selector Models"
+    description: "Combine strategies or regime selector"
+    exit_gate: HUMAN
+    status: LOCKED
+    optional: true
+    skip_reason: "May be SKIPPED_BY_HUMAN if complexity not justified"
+    requirements:
+      - Ensemble averaging or stacking
+      - Regime-dependent strategy selection
+      - Calibration of probabilities
+    
+  S12_MONTE_CARLO:
+    name: "Monte Carlo Simulation"
+    description: "Stress test with randomization"
+    exit_gate: AUTO
+    status: LOCKED
+    requirements:
+      - Randomize trade sequence
+      - Add noise to fills
+      - Vary parameters within realistic bounds
+      - Compute confidence intervals
+    
+  S13_FINAL_OOS:
+    name: "Final OOS Exposure (OOS_FINAL)"
+    description: "Last unbiased test before paper trading"
+    exit_gate: HUMAN
+    status: LOCKED
+    requirements:
+      - Freeze champion strategy
+      - Hash everything
+      - Single exposure to OOS_FINAL
+      - BURN OOS_FINAL
+      - Final verdict: SUPPORTED / NOT_SUPPORTED
+    
+  S14_PAPER_TRADING:
+    name: "Paper Trading (Forward Test)"
+    description: "Real-time simulation with live data"
+    exit_gate: HUMAN
+    status: LOCKED
+    requirements:
+      - Minimum 28 days forward test
+      - Read-only mode (no real orders)
+      - Compare live results vs backtest expectations
+      - Monitor slippage, execution quality
+    
+  S15_DEMO_TRADING:
+    name: "Demo Trading"
+    description: "Live demo account with virtual capital"
+    exit_gate: HUMAN
+    status: LOCKED
+    requirements:
+      - Minimum 28 days demo trading
+      - Real MT5 execution on demo account
+      - Full risk management active
+      - Performance review vs paper trading
+    
+  LIVE_TRADING:
+    name: "Live Trading"
+    description: "REAL CAPITAL - PERMANENTLY DENIED by this charter"
+    exit_gate: HUMAN
+    status: DENIED_PERMANENTLY
+    note: "This research project does NOT authorize live trading. Separate authorization required."
+
+global_constraints:
+  experiment_budget:
+    infrastructure: 20
+    rule_based: 30
+    classical_ml: 30
+    regime_selector: 20
+    evolution_optimization: 50
+    emergency_reserve: 20
+    total: 170
+  
+  risk_limits:
+    per_trade_risk: 0.01  # 1%
+    daily_loss_cap: 0.05  # 5%
+    total_dd_stop: 0.12   # 12%
+    max_consecutive_losses: 5
+  
+  ml_rules:
+    max_features: 3
+    horizon_bars: 5
+    purge_embargo: 5
+    seed: 42
+    allowed_models:
+      - LogisticRegression
+      - DecisionTree
+      - RandomForest
+      - ExtraTrees
+      - GradientBoosting
+      - HistGradientBoosting
+  
+  data_requirements:
+    min_trades_for_claim: 100
+    target_sharpe: 1.2
+    target_maxdd: 0.20
+    initial_window_months: 6
+    recommended_min_months_for_ml: 24

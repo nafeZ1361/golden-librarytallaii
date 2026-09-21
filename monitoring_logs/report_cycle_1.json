@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-09-07T18:55:05.978908",
+  "connection": {
+    "status": "NO_MT5",
+    "error": "MetaTrader5 not available"
+  },
+  "data_integrity": {
+    "status": "NO_MT5"
+  },
+  "bot_status": {
+    "balance": 0,
+    "pnl_today": 0,
+    "timestamp": "2026-09-07T18:55:05.978902"
+  }
+}

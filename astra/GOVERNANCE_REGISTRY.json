@@ -1,0 +1,11 @@
+{
+  "stages": {
+    "S0_AUDIT": {
+      "status": "PASS",
+      "approved_at": "2026-09-21T14:41:18.529437+00:00",
+      "approved_by": "HUMAN",
+      "reason": "تأیید استراتژی‌های جدید در stg_peleh.py و نادیده گرفتن موقت بررسی تلگرام و مانیتورینگ پیش‌رو طبق دستور کاربر"
+    }
+  },
+  "current_stage": "S0_AUDIT"
+}

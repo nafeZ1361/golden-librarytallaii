@@ -1,0 +1,102 @@
+{
+  "project": "XAUUSD-research",
+  "current_stage": "S1_DATA_PREP",
+  "stages": {
+    "S0_AUDIT": {
+      "status": "PASS",
+      "approved_at": "2025-09-13T00:00:00Z",
+      "approved_by": "HUMAN",
+      "reason": "تأیید استراتژی‌های جدید در stg_peleh.py و نادیده گرفتن موقت بررسی تلگرام و مانیتورینگ پیش‌رو طبق دستور کاربر"
+    },
+    "S1_DATA_PREP": {
+      "status": "READY",
+      "started_at": null,
+      "completed_at": null
+    },
+    "S2_BASELINE_STRATEGY": {
+      "status": "LOCKED",
+      "depends_on": "S1_DATA_PREP"
+    },
+    "S3_BASELINE_VALIDATION": {
+      "status": "LOCKED",
+      "depends_on": "S2_BASELINE_STRATEGY"
+    },
+    "S4_COST_ANALYSIS": {
+      "status": "LOCKED",
+      "depends_on": "S3_BASELINE_VALIDATION"
+    },
+    "S5_ML_EXPLORATION": {
+      "status": "LOCKED",
+      "depends_on": "S4_COST_ANALYSIS"
+    },
+    "S6_OOS_FIRST_EXPOSURE": {
+      "status": "LOCKED",
+      "depends_on": "S5_ML_EXPLORATION",
+      "gate": "HUMAN"
+    },
+    "S7_ROBUSTNESS_ANALYSIS": {
+      "status": "LOCKED",
+      "depends_on": "S6_OOS_FIRST_EXPOSURE"
+    },
+    "S8_RISK_ENGINE": {
+      "status": "LOCKED",
+      "depends_on": "S7_ROBUSTNESS_ANALYSIS"
+    },
+    "S9_CHAMPION_CHALLENGER": {
+      "status": "LOCKED",
+      "depends_on": "S8_RISK_ENGINE"
+    },
+    "S10_WALK_FORWARD_OPTIMIZATION": {
+      "status": "LOCKED",
+      "depends_on": "S9_CHAMPION_CHALLENGER"
+    },
+    "S11_ENSEMBLE_METHODS": {
+      "status": "LOCKED",
+      "depends_on": "S10_WALK_FORWARD_OPTIMIZATION",
+      "gate": "HUMAN",
+      "optional": true
+    },
+    "S12_MONTE_CARLO": {
+      "status": "LOCKED",
+      "depends_on": "S11_ENSEMBLE_METHODS"
+    },
+    "S13_FINAL_OOS": {
+      "status": "LOCKED",
+      "depends_on": "S12_MONTE_CARLO",
+      "gate": "HUMAN"
+    },
+    "S14_PAPER_TRADING": {
+      "status": "LOCKED",
+      "depends_on": "S13_FINAL_OOS",
+      "gate": "HUMAN"
+    },
+    "S15_DEMO_TRADING": {
+      "status": "LOCKED",
+      "depends_on": "S14_PAPER_TRADING",
+      "gate": "HUMAN"
+    }
+  },
+  "experiment_budget": {
+    "infrastructure": {"used": 0, "cap": 20},
+    "rule_based": {"used": 0, "cap": 30},
+    "classical_ml": {"used": 0, "cap": 30},
+    "regime_selector": {"used": 0, "cap": 20},
+    "evolution_optimization": {"used": 0, "cap": 50},
+    "emergency_reserve": {"used": 0, "cap": 20}
+  },
+  "data_roles": {
+    "DEV": "UNSET",
+    "VALIDATION": "UNSET",
+    "OOS_1": "UNSET",
+    "OOS_FINAL": "UNSET",
+    "FORWARD_READ_ONLY": "UNSET"
+  },
+  "last_updated": "2025-09-13T00:00:00Z",
+  "git_commit": "pending",
+  "notes": [
+    "S0_AUDIT approved by human with specific conditions",
+    "stg_peleh.py added for grid/martingale strategies",
+    "Telegram security audit deferred",
+    "Forward monitoring deferred to later stage"
+  ]
+}
