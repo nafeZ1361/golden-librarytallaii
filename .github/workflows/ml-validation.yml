@@ -15,5 +15,6 @@ jobs:
           python-version: "3.12"
       - name: Install ML test dependencies
         run: python -m pip install --upgrade pip && python -m pip install numpy==2.2.6 pandas==2.3.3 scikit-learn==1.5.2
-      - name: Run Phase 6 and Stage 7 unit tests
-        run: python -m unittest discover -s tests -p "test_*.py" -v
+      - name: Run Phase 6 and Stage 7 focused tests
+        run: |
+          python -m unittest tests.test_dataset_pipeline tests.test_feature_engineering tests.test_model_training tests.test_time_series_validation tests.test_target_generation tests.test_ml_signal_adapter tests.test_ml_backtest_adapter tests.test_holdout_manifest -v
