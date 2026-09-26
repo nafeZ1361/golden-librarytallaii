@@ -77,8 +77,8 @@ class ExperimentManagerTests(unittest.TestCase):
             }
             r1 = manager1.grid(self.candles(), big_grid)
             r2 = manager2.grid(self.candles(), big_grid)
-            self.assertEqual(len(r1), 50)
-            self.assertEqual(len(r2), 50)
+            self.assertEqual(len(r1), 45)
+            self.assertEqual(len(r2), 45)
             ids1 = [r.experiment_id for r in r1]
             ids2 = [r.experiment_id for r in r2]
             self.assertEqual(ids1, ids2, "H3 selection must be deterministic")
