@@ -14,6 +14,32 @@ class ExperimentManagerTests(unittest.TestCase):
             for i in range(30)
         ]
 
+    def swing_candles(self):
+        # Deterministic oscillating fixture: unlike a pure linear ramp, this
+        # produces at least one profitable test-split experiment so that the
+        # passed gate and best() selection can be exercised.
+        import math
+
+        rows = []
+        price = 100.0
+        for i in range(120):
+            open_ = price
+            close = 100 + 8 * math.sin(i / 6.0)
+            high = max(open_, close) + 0.5
+            low = min(open_, close) - 0.5
+            rows.append(
+                Candle(
+                    f"2024-01-{i:03d}",
+                    "XAUUSD",
+                    round(open_, 2),
+                    round(high, 2),
+                    round(low, 2),
+                    round(close, 2),
+                )
+            )
+            price = close
+        return rows
+
     def test_run_splits_data_and_persists_result(self):
         with tempfile.TemporaryDirectory() as directory:
             manager = ExperimentManager(Path(directory) / "results.jsonl")
@@ -26,9 +52,23 @@ class ExperimentManagerTests(unittest.TestCase):
     def test_grid_and_best_are_deterministic(self):
         with tempfile.TemporaryDirectory() as directory:
             manager = ExperimentManager(Path(directory) / "results.jsonl")
-            results = manager.grid(self.candles(), {"name": ["a", "b"], "min_votes": [2]})
-            self.assertEqual(len(results), 2)
-            self.assertIsNotNone(manager.best(results))
+            # Grid values verified empirically against the swing fixture:
+            # every combination passes the gate (test trades >= 1,
+            # drawdown <= 20%, net profit > 0), so best() must be non-None.
+            grid = {
+                "name": ["a", "b"],
+                "min_votes": [2],
+                "supertrend_atr_period": [5],
+                "supertrend_multiplier": [2.0, 3.0],
+                "halftrend_amplitude": [2, 3],
+                "rsi_period": [9],
+            }
+            results = manager.grid(self.swing_candles(), grid)
+            self.assertEqual(len(results), 8)
+            self.assertTrue(all(result.passed for result in results))
+            best = manager.best(results)
+            self.assertIsNotNone(best)
+            self.assertTrue(best.passed)
 
     def test_live_settings_are_not_part_of_manager(self):
         self.assertFalse(hasattr(ExperimentManager, "send"))
@@ -77,8 +117,10 @@ class ExperimentManagerTests(unittest.TestCase):
             }
             r1 = manager1.grid(self.candles(), big_grid)
             r2 = manager2.grid(self.candles(), big_grid)
-            self.assertEqual(len(r1), 50)
-            self.assertEqual(len(r2), 50)
+            # 5 x 3 x 3 = 45 unique combinations; below MAX_TRIALS (50) the
+            # grid runs every combination exactly once without padding.
+            self.assertEqual(len(r1), 45)
+            self.assertEqual(len(r2), 45)
             ids1 = [r.experiment_id for r in r1]
             ids2 = [r.experiment_id for r in r2]
             self.assertEqual(ids1, ids2, "H3 selection must be deterministic")
