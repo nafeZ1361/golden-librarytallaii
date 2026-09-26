@@ -16,7 +16,7 @@ def signal_from_positive_probability(probability: float, *, threshold: float = 0
         raise ValueError("probability must be finite and within [0, 1]")
     if p >= threshold:
         return LONG
-    if p <= 1.0 - threshold:
+    if p <= (1.0 - threshold) + 1e-12:
         return SHORT
     return FLAT
 
