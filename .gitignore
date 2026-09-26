@@ -1,33 +1,16 @@
+# Python compiled files
 __pycache__/
 *.pyc
-.venv/
-venv/
-env/
-.env
-.vscode/
-.idea/
-*.log
-logs/*.jsonl
-trade_state.json
-paper_state.json
-volume_state.json
-memory/*.jsonl
 
+# Environment and config
 .env
 .env.local
-__pycache__/
-*.pyc
-.venv/
-venv/
+*.env.*
+
+# Logs and temp files
 *.log
+*.tmp
 
-?? ???/
-*.csv
-*.zip
-*.rar
-
-.env
-__pycache__/
-*.pyc
-.venv/
-venv/
+# Editor/IDE
+.vscode/
+.idea/
