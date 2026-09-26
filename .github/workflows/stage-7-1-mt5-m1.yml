@@ -1,0 +1,44 @@
+name: Stage 7.1 - MT5 M1 Data Export
+on:
+  workflow_dispatch:
+    inputs:
+      symbol:
+        description: Exact MT5 symbol to export
+        required: true
+        default: XAUUSD
+      bars_per_chunk:
+        description: Bars requested per MT5 history chunk
+        required: true
+        default: '100000'
+jobs:
+  export-m1:
+    runs-on: [self-hosted, windows, x64]
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Verify Python and MT5 package
+        shell: powershell
+        run: |
+          python --version
+          python -c "import MetaTrader5 as mt5; print('MetaTrader5', mt5.__version__)"
+          python -c "import pandas as pd; print('pandas', pd.__version__)"
+      - name: Export XAUUSD M1 history from local MT5 terminal
+        shell: powershell
+        env:
+          MT5_SYMBOL: ${{ inputs.symbol }}
+          MT5_BARS_PER_CHUNK: ${{ inputs.bars_per_chunk }}
+          MT5_OUTPUT_DIR: data_export
+        run: python tools/mt5_export_m1.py
+      - name: Validate exported dataset
+        shell: powershell
+        run: python -c "import json; p='data_export/${{ inputs.symbol }}_M1.metadata.json'; m=json.load(open(p,encoding='utf-8')); assert m['rows']>0 and m['timeframe']=='M1' and m['timezone']=='UTC'; print(json.dumps(m,indent=2))"
+      - name: Upload acquisition artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mt5-${{ inputs.symbol }}-M1-${{ github.sha }}
+          path: data_export/
+          retention-days: 90
+          if-no-files-found: error
