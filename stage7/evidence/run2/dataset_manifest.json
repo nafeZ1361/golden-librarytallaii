@@ -1,0 +1,37 @@
+{
+  "acquisition_date_utc": "2026-09-29T19:22:00Z",
+  "cross_validation_note": "Independently acquired 2026-09-29; cross-checked against local reference dataset sha 92a84f92ab4e06625a2d977f5acaeecb6d553ffd1c110b2ed9f1571c541a562a (93.5% close agreement within 0.1%); synthetic BarionQuant candidate rejected.",
+  "delimiter": ",",
+  "encoding": "utf-8",
+  "expected_file_size_bytes": 27646937,
+  "file_size_bytes": 27646937,
+  "first_timestamp": "2025-01-02 01:05:00",
+  "integrity_checks": {
+    "duplicate_timestamps": 0,
+    "non_finite_values": 0,
+    "null_values": 0,
+    "ohlc_containment": true,
+    "positive_prices": true,
+    "streaming_chunks_read": 25,
+    "strictly_increasing_chronology": true,
+    "volume_non_negative": true
+  },
+  "last_timestamp": "2026-05-15 23:49:00",
+  "local_path": "stage7_data/raw/XAUUSD_m1_ftmo.csv",
+  "original_filename": "XAUUSD_m1.csv",
+  "provider": "MT5 terminal export, FTMO-Server4 (GitHub user Gianniskas)",
+  "row_count": 480087,
+  "schema": [
+    "datetime",
+    "open",
+    "high",
+    "low",
+    "close",
+    "volume"
+  ],
+  "sha256": "a7d856d8eacde8c2828abadd61d1fe7f977cbbf2c00269921a5798c18e886414",
+  "source_url": "https://raw.githubusercontent.com/Gianniskas/mt5-m1-bars-us500-eurusd-xauusd/main/XAUUSD_m1.csv",
+  "symbol": "XAUUSD",
+  "timeframe": "M1",
+  "timezone": "UTC (broker-naive; no conversion applied)"
+}
