@@ -1,0 +1,43 @@
+{
+  "artifact_hashes_sha256": {
+    "dataset_manifest.json": "bb359a457e0d1df139b4f268a006c88fa59e5349b3abf306b1cc080f44186589",
+    "equity_curve.csv": "cbd37d33154a5d3bda45a0ca84c504421f8e86e0d4d7993e2609017206a344ba",
+    "feature_manifest.json": "82fa12e491d3ba36f4ba9cb0ddcfc43c1821f15bca54b2c917635e38a2a98763",
+    "performance_metrics.json": "dc779b366dc82657cbe64a60bb83c6680e1599cb7396b593e9e40ad53f015c0f",
+    "predictions.csv": "4ebe01e5c5e35c0fd33681b0d806a441f0d6e375dea03cd1b5cca9c49b55b8a7",
+    "signals.csv": "c059c57e30b8249218c803ef1cfb7419586b6763dddffd8e9276cd22dc09288e",
+    "split_manifest.json": "435c12cd98d287ca0c8e16d9f1ca1ec8467a8e78cc3f1e7f9e616b4628e3cba4",
+    "trades.csv": "d62c43cc63969010e2027860827cf665877bf12feb4900a3b09086127b8eb5e9"
+  },
+  "config": {
+    "chunk_rows": 20000,
+    "dataset_path": "stage7_data/raw/XAUUSD_m1_ftmo.csv",
+    "dataset_sha256": "a7d856d8eacde8c2828abadd61d1fe7f977cbbf2c00269921a5798c18e886414",
+    "decision_lag": 1,
+    "embargo": 60,
+    "expected_rows": 480087,
+    "feature_count": 26,
+    "holdout_ratio": 0.3,
+    "horizon": 5,
+    "initial_equity": 100000.0,
+    "lot_usd_per_price_unit": 1.0,
+    "model_name": "logistic_regression",
+    "position_fraction": 0.1,
+    "purge": 5,
+    "random_seed": 42,
+    "spread_cost_usd": 0.3,
+    "symbol": "XAUUSD",
+    "target_name": "label_5",
+    "timeframe": "M1",
+    "train_ratio": 0.7,
+    "version": "stage7-v1"
+  },
+  "dataset_sha256": "a7d856d8eacde8c2828abadd61d1fe7f977cbbf2c00269921a5798c18e886414",
+  "entrypoint": "python3 -u -m stage7.config stage7/evidence/run1 run1",
+  "evidence_dir": "stage7/evidence/run1",
+  "numpy_version": "2.3.1",
+  "pandas_version": "2.3.1",
+  "python_version": "3.12.10",
+  "run_id": "run1",
+  "stage7_version": "stage7-v1"
+}
