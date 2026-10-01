@@ -1,33 +1,6 @@
+# Python bytecode and cache
 __pycache__/
 *.pyc
-.venv/
-venv/
-env/
-.env
-.vscode/
-.idea/
-*.log
-logs/*.jsonl
-trade_state.json
-paper_state.json
-volume_state.json
-memory/*.jsonl
 
-.env
-.env.local
-__pycache__/
-*.pyc
-.venv/
-venv/
-*.log
-
-?? ???/
-*.csv
+# Compressed archives
 *.zip
-*.rar
-
-.env
-__pycache__/
-*.pyc
-.venv/
-venv/
