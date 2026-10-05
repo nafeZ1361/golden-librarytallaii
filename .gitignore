@@ -4,6 +4,7 @@ __pycache__/
 venv/
 env/
 .env
+.env.local
 .vscode/
 .idea/
 *.log
@@ -12,22 +13,6 @@ trade_state.json
 paper_state.json
 volume_state.json
 memory/*.jsonl
-
-.env
-.env.local
-__pycache__/
-*.pyc
-.venv/
-venv/
-*.log
-
-?? ???/
 *.csv
 *.zip
 *.rar
-
-.env
-__pycache__/
-*.pyc
-.venv/
-venv/

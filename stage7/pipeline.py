@@ -24,10 +24,14 @@ from __future__ import annotations
 
 import hashlib
 import json
-import resource
 import sys
 from pathlib import Path
 from typing import Any, Iterator
+
+try:  # `resource` is POSIX-only; absent on Windows.
+    import resource
+except ImportError:  # pragma: no cover - platform dependent
+    resource = None
 
 import numpy as np
 import pandas as pd
@@ -40,6 +44,13 @@ FEATURE_NAMES = list(feature_engineering._FEATURE_NAMES)
 assert len(FEATURE_NAMES) == 26, "Stage 7 requires exactly the 26 Phase-6 features"
 
 STAGE7_PACKAGE_VERSION = stage7.STAGE7_VERSION
+
+
+def _peak_memory_mb() -> float | None:
+    """Peak RSS in MB; None where the POSIX `resource` module is unavailable."""
+    if resource is None:
+        return None
+    return round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0, 1)
 
 
 class Stage7Error(RuntimeError):
@@ -460,7 +471,7 @@ def run_pipeline(config: Stage7Config, evidence_dir: Path, run_id: str) -> dict[
         "final_equity": round(final_equity, 6),
         "total_return_pct": round(pnl_total / config.initial_equity * 100.0, 6),
         **dd,
-        "peak_memory_mb": round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0, 1),
+        "peak_memory_mb": _peak_memory_mb(),
     }
 
     dataset_manifest = {
