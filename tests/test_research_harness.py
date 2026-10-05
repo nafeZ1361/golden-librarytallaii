@@ -154,6 +154,93 @@ class BacktestIntegrityTests(unittest.TestCase):
             self.assertEqual(pref, again)
         self.assertEqual(prev_trades, full["total_trades"])
 
+    def test_no_lookahead_future_mutation(self):
+        """Corrupting every bar AFTER a cutoff must not change the prefix's
+        closed-trade results -- a tighter guard than count-monotonicity alone
+        (a leaky engine can still be monotonic).
+
+        harness_backtest is sequential, returns aggregate (not per-trade) metrics
+        and never force-closes an open position. Post-cutoff entries are
+        suppressed ('hold'), so the future can only ever complete the single
+        position already open at the cutoff. Two complementary futures are used:
+
+        (1) IN-RANGE frozen future (flat at close[cutoff-1], zero high/low
+            range). A position open at the cutoff survived bar cutoff-1's +/-0.5
+            range, so a zero-range bar inside its SL/TP band can never close it;
+            the future therefore contributes ZERO closed trades and EVERY metric
+            of the full run must EQUAL the past-only run exactly.
+
+        (2) EXTREME out-of-range futures (far above and far below the price
+            range). These may complete that one boundary position, so the
+            closed-trade count may rise by AT MOST 1 and both extremes must
+            agree. A peek that multiplies or rewrites earlier trades breaks the
+            bound. (An in-range freeze cannot perturb max/min-style peeks, which
+            is exactly what the extreme variants catch.)
+
+        Repeated over several cutoffs to shrink the single-bar boundary blind
+        spot inherent to aggregate-only output. Verified to fail against an
+        injected future-peek engine, so the guard is not vacuous.
+        """
+        df, trig, conf = self._frame()
+        kw = dict(pip=0.1, pv_per_lot=10.0, mode="fixed",
+                  fixed_sl_pips=10.0, fixed_tp_pips=20.0)
+        n = len(df)
+        lo = float(df["close"].min())
+        hi = float(df["close"].max())
+
+        # post-cutoff entries suppressed everywhere: the future may only ever
+        # complete an already-open position, never open a new one.
+        def held(trig, conf, cutoff):
+            t, c = list(trig), list(conf)
+            for i in range(cutoff, n):
+                t[i] = "hold"
+                c[i] = "hold"
+            return t, c
+
+        def flat_future(cutoff, level):
+            dm = df.copy()
+            tail = dm.index[cutoff:]
+            for col in ("open", "high", "low", "close"):
+                dm.loc[tail, col] = level     # zero-range constant future
+            return dm
+
+        for cutoff in (60, 120, 180):
+            past = rh.harness_backtest(df.iloc[:cutoff].copy(),
+                                       trig[:cutoff], conf[:cutoff], **kw)
+            trig_m, conf_m = held(trig, conf, cutoff)
+
+            # (1) IN-RANGE frozen future: provably closes nothing, so the full
+            #     run must equal the past-only run EXACTLY on every metric.
+            inert = rh.harness_backtest(
+                flat_future(cutoff, float(df["close"].iloc[cutoff - 1])),
+                trig_m, conf_m, **kw)
+            self.assertEqual(
+                inert, past,
+                f"cutoff {cutoff}: an in-range frozen (future-blind) continuation "
+                f"changed pre-cutoff results -> the engine used future bars")
+
+            # (2) EXTREME out-of-range futures (far above / far below): these can
+            #     only complete the single position open at the cutoff, so the
+            #     closed-trade count may rise by AT MOST 1 and both extremes must
+            #     agree. A peek that multiplies/rewrites earlier trades breaks it.
+            up = rh.harness_backtest(flat_future(cutoff, hi + 100.0),
+                                     trig_m, conf_m, **kw)
+            dn = rh.harness_backtest(flat_future(cutoff, max(1.0, lo - 100.0)),
+                                     trig_m, conf_m, **kw)
+            for got, tag in ((up, "above"), (dn, "below")):
+                self.assertGreaterEqual(
+                    got["total_trades"], past["total_trades"],
+                    f"cutoff {cutoff}: a future far {tag} REMOVED a pre-cutoff "
+                    f"closed trade (lookahead rewrote history)")
+                self.assertLessEqual(
+                    got["total_trades"], past["total_trades"] + 1,
+                    f"cutoff {cutoff}: a future far {tag} altered more than the "
+                    f"single boundary position (lookahead leakage)")
+            self.assertEqual(
+                up["total_trades"], dn["total_trades"],
+                f"cutoff {cutoff}: two opposite extreme futures disagreed on the "
+                f"closed-trade count (lookahead leakage)")
+
     def test_atr_mode_skips_nan_atr(self):
         df, trig, conf = self._frame()
         atr = np.full(len(df), np.nan)
