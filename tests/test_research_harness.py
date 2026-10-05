@@ -127,18 +127,32 @@ class BacktestIntegrityTests(unittest.TestCase):
 
     def test_no_future_information_prefix_replay(self):
         """Replaying any prefix must produce identical closed-trade results and
-        never fabricate outcomes from bars outside the prefix."""
+        never fabricate outcomes from bars outside the prefix.
+
+        harness_backtest is a strictly sequential loop: entries use only bar-i
+        data and exits only later bars' high/low. The observable consequence of
+        no-lookahead is monotonicity: appending future bars can never reduce
+        or rewrite the closed-trade count of a prefix. An engine that peeked
+        ahead could retroactively change prefix outcomes and would violate it.
+        """
         df, trig, conf = self._frame()
         kw = dict(pip=0.1, pv_per_lot=10.0, mode="fixed",
                   fixed_sl_pips=10.0, fixed_tp_pips=20.0)
         full = rh.harness_backtest(df, trig, conf, **kw)
-        pref = rh.harness_backtest(df.iloc[:120].copy(), trig[:120], conf[:120], **kw)
-        # prefix can only have FEWER (or equal) closed trades than the full run
-        self.assertLessEqual(pref["total_trades"], full["total_trades"])
-        # prefix balance must match the full run's state after its own last bar:
-        # rerun prefix twice -> stable, and full-run profit is prefix + later trades
-        self.assertLessEqual(abs(pref["total_profit"]), abs(full["total_profit"]) + 1e-9
-                             or True)  # magnitude guard relaxed; ordering asserted above
+        prev_trades = 0
+        for length in (40, 80, 120, 160, 200, len(df)):
+            pref = rh.harness_backtest(df.iloc[:length].copy(),
+                                       trig[:length], conf[:length], **kw)
+            # closed trades can only accumulate as bars are appended
+            self.assertLessEqual(prev_trades, pref["total_trades"],
+                                 f"prefix {length}: closed-trade count decreased "
+                                 f"when future bars were added (lookahead?)")
+            prev_trades = pref["total_trades"]
+            # deterministic: same prefix replayed twice is byte-identical
+            again = rh.harness_backtest(df.iloc[:length].copy(),
+                                        trig[:length], conf[:length], **kw)
+            self.assertEqual(pref, again)
+        self.assertEqual(prev_trades, full["total_trades"])
 
     def test_atr_mode_skips_nan_atr(self):
         df, trig, conf = self._frame()
