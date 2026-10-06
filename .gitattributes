@@ -1,0 +1,5 @@
+# Hash-locked datasets and evidence must stay byte-identical on every platform.
+# Without this, core.autocrlf=true (Windows) rewrites LF -> CRLF on checkout and
+# breaks the SHA-256 locks in stage7/evidence/*/run_manifest.json.
+stage7/evidence/** -text
+stage7_data/** -text
