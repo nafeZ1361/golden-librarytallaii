@@ -25,7 +25,7 @@ class SkillCatalog:
 
     def __init__(self, roots: list[str | Path] | None = None) -> None:
         base = Path(__file__).resolve().parent.parent
-        self.roots = tuple(Path(root) for root in (roots or (base / ".agents" / "skills", base / "skll")))
+        self.roots = tuple(Path(root) for root in (roots or (base / ".agents" / "skills",)))
 
     def discover(self) -> list[Skill]:
         skills: list[Skill] = []
