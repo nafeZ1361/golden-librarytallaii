@@ -1,9 +1,9 @@
 # PROJECT_STATE.md
 
-Last updated (UTC): 2026-10-08T11:25:59Z
+Last updated (UTC): 2026-10-08T11:42:33Z
 Updated by: QCode/nafeZ1361
 Current stage: Stage 7.3 Governance Alignment
-Current HEAD (main): d1597ef
+Current HEAD (main): 7f61d64
 
 ## PROJECT GOAL
 
@@ -45,6 +45,8 @@ Tracked in stage7/GAPS.md (PR #16):
 | F-004 | PR #16 | commit 222b76b |
 | GAPS registry | PR #16 | commit 80f5cf3 (stage7/GAPS.md) |
 
+Merged into main (2026-10-08): #17 → be8da8c, #15 → c5bb24b, #16 → 7f61d64.
+
 ## NEXT ACTIONS
 
 1. bot.ipynb smoke-check (manual, by human) — gate for PR #14 merge.
@@ -75,9 +77,6 @@ Tracked in stage7/GAPS.md (PR #16):
 | PR | Branch | Content | Status | Merge gate |
 |---|---|---|---|---|
 | #14 | fix/stage71-f005-f002 | F-005 + F-002 fixes | OPEN, unmerged | manual bot.ipynb smoke-check + separate Human Confirmation |
-| #15 | chore/stage71-cleanup | F-003 skll/ cleanup | OPEN, unmerged | separate Human Confirmation |
-| #16 | fix/stage73-f004-riskconfig | F-004 fix + stage7/GAPS.md | OPEN, unmerged | separate Human Confirmation |
-| #17 | chore/project-state | PROJECT_STATE.md + DECISIONS_LOG.md | OPEN, unmerged | separate Human Confirmation |
 
 ## LEGACY PRs
 
