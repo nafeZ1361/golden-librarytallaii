@@ -43,3 +43,47 @@ SCOPE: stage7/GAPS.md (new), module/execution.py:53, module/config.py (docs only
   (`fix(f004): construct default risk validator via RiskLimits.from_env()`)
 - Status: **RESOLVED** (pending full-suite re-validation and separate Human
   Confirmation to merge)
+
+## GAP-003 — Time-of-Day regime — OPEN (RESEARCH GAP)
+
+- Type: RESEARCH GAP
+- Target stage: Stage 7.2/8
+- Implementation: none ("no impl")
+- Status: **OPEN**
+
+## GAP-004 — ATR/Volatility regime — OPEN (RESEARCH GAP)
+
+- Type: RESEARCH GAP
+- Target stage: Stage 8
+- Implementation: none ("no impl")
+- Status: **OPEN**
+
+## GAP-005 — Monte Carlo trade-sequence — OPEN (VALIDATION GAP)
+
+- Type: VALIDATION GAP
+- Target stage: Stage 8
+- Implementation: none ("no impl")
+- Status: **OPEN**
+
+## GAP-006 — Parameter landscape — OPEN (VALIDATION GAP)
+
+- Type: VALIDATION GAP
+- Target stage: Stage 8
+- Implementation: none ("no impl")
+- Status: **OPEN**
+
+## GAP-007 — Slippage/execution friction — OPEN (VALIDATION GAP, HIGH PRIORITY)
+
+- Type: VALIDATION GAP
+- Priority: HIGH — Stage 8, before any filter work
+- Rationale: Stage 7.1 post-cost result is negative; validate friction first.
+- Implementation: none ("no impl")
+- Status: **OPEN**
+
+## GAP-008 — OFI/Depth Skew — OPEN (RESEARCH CANDIDATE)
+
+- Type: RESEARCH CANDIDATE
+- Target stage: Stage 7.2
+- Dependency: L2/L3 data
+- Implementation: none ("no impl")
+- Status: **OPEN**

@@ -1,9 +1,9 @@
 # PROJECT_STATE.md
 
-Last updated (UTC): 2026-10-08T11:42:33Z
+Last updated (UTC): 2026-10-08T11:57:00Z
 Updated by: QCode/nafeZ1361
 Current stage: Stage 7.3 Governance Alignment
-Current HEAD (main): 7f61d64
+Current HEAD (main): 4448ff0
 
 ## PROJECT GOAL
 
@@ -13,7 +13,7 @@ golden-librarytallaii یک مخزن پژوهشی و اعتبارسنجی برا�
 
 - Baseline test suite: 171 passed + 2 subtests (pytest tests/ -q, full green).
 - Stage 7.1 Technical Closure: approved (Decision 4), code fixes staged in PRs below.
-- Stage 7.3 Governance Alignment audit: in progress (read-only, started 2026-10-09).
+- Stage 7.3 Governance Alignment: DONE (pending final signature).
 - Runtime mode: PAPER by default; LIVE blocked unless ENABLE_LIVE_TRADING=YES.
 
 ## LOCKED
@@ -34,6 +34,17 @@ Tracked in stage7/GAPS.md (PR #16):
 - F-012: requirements.txt missing deps — resolved upstream (fa600be).
 - F-003 (PR #15, commits 8df7799, 1dcfff6): skll/ pollution cleanup.
 
+## POTENTIAL ENHANCEMENTS
+
+Tracked in stage7/GAPS.md (GAP-003..GAP-008; none implemented):
+
+- GAP-003 — Time-of-Day regime — RESEARCH GAP — Stage 7.2/8 — no impl
+- GAP-004 — ATR/Volatility regime — RESEARCH GAP — Stage 8 — no impl
+- GAP-005 — Monte Carlo trade-sequence — VALIDATION GAP — Stage 8 — no impl
+- GAP-006 — Parameter landscape — VALIDATION GAP — Stage 8 — no impl
+- GAP-007 — Slippage/execution friction — VALIDATION GAP — HIGH PRIORITY — Stage 8 (before any filter work) — no impl (rationale: Stage 7.1 post-cost negative; validate friction first)
+- GAP-008 — OFI/Depth Skew — RESEARCH CANDIDATE — Stage 7.2 — dep: L2/L3 data — no impl
+
 ## COMPLETED WORK
 
 | Finding | Fix | Location |
@@ -50,10 +61,10 @@ Merged into main (2026-10-08): #17 → be8da8c, #15 → c5bb24b, #16 → 7f61d64
 ## NEXT ACTIONS
 
 1. bot.ipynb smoke-check (manual, by human) — gate for PR #14 merge.
-2. Human Confirmation for PR #15 merge.
-3. Human Confirmation for PR #16 merge.
-4. Human Confirmation for this PROJECT_STATE PR merge (see table below).
-5. Stage 8 Final Audit (after Stage 7.3 closure).
+2. DONE — Human Confirmation for PR #15 merge (received; merged c5bb24b).
+3. DONE — Human Confirmation for PR #16 merge (received; merged 7f61d64).
+4. DONE — Human Confirmation for PROJECT_STATE PR merges (received; #17 merged be8da8c, #18 merged 4448ff0).
+5. Stage 8 Final Audit (after Stage 7.3 final signature).
 
 ## HARD CONSTRAINTS
 
