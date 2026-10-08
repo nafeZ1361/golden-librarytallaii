@@ -50,7 +50,7 @@ class ExecutionEngine:
             ) from exc
 
         self.live_enabled = os.getenv("ENABLE_LIVE_TRADING", "NO").upper() == "YES"
-        self.risk_validator = risk_validator or RiskValidator(RiskLimits(max_volume=1.0))
+        self.risk_validator = risk_validator or RiskValidator(RiskLimits.from_env())
         self._submitted_trade_ids: set[str] = set()
         self._emergency_locked = False
 
