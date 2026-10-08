@@ -33,7 +33,7 @@ SCOPE: stage7/GAPS.md (new), module/execution.py:53, module/config.py (docs only
   - `module/execution.py:53` default validator is now
     `RiskValidator(RiskLimits.from_env())` (fail-safe defaults).
   - The RISK_* contract is documented in `module/config.py` as the single
-    source of truth (docs/comment only; no forced refactor).
+  source of truth (docs/comment only; no forced refactor).
   - `main.py` unchanged (already correct).
   - `module/execution.py:44` and `:52` (`TRADING_MODE`, `ENABLE_LIVE_TRADING`)
     intentionally unchanged: their construction-time env reads are load-bearing
@@ -87,3 +87,43 @@ SCOPE: stage7/GAPS.md (new), module/execution.py:53, module/config.py (docs only
 - Dependency: L2/L3 data
 - Implementation: none ("no impl")
 - Status: **OPEN**
+
+## GAP-009 — heikin_ashi().obj mismatch — OPEN (PRE-EXISTING)
+
+- Severity: MEDIUM
+- Type: CODE MISMATCH — RESOLUTION GAP
+- Finding: `module/indicators.py:1061` accesses `.obj` on the DataFrame returned by `heikin_ashi(...)`.
+- Classification: PRE-EXISTING; not introduced by PR #14.
+- Scope: OUT OF SCOPE for PR #14.
+- Decision: DEFER; no change to `module/indicators.py` in this governance action.
+- Status: **OPEN**
+- Constraint: no indicator fix until separately audited and explicitly approved.
+
+## GAP-010 — missing ml_signal_adapter — OPEN (PRE-EXISTING / HIGHLY LIKELY)
+
+- Severity: HIGH
+- Type: REPOSITORY/TEST INTEGRITY GAP
+- Finding: `tests/test_stage71_e2e_integration.py` imports `ml_signal_adapter`, but no tracked module was found.
+- Classification: PRE-EXISTING / HIGHLY LIKELY; PR #14 did not modify the test or adapter.
+- Historical deletion: NOT PROVEN.
+- Scope: OUT OF SCOPE for current governance action.
+- Decision: DEFER; do not create `ml_signal_adapter.py`, modify tests, or install a dependency.
+- Status: **OPEN**
+- Constraint: root cause requires separate forensic investigation before remediation.
+
+## GAP-011 — PROJECT_STATE governance/document drift — OPEN
+
+- Severity: MEDIUM
+- Type: GOVERNANCE/DOCUMENTATION DRIFT
+- Finding: `PROJECT_STATE.md` records `Current HEAD (main): 4448ff0`, while the audited current main is `36df7c9`; it also states Stage 7.1 Technical Closure is approved although the PR #14 merge gate and required validation are still open.
+- Decision: reconcile `PROJECT_STATE.md` using verified repository state only; no code/data/evidence changes.
+- Status: **OPEN** until reconciliation is validated.
+
+## GAP-012 — PR #14 branch/integration drift — OPEN (ASSESSMENT PENDING)
+
+- Severity: MEDIUM
+- Type: BRANCH/INTEGRATION DRIFT
+- Finding: current main is `36df7c9`; PR #14 head is `8f8939c`; PR #14 base/merge-base is `d1597ef`; compare shows PR #14 is 2 commits ahead and 14 commits behind main.
+- Classification: real branch divergence; semantic conflict or required rebase is NOT YET established.
+- Decision: do not rebase or merge until a fresh PR #14 audit and explicit Human Confirmation.
+- Status: **OPEN / ASSESSMENT PENDING**
