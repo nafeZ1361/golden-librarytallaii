@@ -77,7 +77,7 @@ Tracked in stage7/GAPS.md (PR #16):
 | #14 | fix/stage71-f005-f002 | F-005 + F-002 fixes | OPEN, unmerged | manual bot.ipynb smoke-check + separate Human Confirmation |
 | #15 | chore/stage71-cleanup | F-003 skll/ cleanup | OPEN, unmerged | separate Human Confirmation |
 | #16 | fix/stage73-f004-riskconfig | F-004 fix + stage7/GAPS.md | OPEN, unmerged | separate Human Confirmation |
-| #\<new\> TBD | chore/project-state | PROJECT_STATE.md + DECISIONS_LOG.md | OPEN, unmerged | separate Human Confirmation |
+| #17 | chore/project-state | PROJECT_STATE.md + DECISIONS_LOG.md | OPEN, unmerged | separate Human Confirmation |
 
 ## LEGACY PRs
 
