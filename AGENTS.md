@@ -37,3 +37,19 @@ Prefer machine-checkable JSON/MD artifacts containing dataset identity/hash, mod
 
 ## Agent behavior
 Read the relevant skill before specialized work. Do not load unrelated skills. If requirements conflict or evidence is missing, stop at BLOCKED and report the exact missing evidence.
+
+## Entry rule (pre-action)
+Before any repository action:
+- Read this root `AGENTS.md` in full; it is the governing agent contract and the mandatory entry point.
+- Read the current-state documents that apply to the task: `PROJECT_STATE.md`, `DECISIONS_LOG.md`, and `stage7/GAPS.md`.
+- Inspect the actual Git state (branch, HEAD, working tree) with read-only commands where tools allow.
+- Compare document claims against observed reality and report material discrepancies before acting; do not assume they match.
+- Treat prior agent reports and your own earlier output as audit leads, not confirmed evidence; re-verify anything you rely on.
+- If a required document or check is inaccessible, declare exactly what could not be verified (`NOT VERIFIED`) and stop dependent work at BLOCKED.
+
+## Rollback rule (reversibility)
+Every accepted change must be reversible without affecting protected data, baselines, or evidence:
+- Apply changes only on a dedicated branch created from the verified target commit; never rewrite history of protected branches.
+- Before applying a stage-changing patch, create an annotated checkpoint tag on the pre-change commit.
+- One logical change per atomic commit; record the rollback command (`git revert <commit>` for committed changes; branch discard/tag restore for uncommitted work) in the handoff note.
+- Reverting must never delete datasets, evidence artifacts, or baselines; if a change touched protected files, mark rollback as requiring separate human approval.
