@@ -20,8 +20,49 @@ buy_stop = mt5.ORDER_TYPE_BUY_STOP
 sell = mt5.ORDER_TYPE_SELL
 sell_limit = mt5.ORDER_TYPE_SELL_LIMIT
 sell_stop = mt5.ORDER_TYPE_SELL_STOP
-paper_broker = PaperBroker("paper_state.json", magic_number=MAGIC_NUMBER)
-execution_engine = ExecutionEngine(mt5, paper_broker=paper_broker)
+
+_paper_broker = None
+_execution_engine = None
+
+
+def get_paper_broker():
+    """Lazily build the shared PaperBroker (F-005: no import-time disk I/O)."""
+    global _paper_broker
+    if _paper_broker is None:
+        _paper_broker = PaperBroker("paper_state.json", magic_number=MAGIC_NUMBER)
+    return _paper_broker
+
+
+def get_execution_engine():
+    """Lazily build the shared ExecutionEngine (F-005: no import-time MT5 binding)."""
+    global _execution_engine
+    if _execution_engine is None:
+        _execution_engine = ExecutionEngine(mt5, paper_broker=get_paper_broker())
+    return _execution_engine
+
+
+class _LazySingletonProxy:
+    """Preserve legacy module exports without constructing state during import."""
+
+    __slots__ = ("_factory",)
+
+    def __init__(self, factory):
+        object.__setattr__(self, "_factory", factory)
+
+    def __getattr__(self, name):
+        return getattr(self._factory(), name)
+
+    def __setattr__(self, name, value):
+        setattr(self._factory(), name, value)
+
+    def __repr__(self):
+        return "<lazy singleton proxy>"
+
+
+# Compatibility exports for callers that still import these names directly or
+# through wildcard imports. The real singletons remain lazy (F-005).
+paper_broker = _LazySingletonProxy(get_paper_broker)
+execution_engine = _LazySingletonProxy(get_execution_engine)
 
 
 def get_broker_offset():
@@ -152,7 +193,7 @@ def create_order(symbol, lot, order_type, sl=0.0, tp=0.0, comment='hashem', trad
     if trade_id:
         request["trade_id"] = str(trade_id)
     
-    result = execution_engine.send(request, daily_profit=daily_profit, open_positions=open_positions)
+    result = get_execution_engine().send(request, daily_profit=daily_profit, open_positions=open_positions)
     if result is None:
         print("ارسال سفارش بدون پاسخ از MT5 برگشت")
         return None
@@ -197,7 +238,7 @@ def close_order(ticket):
             "type_filling": filling_mode,
         }
         
-        result = execution_engine.send(request)
+        result = get_execution_engine().send(request)
         if result is not None and result.retcode == mt5.TRADE_RETCODE_DONE:
             return result
 
@@ -241,7 +282,7 @@ def close_half_vol_order(ticket):
             "type_filling": filling_mode,
         }
         
-        result = execution_engine.send(request)
+        result = get_execution_engine().send(request)
         if result is not None and result.retcode == mt5.TRADE_RETCODE_DONE:
             return result
 
@@ -679,7 +720,7 @@ def modify_stop(ticket, new_stop_loss):
         "risk_exempt": True,
     }
 
-    result = execution_engine.send(request)
+    result = get_execution_engine().send(request)
     return result
 
 def modify_tp(ticket, new_tp):
@@ -701,7 +742,7 @@ def modify_tp(ticket, new_tp):
         "risk_exempt": True,
     }
 
-    result = execution_engine.send(request)
+    result = get_execution_engine().send(request)
     return result
 
 def pending_order(symbol , lot , order_type , price , sl = 0.0 , tp= 0.0 , comment = 'hashem'):
@@ -718,7 +759,7 @@ def pending_order(symbol , lot , order_type , price , sl = 0.0 , tp= 0.0 , comme
         "type_time": mt5.ORDER_TIME_GTC,
         "type_filling": mt5.ORDER_FILLING_IOC,
         }
-    order = execution_engine.send(request)
+    order = get_execution_engine().send(request)
     return order
 
 def remove_order(ticket):
@@ -727,7 +768,7 @@ def remove_order(ticket):
         "order": ticket,
         "risk_exempt": True,
     }
-    res = execution_engine.send(request)
+    res = get_execution_engine().send(request)
     return res
  
 def close_all_pending_orders():
