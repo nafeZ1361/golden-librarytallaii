@@ -111,19 +111,19 @@ SCOPE: stage7/GAPS.md (new), module/execution.py:53, module/config.py (docs only
 - Status: **OPEN**
 - Constraint: root cause requires separate forensic investigation before remediation.
 
-## GAP-011 — PROJECT_STATE governance/document drift — OPEN
+## GAP-011 — PROJECT_STATE governance/document drift — OPEN (RECONCILIATION PR)
 
 - Severity: MEDIUM
 - Type: GOVERNANCE/DOCUMENTATION DRIFT
-- Finding: `PROJECT_STATE.md` records `Current HEAD (main): 4448ff0`, while the audited current main is `36df7c9`; it also states Stage 7.1 Technical Closure is approved although the PR #14 merge gate and required validation are still open.
+- Finding: `PROJECT_STATE.md` was stale after PR #14 merged. GitHub reports current `main` at `7ebc117a09fae4018630a7289b6a4392ce226568`.
 - Decision: reconcile `PROJECT_STATE.md` using verified repository state only; no code/data/evidence changes.
-- Status: **OPEN** until reconciliation is validated.
+- Proposed disposition: documentation updated in a separate governance-only PR; remains OPEN until review/merge.
 
-## GAP-012 — PR #14 branch/integration drift — OPEN (ASSESSMENT PENDING)
+## GAP-012 — PR #14 branch/integration drift — CLOSED (INTEGRATION ONLY)
 
 - Severity: MEDIUM
 - Type: BRANCH/INTEGRATION DRIFT
-- Finding: current main is `36df7c9`; PR #14 head is `8f8939c`; PR #14 base/merge-base is `d1597ef`; compare shows PR #14 is 2 commits ahead and 14 commits behind main.
-- Classification: real branch divergence; semantic conflict or required rebase is NOT YET established.
-- Decision: do not rebase or merge until a fresh PR #14 audit and explicit Human Confirmation.
-- Status: **OPEN / ASSESSMENT PENDING**
+- Finding: PR #14 was merged as-is on 2026-10-28. Merge commit: `7ebc117a09fae4018630a7289b6a4392ce226568`; merge tree: `a52f3760237a5df457aecd10e32a601b60e73b4c`.
+- Disposition: integration drift resolved; do not rebase or re-merge PR #14.
+- Residual validation: Windows x64 / MT5 import and `bot.ipynb` smoke-check not yet evidenced in this audit; current merge SHA has no check-runs and no successful status contexts.
+- Status: integration CLOSED; post-merge validation remains BLOCKED until current-SHA tests and Windows smoke evidence are attached.

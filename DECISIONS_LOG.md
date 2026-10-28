@@ -19,3 +19,6 @@
 | 15 | 2026-10-08 | Governance reconciliation scope | PENDING HUMAN CONFIRMATION | scope limited to stage7/GAPS.md, DECISIONS_LOG.md, PROJECT_STATE.md; no code/data/evidence changes |
 | 16 | 2026-10-08 | Stage 7.1 status | A | remains not-final-PASS until PR #14 gate and required validation are complete; Stage 8 not started |
 | 17 | 2026-10-08 | PR #14 integration | PENDING HUMAN DECISION | decide update/rebase, merge as-is, or keep unchanged only after fresh audit |
+
+| 18 | 2026-10-28 | PR #14 integration | MERGED AS-IS; merge SHA `7ebc117a09fae4018630a7289b6a4392ce226568` | Verified against GitHub main and PR metadata; Stage 7.1 remains BLOCKED until Windows smoke and current-SHA test evidence exist |
+| 19 | 2026-10-28 | Post-merge governance reconciliation | APPROVED by user for separate PR only | Scope: `PROJECT_STATE.md`, `DECISIONS_LOG.md`, `stage7/GAPS.md`; no code/data/evidence changes; no merge authorized |
