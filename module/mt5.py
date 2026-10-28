@@ -41,6 +41,30 @@ def get_execution_engine():
     return _execution_engine
 
 
+class _LazySingletonProxy:
+    """Preserve legacy module exports without constructing state during import."""
+
+    __slots__ = ("_factory",)
+
+    def __init__(self, factory):
+        object.__setattr__(self, "_factory", factory)
+
+    def __getattr__(self, name):
+        return getattr(self._factory(), name)
+
+    def __setattr__(self, name, value):
+        setattr(self._factory(), name, value)
+
+    def __repr__(self):
+        return "<lazy singleton proxy>"
+
+
+# Compatibility exports for callers that still import these names directly or
+# through wildcard imports. The real singletons remain lazy (F-005).
+paper_broker = _LazySingletonProxy(get_paper_broker)
+execution_engine = _LazySingletonProxy(get_execution_engine)
+
+
 def get_broker_offset():
     today = datetime.datetime.today().strftime('%A')
     symbol = None
