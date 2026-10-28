@@ -1,9 +1,9 @@
 # PROJECT_STATE.md
 
-Last updated (UTC): 2026-10-08T11:57:00Z
-Updated by: QCode/nafeZ1361
-Current stage: Stage 7.3 Governance Alignment
-Current HEAD (main): 36df7c9
+Last updated (UTC): 2026-10-28T19:36:37Z
+Updated by: governance reconciliation (PR #14 post-merge audit)
+Current stage: Stage 7.1 Technical Validation — BLOCKED pending Windows smoke and current-SHA test evidence
+Current HEAD (main): 7ebc117a09fae4018630a7289b6a4392ce226568
 
 ## PROJECT GOAL
 
@@ -11,9 +11,12 @@ golden-librarytallaii یک مخزن پژوهشی و اعتبارسنجی برا�
 
 ## CURRENT STATUS
 
-- Baseline test suite: 171 passed + 2 subtests (pytest tests/ -q, full green).
-- Stage 7.1 Technical Closure: **NOT FINAL-PASS** — PR #14 remains open and unmerged; required bot.ipynb smoke-check and final validation/merge gate are incomplete.
-- Stage 7.3 Governance Alignment: DONE (pending final signature).
+- Historical test report in PR #14 body: 171 passed + 2 subtests; this report predates the final compatibility-test commit and is not current-SHA verification.
+- GitHub verification: PR #14 is merged; merge commit and current `main` are `7ebc117a09fae4018630a7289b6a4392ce226568`.
+- Current merge commit has zero check-runs; combined commit status is pending with no status contexts. No current CI result proves the suite passed on the merge commit.
+- Windows x64 / MetaTrader5 import and `bot.ipynb` smoke-check: NOT RUN in this audit environment; required before Stage 7.1 can be marked final PASS.
+- Stage 7.1 Technical Closure: **BLOCKED / NOT FINAL-PASS** pending Windows smoke evidence and tests against the verified merge SHA.
+- CI workflow directory `.github/workflows/` is absent on `main`; branch protection reports disabled.
 - Runtime mode: PAPER by default; LIVE blocked unless ENABLE_LIVE_TRADING=YES.
 
 ## LOCKED
@@ -37,8 +40,8 @@ Tracked in stage7/GAPS.md:
 - GAP-008 — OFI/Depth Skew — RESEARCH CANDIDATE — Stage 7.2 — no impl
 - GAP-009 — `heikin_ashi().obj` mismatch — OPEN, pre-existing, out of scope PR #14.
 - GAP-010 — missing `ml_signal_adapter` — OPEN, pre-existing/highly likely; historical deletion not proven; deferred.
-- GAP-011 — PROJECT_STATE governance/document drift — OPEN pending reconciliation validation.
-- GAP-012 — PR #14 branch/integration drift — OPEN / assessment pending; no rebase/merge yet.
+- GAP-011 — PROJECT_STATE governance/document drift — reconciliation proposed in this PR; pending review/merge.
+- GAP-012 — PR #14 integration drift — CLOSED for integration state (PR #14 merged as-is); post-merge validation remains blocked pending Windows smoke and current-SHA tests.
 - F-005 (PR #14, commit 1d54d8c): singleton import-time LIVE state in module/mt5.py.
 - F-002 (PR #14, commit 8f8939c): non-deterministic peak_memory_mb in evidence.
 - F-012: requirements.txt missing deps — resolved upstream (fa600be).
@@ -59,18 +62,18 @@ Tracked in stage7/GAPS.md (GAP-003..GAP-008; none implemented).
 | F-004 | PR #16 | commit 222b76b |
 | GAPS registry | PR #16 | commit 80f5cf3 (stage7/GAPS.md) |
 
-Merged into main (2026-10-08): #17 → be8da8c, #15 → c5bb24b, #16 → 7f61d64.
+Merged into main (historical): #17 → be8da8c, #15 → c5bb24b, #16 → 7f61d64.
+
+PR #14 merged 2026-10-28 at `7ebc117a09fae4018630a7289b6a4392ce226568` (tree `a52f3760237a5df457aecd10e32a601b60e73b4c`).
 
 ## NEXT ACTIONS
 
-1. Governance reconciliation validation for GAP-009..GAP-012 and Decisions 11–17.
-2. Fresh audit of PR #14 against current main to assess branch/integration drift.
-3. Human Confirmation for the chosen PR #14 integration action.
-4. Required targeted validation, including the manual bot.ipynb smoke-check gate.
-5. Final Human Confirmation for merge.
-6. Merge PR #14.
-7. Verify Stage 7.1 closure with evidence.
-8. Stage 8 Final Audit only after Stage 7.1 closure.
+1. Run targeted and full pytest on the verified merge SHA in a supported Windows x64 environment; preserve exact logs and counts.
+2. Perform manual `bot.ipynb` smoke-check under PAPER mode; prove no live orders and no unintended MT5 IPC/state writes.
+3. Audit and propose a minimal CI workflow in a separate review; do not implement until separately approved.
+4. Review/merge this governance-only reconciliation PR after independent checks.
+5. Verify Stage 7.1 closure only with current-SHA test evidence and Windows smoke evidence.
+6. Stage 8 Final Audit only after Stage 7.1 closure.
 
 ## HARD CONSTRAINTS
 
@@ -94,7 +97,7 @@ Merged into main (2026-10-08): #17 → be8da8c, #15 → c5bb24b, #16 → 7f61d64
 
 | PR | Branch | Content | Status | Merge gate |
 |---|---|---|---|---|
-| #14 | fix/stage71-f005-f002 | F-005 + F-002 fixes | OPEN, unmerged | fresh PR audit + manual bot.ipynb smoke-check + separate Human Confirmation |
+| #14 | fix/stage71-f005-f002 | F-005 + F-002 fixes | MERGED (`7ebc117a09fae4018630a7289b6a4392ce226568`) | post-merge Windows smoke + current-SHA tests pending |
 
 ## LEGACY PRs
 
